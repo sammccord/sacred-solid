@@ -30,7 +30,8 @@ async function markupOf(lib: typeof src) {
 // MARKUP_FROM=dist after `vp pack` of the revision to compare against.
 test("markup with no class passed matches the recorded snapshot", async () => {
   if (process.env.MARKUP_FROM === "dist") {
-    const dist = (await import("../dist/index.mjs")) as unknown as typeof src;
+    const distPath = "../dist/index.mjs";
+    const dist = (await import(/* @vite-ignore */ distPath)) as typeof src;
     writeFileSync(SNAPSHOT, `${JSON.stringify(await markupOf(dist), null, 2)}\n`);
   }
   expect(existsSync(SNAPSHOT)).toBe(true);
