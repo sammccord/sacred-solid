@@ -1,0 +1,78 @@
+.section {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  position: relative;
+
+  .right {
+    padding-bottom: calc(8px * var(--theme-line-height-base));
+    box-shadow: inset 0 var(--theme-line-width) 0 0 var(--theme-line-subdued);
+  }
+
+  &:last-child {
+    .right {
+      padding-bottom: 0;
+    }
+  }
+}
+
+.figure {
+  display: inline-flex;
+  height: calc(var(--font-size) * var(--theme-line-height-base));
+  cursor: pointer;
+  color: var(--theme-ink);
+  background: var(--theme-control-foreground);
+  width: 3ch;
+  align-items: center;
+  justify-content: center;
+}
+
+.selected {
+  .figure {
+    background: var(--theme-surface-inverse);
+  }
+}
+
+.dot {
+  display: inline-block;
+  width: 1ch;
+  height: 1ch;
+  background: var(--theme-ink-inverse);
+  transform: rotate(45deg);
+  vertical-align: middle;
+}
+
+.focused {
+  .figure {
+    background: var(--theme-accent);
+  }
+}
+
+.relative {
+  flex-shrink: 0;
+  display: inline-block;
+  vertical-align: baseline;
+}
+
+.right {
+  background: var(--theme-control-background);
+  min-width: 10%;
+  width: 100%;
+  align-self: stretch;
+}
+
+.input {
+  position: absolute;
+  height: 1px;
+  width: 1px;
+  opacity: 0;
+  background: transparent;
+  border: 0;
+  outline: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.section:where([data-aug-border]) > .right {
+  box-shadow: none;
+}

@@ -1,0 +1,41 @@
+.root {
+  display: block;
+  font-weight: 400;
+  overflow: auto;
+  font-family: inherit;
+  background: var(--theme-surface-subdued);
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  scrollbar-width: none;
+}
+
+.line {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.number {
+  display: inline-flex;
+  width: 3ch;
+  text-align: right;
+  padding-right: 1ch;
+  user-select: none;
+  background: var(--theme-surface-page);
+  opacity: 0.5;
+}
+
+.content {
+  min-width: 10%;
+  width: 100%;
+  white-space: pre;
+  background: var(--theme-surface-subdued);
+  padding-left: 2ch;
+}
+
+.root:where([data-aug-inlay]) {
+  background: none;
+}

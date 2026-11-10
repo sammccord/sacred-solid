@@ -1,0 +1,53 @@
+.message {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: calc(var(--font-size) * var(--theme-line-height-base));
+
+  &:last-child {
+    margin-bottom: 0px;
+  }
+}
+
+.left {
+  align-self: stretch;
+  flex-shrink: 0;
+  display: flex;
+  align-items: flex-end;
+  position: relative;
+}
+
+.triangle {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border-top: calc((var(--font-size) * var(--theme-line-height-base)) / 2) solid transparent;
+  border-bottom: calc((var(--font-size) * var(--theme-line-height-base)) / 2) solid transparent;
+  border-right: 1ch solid var(--theme-surface-float);
+  margin-bottom: calc((var(--font-size) * var(--theme-line-height-base)) / 2);
+}
+
+.right {
+  min-width: 10%;
+  width: 100%;
+  text-align: left;
+}
+
+.bubble {
+  padding: calc(8px * var(--theme-line-height-base)) 1ch calc(8px * var(--theme-line-height-base)) 1ch;
+  background: var(--theme-surface-float);
+  display: inline-block;
+  box-shadow: var(--theme-shadow-float-geometry) var(--theme-shadow-float-color);
+}
+
+.message:where([data-augmented-ui]) > .right > .bubble {
+  box-shadow: none;
+}
+
+.message:where([data-aug-inlay]) > .right > .bubble {
+  background: none;
+}
+
+.message:where([data-aug-inlay]) > .left > .triangle {
+  border-right-color: transparent;
+}

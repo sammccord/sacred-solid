@@ -1,0 +1,537 @@
+/*
+NOTE(jimmylee):
+Color palette for Sacred Computer. The root source of truth for color is the
+Simulacrum CLI palette in scripts/cli/colors.json — those are the true, terminal-
+tested colors, the ones a real terminal actually renders. The --ansi-* primitives
+below mirror that palette in CSS, so every value must be one a terminal can show:
+Standard (SGR 30-37, 90-97), 256-color (SGR 38;5;n), the grayscale ramp (232-255),
+or 24-bit true color (SGR 38;2;r;g;b). Do not add a color outside that spec.
+
+The OKLCH tint themes further down are a WEB-ONLY behavior. A terminal cannot run
+OKLCH math; it exists purely so the React surface can derive tinted variants while
+staying inside the same perceptual band as the terminal-tested primitives. OKLCH is
+a projection of the root palette, never a new source of color.
+*/
+
+a,
+abbr,
+acronym,
+address,
+applet,
+article,
+aside,
+audio,
+b,
+big,
+blockquote,
+body,
+canvas,
+caption,
+center,
+cite,
+code,
+dd,
+del,
+details,
+dfn,
+div,
+dl,
+dt,
+embed,
+em,
+figure,
+figcaption,
+fieldset,
+footer,
+form,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+header,
+hgroup,
+html,
+i,
+iframe,
+img,
+ins,
+kbd,
+label,
+legend,
+li,
+mark,
+menu,
+nav,
+object,
+ol,
+output,
+p,
+pre,
+q,
+ruby,
+s,
+samp,
+section,
+small,
+span,
+strike,
+strong,
+sub,
+summary,
+sup,
+table,
+tbody,
+td,
+tfoot,
+th,
+thead,
+time,
+tr,
+tt,
+u,
+ul,
+var,
+video {
+  border: 0;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  vertical-align: baseline;
+}
+
+a {
+  background: var(--theme-surface-subdued);
+  color: var(--theme-ink);
+
+  &:hover {
+    background: var(--theme-accent);
+    color: var(--theme-ink);
+  }
+
+  &:focus {
+    background: var(--theme-accent);
+    color: var(--theme-ink);
+    outline: 0;
+  }
+
+  &:active {
+    background: var(--theme-accent);
+    color: var(--theme-ink);
+  }
+}
+
+ul {
+  list-style-position: inside;
+  list-style-type: '▪';
+  text-indent: -1ch;
+}
+
+ol {
+  list-style-type: '';
+  list-style-position: inside;
+  counter-reset: cupcake;
+  text-indent: -1ch;
+}
+
+ul ul,
+ul ol,
+ol ul,
+ol ol {
+  padding-left: 2ch;
+}
+
+ol li {
+  padding-left: 1ch;
+  counter-increment: cupcake;
+}
+
+ul li:before {
+  content: ' ';
+  display: inline-block;
+  width: 1ch;
+  height: 0;
+  visibility: hidden;
+}
+
+ol li:before {
+  content: counters(cupcake, '.') '. ';
+}
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
+
+html,
+body {
+  /* ------------------------------------------------------------------ */
+  /* Standard 16 Colors (SGR 38;5;0-15)                                 */
+  /* ------------------------------------------------------------------ */
+  --ansi-0-black: #000000;
+  --ansi-1-maroon: #800000;
+  --ansi-2-green: #008000;
+  --ansi-3-olive: #808000;
+  --ansi-4-navy: #000080;
+  --ansi-5-purple: #800080;
+  --ansi-6-teal: #008080;
+  --ansi-7-silver: #c0c0c0;
+  --ansi-8-gray: #808080;
+  --ansi-9-red: #ff0000;
+  --ansi-10-lime: #00ff00;
+  --ansi-11-yellow: #ffff00;
+  --ansi-12-blue: #0000ff;
+  --ansi-13-fuchsia: #ff00ff;
+  --ansi-14-aqua: #00ffff;
+  --ansi-15-white: #ffffff;
+
+  /* ------------------------------------------------------------------ */
+  /* 216 Color Cube (SGR 38;5;16-231)                                   */
+  /* Channels: 0x00, 0x5F, 0x87, 0xAF, 0xD7, 0xFF                       */
+  /* ------------------------------------------------------------------ */
+  --ansi-100-yellow4a: #878700;
+  --ansi-148-yellow3a: #afd700;
+  --ansi-232-gray-3: #080808;
+  --ansi-235-gray-15: #262626;
+  --ansi-237-gray-23: #3a3a3a;
+  --ansi-240-gray-35: #585858;
+  --ansi-242-gray-42: #6c6c6c;
+  --ansi-245-gray-54: #8a8a8a;
+  --ansi-248-gray-66: #a8a8a8;
+  --ansi-251-gray-78: #c6c6c6;
+  --ansi-254-gray-89: #e4e4e4;
+  --ansi-255-gray-93: #eeeeee;
+
+  /* ------------------------------------------------------------------ */
+  /* Bright Colors (SGR 90-97) — overlap with ansi-8..15 in some terms  */
+  /* but the SGR 90-97 renditions use these distinct hex values.        */
+  /* ------------------------------------------------------------------ */
+  --ansi-bright-green: #55ff55;
+
+  /* ------------------------------------------------------------------ */
+  /* 24-bit True Color (SGR 38;2;r;g;b) — outside the 256 palette       */
+  /* ------------------------------------------------------------------ */
+  --ansi-true-brand: #e4f221;
+
+  /* ------------------------------------------------------------------ */
+  /* Semantic Color Aliases                                              */
+  /* All values reference the ANSI palette above.                       */
+  /* ------------------------------------------------------------------ */
+  --color-black: var(--ansi-0-black);
+  --color-white: var(--ansi-15-white);
+  --color-green: var(--ansi-2-green);
+  --color-lime: var(--ansi-10-lime);
+  --color-bright-green: var(--ansi-bright-green);
+  --color-brand: var(--ansi-true-brand);
+
+  --color-gray-93: var(--ansi-255-gray-93);
+  --color-gray-89: var(--ansi-254-gray-89);
+  --color-gray-78: var(--ansi-251-gray-78);
+  --color-gray-66: var(--ansi-248-gray-66);
+  --color-gray-54: var(--ansi-245-gray-54);
+  --color-gray-42: var(--ansi-242-gray-42);
+  --color-gray-35: var(--ansi-240-gray-35);
+  --color-gray-23: var(--ansi-237-gray-23);
+  --color-gray-15: var(--ansi-235-gray-15);
+  --color-gray-3: var(--ansi-232-gray-3);
+
+  /* ------------------------------------------------------------------ */
+  /* Web-only Alpha Variants (no ANSI equivalent — CSS rendering only)  */
+  /* Used for translucent overlays and subdued borders.                  */
+  /* ------------------------------------------------------------------ */
+  --color-black-alpha-40: rgba(0, 0, 0, 0.4);
+  --color-white-alpha-40: rgba(255, 255, 255, 0.4);
+  --color-gray-89-border-alpha: rgba(228, 228, 228, 0.6);
+  --color-gray-23-border-alpha: rgba(58, 58, 58, 0.3);
+  --color-brand-alpha-50: rgba(228, 242, 33, 0.5);
+
+  --font-family-mono: 'FiraCode-Regular', Consolas, monaco, monospace;
+
+  --theme-line-height-base: 1.25;
+  --font-size: 16px;
+
+  --z-index-page: 1;
+  --z-index-page-select: 3;
+  --z-index-page-tooltips: 4;
+  --z-index-page-popover: 5;
+  --z-index-page-dropdown-menus: 6;
+  --z-index-page-modals: 10;
+
+  --theme-line-width-strong: 2px;
+  --theme-line-width: 1px;
+  --theme-line-width-double: 6px;
+
+  --theme-shadow-window-geometry: 1ch calc(var(--theme-line-height-base) * 1rem) 0 0;
+  --theme-shadow-float-geometry: 1ch 1ch 0 0;
+  --theme-shadow-tooltip-geometry: 0.5ch 0.5ch 0 0;
+  --theme-shadow-ring-geometry: 0 0 0 1ch;
+
+  background: var(--theme-surface-page);
+  color: var(--theme-ink);
+  font-family: var(--font-family-mono);
+  line-height: calc(var(--theme-line-height-base) * 1rem);
+
+  font-size: var(--font-size);
+  font-optical-sizing: auto;
+  text-rendering: geometricPrecision;
+  font-weight: 400;
+  font-variant-numeric: tabular-nums lining-nums;
+
+  &::-webkit-scrollbar {
+    background: transparent;
+    height: calc(var(--theme-line-height-base) * 1rem);
+    width: 1ch;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: var(--theme-surface-page);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--theme-surface-chip);
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: var(--theme-surface-chip);
+  }
+}
+
+body.theme-light {
+  --theme-ink: var(--color-black);
+  --theme-ink-inverse: var(--color-white);
+  --theme-ink-subdued: var(--color-black-alpha-40);
+
+  --theme-surface-page: var(--color-white);
+  --theme-surface-input: var(--color-gray-89);
+  --theme-surface-panel: var(--color-gray-89);
+  --theme-surface-panel-footer: var(--color-gray-66);
+  --theme-surface-window: var(--color-gray-89);
+  --theme-surface-float: var(--color-gray-89);
+  --theme-surface-chip: var(--color-gray-89);
+  --theme-surface-inverse: var(--color-black);
+  --theme-surface-subdued: var(--color-gray-89-border-alpha);
+  --theme-surface-sunken: var(--color-gray-66);
+
+  --theme-line-strong: var(--color-black);
+  --theme-line: var(--color-gray-89);
+  --theme-line-subdued: var(--color-gray-89-border-alpha);
+
+  --theme-accent: var(--color-bright-green);
+  --theme-accent-subdued: var(--color-brand-alpha-50);
+
+  --theme-control: var(--color-black);
+  --theme-control-ink: var(--color-white);
+  --theme-control-foreground: var(--color-gray-78);
+  --theme-control-background: var(--color-gray-89);
+
+  --theme-shadow-window-color: var(--color-gray-66);
+  --theme-shadow-float-color: var(--color-gray-89-border-alpha);
+  --theme-shadow-tooltip-color: var(--color-gray-89-border-alpha);
+  --theme-shadow-ring-color: var(--color-gray-89-border-alpha);
+  /*
+  NOTE(jimmylee):
+  Window-specific tones: surface-window sits one step darker than surface-page so the
+  window reads as a "lifted" panel, and shadow-window-color sits one step darker still so
+  the drop shadow is unambiguously darker than the window body. The CLI mirror lives in
+  scripts/cli/colors.json (windowBg / shadow).
+  */
+}
+
+body.theme-dark {
+  --theme-ink: var(--color-white);
+  --theme-ink-inverse: var(--color-black);
+  --theme-ink-subdued: var(--color-black-alpha-40);
+
+  --theme-surface-page: var(--color-black);
+  --theme-surface-input: var(--color-gray-23);
+  --theme-surface-panel: var(--color-gray-23);
+  --theme-surface-panel-footer: var(--color-gray-35);
+  --theme-surface-window: var(--color-gray-23);
+  --theme-surface-float: var(--color-gray-23);
+  --theme-surface-chip: var(--color-gray-23);
+  --theme-surface-inverse: var(--color-white);
+  --theme-surface-subdued: var(--color-gray-23-border-alpha);
+  --theme-surface-sunken: var(--color-gray-15);
+
+  --theme-line-strong: var(--color-white);
+  --theme-line: var(--color-gray-23);
+  --theme-line-subdued: var(--color-gray-23-border-alpha);
+
+  --theme-accent: oklch(from var(--ansi-13-fuchsia) 0.55 c h);
+  --theme-accent-subdued: oklch(from var(--ansi-13-fuchsia) 0.55 c h / 0.5);
+
+  --theme-control: var(--color-white);
+  --theme-control-ink: var(--color-black);
+  --theme-control-foreground: var(--color-gray-15);
+  --theme-control-background: var(--color-gray-23);
+
+  --theme-shadow-window-color: var(--color-gray-15);
+  --theme-shadow-float-color: var(--color-gray-23-border-alpha);
+  --theme-shadow-tooltip-color: var(--color-gray-23-border-alpha);
+  --theme-shadow-ring-color: var(--color-gray-23-border-alpha);
+  /*
+  NOTE(jimmylee):
+  Window body is gray-23 (#3a3a3a) so it lifts off the gray-3 (#080808) page
+  background, and the shadow is gray-15 (#262626), a hair lighter than the page
+  but visibly darker than the window body, preserving the "shadow darker than the
+  body" contract while staying inside the ANSI gray ramp.
+  */
+}
+
+/*
+NOTE(jimmylee):
+OKLCH tint themes — web-only. These have no terminal equivalent (Simulacrum renders
+the fixed colors.json palette, never derived tints). They are recalibrated against
+the --ansi-* base so the saturation and lightness ramps fall in the same perceptual
+range as the ANSI gray scale (#eeeeee → #262626) and the brand color (#e4f221). Each
+tint sets only --tint, and the body.theme-light.tint-* / body.theme-dark.tint-*
+selectors below derive every --theme-* token from that tint via OKLCH math.
+*/
+
+body.tint-green {
+  --tint: #39ff44;
+}
+
+body.tint-blue {
+  --tint: #0047ff;
+}
+
+body.tint-red {
+  --tint: #ff0000;
+}
+
+body.tint-yellow {
+  --tint: var(--ansi-true-brand);
+}
+
+body.tint-purple {
+  --tint: #8000ff;
+}
+
+body.tint-orange {
+  --tint: #ffac1c;
+}
+
+body.tint-pink {
+  --tint: #ff00ff;
+}
+
+body.theme-light.tint-green,
+body.theme-light.tint-blue,
+body.theme-light.tint-red,
+body.theme-light.tint-yellow,
+body.theme-light.tint-purple,
+body.theme-light.tint-orange,
+body.theme-light.tint-pink {
+  /*
+  NOTE(jimmylee):
+  Light tint ramp is anchored to the ANSI light grays:
+    --theme-surface-page   ~ ansi-255-gray-93 (#eeeeee)
+    --theme-surface-panel  ~ ansi-254-gray-89 (#e4e4e4)
+    --theme-surface-input  ~ ansi-255-gray-93 (#eeeeee)
+    --theme-line           ~ ansi-251-gray-78 (#c6c6c6)
+    --theme-ink            ~ ansi-232-gray-3  (#080808)
+  Each token uses oklch(from var(--tint) L C H) so it tints toward the source
+  color while staying within the ANSI lightness band. Window body matches
+  surface-panel so the panel sits one step darker than the page, and
+  shadow-window-color drops to L=0.70, a third step down, so the drop shadow stays
+  visibly darker than the window body across every tint.
+  */
+  --theme-ink: oklch(from var(--tint) 0.18 calc(c * 0.4) h);
+  --theme-ink-inverse: oklch(from var(--tint) 0.97 calc(c * 0.1) h);
+  --theme-ink-subdued: var(--color-black-alpha-40);
+
+  --theme-surface-page: oklch(from var(--tint) 0.97 calc(c * 0.1) h);
+  --theme-surface-input: oklch(from var(--tint) 0.97 calc(c * 0.1) h);
+  --theme-surface-panel: oklch(from var(--tint) 0.92 calc(c * 0.18) h);
+  --theme-surface-panel-footer: oklch(from var(--tint) 0.86 calc(c * 0.22) h);
+  --theme-surface-window: oklch(from var(--tint) 0.92 calc(c * 0.18) h);
+  --theme-surface-float: oklch(from var(--tint) 0.84 calc(c * 0.28) h);
+  --theme-surface-chip: oklch(from var(--tint) 0.84 calc(c * 0.28) h);
+  --theme-surface-inverse: oklch(from var(--tint) 0.18 calc(c * 0.4) h);
+  --theme-surface-subdued: oklch(from var(--tint) 0.92 calc(c * 0.18) h);
+  --theme-surface-sunken: oklch(from var(--tint) 0.7 calc(c * 0.28) h);
+
+  --theme-line-strong: oklch(from var(--tint) 0.18 calc(c * 0.4) h);
+  --theme-line: oklch(from var(--tint) 0.84 calc(c * 0.28) h);
+  --theme-line-subdued: oklch(from var(--tint) 0.92 calc(c * 0.18) h);
+
+  --theme-accent: oklch(from var(--tint) 0.62 c h);
+  --theme-accent-subdued: oklch(from var(--tint) 0.62 c h / 0.5);
+
+  --theme-control: oklch(from var(--tint) 0.18 calc(c * 0.4) h);
+  --theme-control-ink: oklch(from var(--tint) 0.97 calc(c * 0.1) h);
+  --theme-control-foreground: oklch(from var(--tint) 0.86 calc(c * 0.22) h);
+  --theme-control-background: oklch(from var(--tint) 0.92 calc(c * 0.18) h);
+
+  --theme-shadow-window-color: oklch(from var(--tint) 0.7 calc(c * 0.28) h);
+  --theme-shadow-float-color: oklch(from var(--tint) 0.92 calc(c * 0.18) h);
+  --theme-shadow-tooltip-color: oklch(from var(--tint) 0.92 calc(c * 0.18) h);
+  --theme-shadow-ring-color: oklch(from var(--tint) 0.92 calc(c * 0.18) h);
+}
+
+body.theme-dark.tint-green,
+body.theme-dark.tint-blue,
+body.theme-dark.tint-red,
+body.theme-dark.tint-yellow,
+body.theme-dark.tint-purple,
+body.theme-dark.tint-orange,
+body.theme-dark.tint-pink {
+  /*
+  NOTE(jimmylee):
+  Dark tint ramp is anchored to the ANSI dark grays:
+    --theme-surface-page   ~ ansi-232-gray-3  (#080808)
+    --theme-surface-panel  ~ ansi-235-gray-15 (#262626)
+    --theme-surface-input  ~ ansi-237-gray-23 (#3a3a3a)
+    --theme-line           ~ ansi-237-gray-23 (#3a3a3a)
+    --theme-ink            ~ ansi-15-white    (#ffffff)
+  Window body matches surface-panel (L=0.24) so it sits one step lighter than the
+  L=0.14 page, and shadow-window-color drops to L=0.18, a hair lighter than the page
+  but darker than the window body, preserving the "shadow darker than the body"
+  contract under every dark tint.
+  */
+  --theme-ink: oklch(from var(--tint) 0.92 calc(c * 0.18) h);
+  --theme-ink-inverse: oklch(from var(--tint) 0.14 calc(c * 0.18) h);
+  --theme-ink-subdued: var(--color-black-alpha-40);
+
+  --theme-surface-page: oklch(from var(--tint) 0.14 calc(c * 0.18) h);
+  --theme-surface-input: oklch(from var(--tint) 0.28 calc(c * 0.2) h);
+  --theme-surface-panel: oklch(from var(--tint) 0.24 calc(c * 0.22) h);
+  --theme-surface-panel-footer: oklch(from var(--tint) 0.3 calc(c * 0.24) h);
+  --theme-surface-window: oklch(from var(--tint) 0.24 calc(c * 0.22) h);
+  --theme-surface-float: oklch(from var(--tint) 0.4 calc(c * 0.28) h);
+  --theme-surface-chip: oklch(from var(--tint) 0.4 calc(c * 0.28) h);
+  --theme-surface-inverse: oklch(from var(--tint) 0.92 calc(c * 0.18) h);
+  --theme-surface-subdued: oklch(from var(--tint) 0.4 calc(c * 0.28) h / 0.6);
+  --theme-surface-sunken: oklch(from var(--tint) 0.18 calc(c * 0.2) h);
+
+  --theme-line-strong: oklch(from var(--tint) 0.92 calc(c * 0.18) h);
+  --theme-line: oklch(from var(--tint) 0.4 calc(c * 0.28) h);
+  --theme-line-subdued: oklch(from var(--tint) 0.4 calc(c * 0.28) h / 0.6);
+
+  --theme-accent: oklch(from var(--tint) 0.72 c h);
+  --theme-accent-subdued: oklch(from var(--tint) 0.72 c h / 0.5);
+
+  --theme-control: oklch(from var(--tint) 0.92 calc(c * 0.18) h);
+  --theme-control-ink: oklch(from var(--tint) 0.14 calc(c * 0.18) h);
+  --theme-control-foreground: oklch(from var(--tint) 0.3 calc(c * 0.22) h);
+  --theme-control-background: oklch(from var(--tint) 0.24 calc(c * 0.22) h);
+
+  --theme-shadow-window-color: oklch(from var(--tint) 0.18 calc(c * 0.2) h);
+  --theme-shadow-float-color: oklch(from var(--tint) 0.4 calc(c * 0.28) h / 0.6);
+  --theme-shadow-tooltip-color: oklch(from var(--tint) 0.4 calc(c * 0.28) h / 0.6);
+  --theme-shadow-ring-color: oklch(from var(--tint) 0.4 calc(c * 0.28) h / 0.6);
+}
+
+#__next {
+}

@@ -1,0 +1,5 @@
+---
+"sacred-solid": minor
+---
+
+Close the HUD gaps. `Accordion` takes `aug` and `theme`, which go on its header row. Its body row now gets its `padding-left: 1ch` from CSS (a class) instead of an inline style, so a caller class can override it. The computed padding is unchanged, the markup loses `style="padding-left: 1ch;"` and gains a class. `BarProgress` takes `style`, so a caller sets the solid height. `Navigation` takes `logo={false}` to render no logo button, the default markup is unchanged. `Tabs` items take `panel`, and `Tabs` renders the selected one with `role="tabpanel"` and wired `aria-controls` and `aria-labelledby`. `Tabs` is now controlled with `value` or uncontrolled with `defaultValue`, and `classes` gains `panel`. Define `panel` with a getter to build it only while its tab is selected. New `ScrollArea` scrolls vertically, with `fade` on the edges that can still scroll, `scrollbar` set to `native`, `hidden` or `rail`, and `classes` for `viewport`, `content`, `rail` and `thumb`. `Table` takes `classes={{ body }}`.

@@ -1,0 +1,15 @@
+.root {
+  display: block;
+  background: var(--theme-surface-float);
+  box-shadow: var(--theme-shadow-tooltip-geometry) var(--theme-shadow-tooltip-color);
+  font-weight: 400;
+  max-width: 24ch;
+}
+
+.root:where([data-augmented-ui]) {
+  box-shadow: none;
+}
+
+.root:where([data-aug-inlay]) {
+  background: none;
+}

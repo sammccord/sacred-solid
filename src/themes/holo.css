@@ -1,0 +1,41 @@
+body.theme-holo {
+  --theme-ink: oklch(0.95 0.03 205 / 0.94);
+  --theme-ink-inverse: oklch(0.14 0.03 220);
+  --theme-ink-subdued: oklch(0.8 0.05 205 / 0.55);
+
+  --theme-surface-page: oklch(0.15 0.04 230 / 0.28);
+  --theme-surface-input: oklch(0.18 0.05 225 / 0.35);
+  --theme-surface-panel: oklch(0.2 0.05 225 / 0.6);
+  --theme-surface-panel-footer: oklch(0.26 0.06 215 / 0.7);
+  --theme-surface-window: oklch(0.2 0.05 225 / 0.38);
+  --theme-surface-float: oklch(0.18 0.05 225 / 0.78);
+  --theme-surface-chip: oklch(0.3 0.07 210 / 0.5);
+  --theme-surface-inverse: oklch(0.86 0.13 200 / 0.92);
+  --theme-surface-subdued: oklch(0.8 0.1 205 / 0.12);
+  --theme-surface-sunken: oklch(0.1 0.03 230 / 0.5);
+
+  --theme-line-strong: oklch(0.85 0.14 200 / 0.7);
+  --theme-line: oklch(0.82 0.12 205 / 0.35);
+  --theme-line-subdued: oklch(0.82 0.12 205 / 0.16);
+
+  --theme-accent: oklch(0.55 0.12 205 / 0.9);
+  --theme-accent-subdued: oklch(0.55 0.12 205 / 0.4);
+
+  --theme-control: oklch(0.85 0.12 200 / 0.9);
+  --theme-control-ink: oklch(0.14 0.03 220);
+  --theme-control-foreground: oklch(0.45 0.08 210 / 0.6);
+  --theme-control-background: oklch(0.28 0.06 215 / 0.4);
+
+  --theme-shadow-window-color: oklch(0.8 0.12 205 / 0.25);
+  --theme-shadow-float-color: oklch(0.82 0.13 205 / 0.35);
+  --theme-shadow-tooltip-color: oklch(0.82 0.13 205 / 0.3);
+  --theme-shadow-ring-color: oklch(0.8 0.13 205 / 0.3);
+
+  --theme-line-width-strong: 1px;
+  --theme-line-width-double: 3px;
+
+  --theme-shadow-window-geometry: 0 0 24px 0;
+  --theme-shadow-float-geometry: 0 0 16px 0;
+  --theme-shadow-tooltip-geometry: 0 0 8px 0;
+  --theme-shadow-ring-geometry: 0 0 18px 2px;
+}

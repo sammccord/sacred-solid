@@ -1,0 +1,12 @@
+.block {
+  display: inline-block;
+  width: 1ch;
+  background: var(--theme-surface-inverse);
+  height: calc(var(--font-size) * var(--theme-line-height-base));
+  vertical-align: bottom;
+  flex-shrink: 0;
+}
+
+.block:where([data-aug-inlay]) {
+  background: none;
+}

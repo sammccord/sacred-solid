@@ -1,0 +1,42 @@
+body.theme-redline {
+  --font-family-mono: 'Rajdhani', 'FiraCode-Regular', Consolas, monaco, monospace;
+
+  --theme-ink: #ff5a53;
+  --theme-ink-inverse: #0b0e13;
+  --theme-ink-subdued: rgb(255 90 83 / 0.5);
+
+  --theme-surface-page: #0b0e13;
+  --theme-surface-input: #170d12;
+  --theme-surface-panel: #1a0d12;
+  --theme-surface-panel-footer: #240f15;
+  --theme-surface-window: #14090e;
+  --theme-surface-float: rgb(18 10 16 / 0.85);
+  --theme-surface-chip: #3a1218;
+  --theme-surface-inverse: #ff5a53;
+  --theme-surface-subdued: rgb(255 90 83 / 0.12);
+  --theme-surface-sunken: #070a0e;
+
+  --theme-line-strong: #ff5a53;
+  --theme-line: rgb(255 90 83 / 0.55);
+  --theme-line-subdued: rgb(255 90 83 / 0.22);
+
+  --theme-accent: #7b2526;
+  --theme-accent-subdued: rgb(123 37 38 / 0.5);
+
+  --theme-control: #ff5a53;
+  --theme-control-ink: #0b0e13;
+  --theme-control-foreground: #4de1e0;
+  --theme-control-background: rgb(77 225 224 / 0.12);
+
+  --theme-shadow-window-color: rgb(255 90 83 / 0.25);
+  --theme-shadow-float-color: rgb(255 90 83 / 0.3);
+  --theme-shadow-tooltip-color: rgb(255 90 83 / 0.3);
+  --theme-shadow-ring-color: rgb(255 90 83 / 0.3);
+
+  --theme-line-width-double: 3px;
+
+  --theme-shadow-window-geometry: 0 0 24px 0;
+  --theme-shadow-float-geometry: 0 0 14px 0;
+  --theme-shadow-tooltip-geometry: 0 0 8px 0;
+  --theme-shadow-ring-geometry: 0 0 16px 2px;
+}

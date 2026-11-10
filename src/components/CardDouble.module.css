@@ -1,0 +1,97 @@
+.card {
+  --card-double-top-gutter: 6px;
+
+  position: relative;
+  display: block;
+  padding-top: 0;
+  padding-right: 0;
+  padding-left: 0;
+  padding-bottom: 0;
+}
+
+.children {
+  border-left: var(--theme-line-width-double) solid var(--theme-line-strong);
+  border-left-style: double;
+  border-bottom: var(--theme-line-width-double) solid var(--theme-line-strong);
+  border-bottom-style: double;
+  border-right: var(--theme-line-width-double) solid var(--theme-line-strong);
+  border-right-style: double;
+  display: block;
+  padding-top: calc(var(--theme-line-height-base) * 0.5rem);
+  padding-left: calc(2ch - var(--theme-line-width-double));
+  padding-right: calc(2ch - var(--theme-line-width-double));
+  padding-bottom: calc(var(--theme-line-height-base) * 1rem - var(--theme-line-width-double));
+
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  scrollbar-width: none;
+}
+
+.action {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.left {
+  min-width: 10%;
+  width: 100%;
+  border-top: var(--theme-line-width-double) solid var(--theme-line-strong);
+  border-top-style: double;
+  border-left: var(--theme-line-width-double) solid var(--theme-line-strong);
+  border-left-style: double;
+  padding: calc(var(--card-double-top-gutter) * var(--theme-line-height-base)) 2ch 0px 1ch;
+}
+
+.leftCorner {
+  flex-shrink: 0;
+  border-top: var(--theme-line-width-double) solid var(--theme-line-strong);
+  border-top-style: double;
+  border-left: var(--theme-line-width-double) solid var(--theme-line-strong);
+  border-left-style: double;
+  padding: calc(var(--card-double-top-gutter) * var(--theme-line-height-base)) calc(1ch - var(--theme-line-width-double)) 0px 1ch;
+}
+
+.right {
+  min-width: 10%;
+  width: 100%;
+  border-top: var(--theme-line-width-double) solid var(--theme-line-strong);
+  border-top-style: double;
+  border-right: var(--theme-line-width-double) solid var(--theme-line-strong);
+  border-right-style: double;
+  padding: calc(var(--card-double-top-gutter) * var(--theme-line-height-base)) 2ch 0px 1ch;
+}
+
+.rightCorner {
+  flex-shrink: 0;
+  border-top: var(--theme-line-width-double) solid var(--theme-line-strong);
+  border-top-style: double;
+  border-right: var(--theme-line-width-double) solid var(--theme-line-strong);
+  border-right-style: double;
+  padding: calc(var(--card-double-top-gutter) * var(--theme-line-height-base)) 1ch 0px calc(1ch - var(--theme-line-width-double));
+}
+
+.title {
+  flex-shrink: 0;
+  padding: 0 1ch 0 1ch;
+  font-size: var(--font-size);
+  font-weight: 400;
+}
+
+.card:where([data-aug-border]) > .children {
+  border: none;
+  padding-left: 2ch;
+  padding-right: 2ch;
+  padding-bottom: calc(var(--theme-line-height-base) * 1rem);
+}
+
+.card:where([data-aug-border]) > .action > :is(.left, .leftCorner, .right, .rightCorner) {
+  border-top: none;
+  border-left: none;
+  border-right: none;
+}

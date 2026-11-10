@@ -1,0 +1,71 @@
+.viewport {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background: var(--theme-surface-sunken);
+}
+
+.stage {
+  position: absolute;
+  transform-origin: 0 0;
+  overflow: hidden;
+  background: var(--theme-surface-page);
+  font-weight: 500;
+  cursor: none;
+}
+
+.stage * {
+  cursor: none;
+}
+
+.dotGrid {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+      color-mix(in srgb, var(--theme-ink) 9%, transparent) 1px,
+      transparent 1.5px
+    )
+    0 0 / 24px 24px;
+  pointer-events: none;
+}
+
+.micro {
+  font-size: 6px;
+  line-height: 7px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  opacity: 0.85;
+  pointer-events: none;
+}
+
+.cursor {
+  position: absolute;
+  box-sizing: border-box;
+  width: 38px;
+  height: 38px;
+  border: 2px solid var(--theme-control-foreground);
+  background: var(--theme-control-background);
+  box-shadow:
+    0 0 10px var(--theme-control-foreground),
+    inset 0 0 8px var(--theme-control-foreground);
+  pointer-events: none;
+  z-index: 10;
+}
+
+.cursor::after {
+  content: "";
+  position: absolute;
+  left: 11px;
+  right: 11px;
+  top: 15px;
+  height: 4px;
+  background: var(--theme-control-foreground);
+}
+
+.keys {
+  position: absolute;
+  display: flex;
+  line-height: 1;
+  letter-spacing: 0.02em;
+}

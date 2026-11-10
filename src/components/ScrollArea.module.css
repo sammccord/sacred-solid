@@ -1,0 +1,55 @@
+.root {
+  position: relative;
+  display: block;
+  overflow: hidden;
+}
+
+.viewport {
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.bare {
+  scrollbar-width: none;
+}
+
+.bare::-webkit-scrollbar {
+  display: none;
+}
+
+.content {
+  display: block;
+}
+
+.fade {
+  --mask-top: linear-gradient(#000, #000);
+  --mask-bottom: linear-gradient(#000, #000);
+  mask-image: var(--mask-top), var(--mask-bottom);
+  mask-composite: intersect;
+}
+
+.fade[data-fade-top] {
+  --mask-top: linear-gradient(to bottom, transparent, #000 var(--scroll-fade-top, 2rem));
+}
+
+.fade[data-fade-bottom] {
+  --mask-bottom: linear-gradient(to top, transparent, #000 var(--scroll-fade-bottom, 2rem));
+}
+
+.rail {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 0.5ch;
+  background: var(--theme-surface-subdued);
+  pointer-events: none;
+}
+
+.thumb {
+  position: absolute;
+  left: 0;
+  right: 0;
+  background: var(--theme-line-strong);
+}

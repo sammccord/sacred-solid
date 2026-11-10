@@ -1,0 +1,66 @@
+.root {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border: var(--theme-line-width) solid var(--theme-line-strong);
+  box-shadow: var(--theme-shadow-float-geometry) var(--theme-shadow-float-color);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 1ch;
+  flex-shrink: 0;
+  padding: 0 1ch;
+  min-height: calc(var(--theme-line-height-base) * 2rem);
+}
+
+.outline {
+  border-bottom: var(--theme-line-width) solid var(--theme-line);
+}
+
+.filled {
+  background: var(--theme-surface-inverse);
+  color: var(--theme-ink-inverse);
+}
+
+.icon {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.title {
+  margin: 0;
+  font-size: inherit;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+.gap {
+  flex: 1;
+}
+
+.meta {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.body {
+  flex: 1;
+  min-height: 0;
+  background: var(--theme-surface-float);
+}
+
+.root:where([data-aug-border]) {
+  border: none;
+}
+
+.root:where([data-aug-inlay]) > .body {
+  background: none;
+}
+
+.root:where([data-augmented-ui]) {
+  box-shadow: none;
+}

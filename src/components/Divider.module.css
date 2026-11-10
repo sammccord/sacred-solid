@@ -1,0 +1,33 @@
+.gradient {
+  background: linear-gradient(to right, transparent, var(--theme-line), transparent);
+  height: calc(var(--font-size) * var(--theme-line-height-base));
+  width: 100%;
+}
+
+.divider {
+  align-items: center;
+  border: 0;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  height: calc(var(--font-size) * var(--theme-line-height-base));
+  justify-content: center;
+  outline: 0;
+  width: 100%;
+}
+
+.line {
+  background: var(--theme-line-strong);
+  display: block;
+  flex-shrink: 0;
+  height: var(--theme-line-width-strong);
+  width: 100%;
+}
+
+.divider:where([data-aug-border]) > .line {
+  background: none;
+}
+
+.gradient:where([data-aug-border]) {
+  background: none;
+}

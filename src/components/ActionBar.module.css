@@ -1,0 +1,12 @@
+.root {
+  background: var(--theme-surface-page);
+  box-shadow: inset 0 0 0 var(--theme-line-width) var(--theme-line);
+}
+
+.root:where([data-aug-border]) {
+  box-shadow: none;
+}
+
+.root:where([data-aug-inlay]) {
+  background: none;
+}

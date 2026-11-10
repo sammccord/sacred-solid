@@ -1,0 +1,14 @@
+.root {
+  display: block;
+  background: var(--theme-surface-float);
+  font-weight: 400;
+}
+
+.footer {
+  background: var(--theme-surface-panel-footer);
+  padding: calc(var(--font-size) * 0.5 * var(--theme-line-height-base)) 1ch calc(var(--font-size) * 0.5 * var(--theme-line-height-base)) 1ch;
+}
+
+.root:where([data-aug-inlay]) {
+  background: none;
+}

@@ -1,0 +1,83 @@
+.hotkey {
+  background: var(--theme-control-foreground);
+  color: var(--theme-ink);
+  cursor: pointer;
+  flex-shrink: 0;
+  font-weight: 400;
+  padding: 0 1ch 0 1ch;
+  text-indent: 0ch;
+  user-select: none;
+}
+
+.content {
+  background: var(--theme-control-background);
+  box-shadow: inset 0 0 0 var(--theme-line-width-strong) var(--theme-control-foreground);
+  cursor: pointer;
+  flex-shrink: 0;
+  font-weight: 400;
+  padding: 0 1ch 0 1ch;
+  text-indent: 0ch;
+  text-transform: uppercase;
+  user-select: none;
+}
+
+.root {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  outline: 0;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size);
+  flex-shrink: 0;
+
+  &:hover .hotkey {
+    background: var(--theme-accent);
+  }
+
+  &:hover .content {
+    box-shadow: inset 0 0 0 var(--theme-line-width-strong) var(--theme-accent);
+  }
+
+  &:focus {
+    background: var(--theme-accent);
+  }
+
+  &:focus .hotkey {
+    background: var(--theme-accent);
+  }
+
+  &:focus .content {
+    box-shadow: inset 0 0 0 var(--theme-line-width-strong) var(--theme-accent);
+  }
+
+  &:active {
+    background: var(--theme-accent);
+  }
+
+  &:active .hotkey {
+    background: var(--theme-accent);
+  }
+
+  &:active .content {
+    box-shadow: inset 0 0 0 var(--theme-line-width-strong) var(--theme-accent);
+  }
+}
+
+.selected {
+  .content {
+    background: var(--theme-accent);
+  }
+}
+
+.root:where([data-aug-border]) > .content {
+  box-shadow: none;
+}
+
+.root:where([data-aug-inlay]) > .content {
+  background: none;
+}

@@ -1,0 +1,23 @@
+.root {
+  position: relative;
+  display: block;
+}
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.glow {
+  display: block;
+}
+
+.surface {
+  display: block;
+  background: var(--theme-surface-float);
+}
+
+.surface:where([data-aug-inlay]) {
+  background: none;
+}

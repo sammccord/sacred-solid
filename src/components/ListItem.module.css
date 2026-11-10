@@ -1,0 +1,21 @@
+.root {
+  padding-left: 1ch;
+
+  &:focus,
+  &:active {
+    outline: 0;
+    background: var(--theme-accent);
+  }
+}
+
+.root[data-selected]:not([data-aug-inlay]) {
+  background: var(--theme-accent);
+}
+
+.root[data-selected] {
+  --aug-inlay-bg: var(--theme-accent);
+}
+
+.root:where([data-aug-inlay]) {
+  background: none;
+}

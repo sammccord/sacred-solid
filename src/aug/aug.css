@@ -1,0 +1,7 @@
+:where([data-augmented-ui]) {
+  position: relative;
+  --aug-border-bg: var(--theme-line-strong);
+  --aug-inlay-bg: var(--theme-surface-float);
+  --aug-border-all: var(--theme-line-width);
+  --aug-inlay-all: var(--theme-line-width);
+}

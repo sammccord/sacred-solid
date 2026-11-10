@@ -1,0 +1,41 @@
+import { createEffect, createSignal, onCleanup } from "solid-js";
+import type { AugProps } from "../aug/index.ts";
+import { styleAttributes, type ThemeProps } from "../style/index.ts";
+import styles from "./BarLoader.module.css";
+import { classNames } from "../common/utilities.ts";
+
+export interface BarLoaderProps {
+  class?: string;
+  aug?: AugProps;
+  theme?: ThemeProps;
+  intervalRate?: number;
+  progress?: number;
+}
+
+export function BarLoader(props: BarLoaderProps) {
+  const [currentProgress, setCurrentProgress] = createSignal<number>(props.progress || 0);
+
+  createEffect(() => {
+    const progress = props.progress;
+    const intervalRate = props.intervalRate;
+
+    if (progress !== undefined) {
+      setCurrentProgress(progress);
+      return;
+    }
+
+    if (!intervalRate) return;
+
+    const interval = setInterval(() => {
+      setCurrentProgress((prev) => (prev + 10) % 110);
+    }, intervalRate);
+
+    onCleanup(() => clearInterval(interval));
+  });
+
+  return (
+    <div class={classNames(styles.root, props.class)} {...styleAttributes(props)}>
+      <div class={styles.bar} style={{ width: `${Math.min(currentProgress(), 100)}%` }}></div>
+    </div>
+  );
+}

@@ -1,0 +1,15 @@
+.root {
+  display: block;
+  background: var(--theme-surface-float);
+  box-shadow: var(--theme-shadow-ring-geometry) var(--theme-shadow-ring-color);
+  padding: calc(var(--font-size) * var(--theme-line-height-base)) 2ch calc(var(--font-size) * var(--theme-line-height-base)) 2ch;
+  font-weight: 400;
+}
+
+.root:where([data-augmented-ui]) {
+  box-shadow: none;
+}
+
+.root:where([data-aug-inlay]) {
+  background: none;
+}

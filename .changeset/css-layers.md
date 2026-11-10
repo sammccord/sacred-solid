@@ -1,0 +1,5 @@
+---
+"sacred-solid": minor
+---
+
+Behavior change in the cascade. Every sacred-solid stylesheet now sits in a cascade layer, `sacred.vendor` (augmented-ui), `sacred.base` (`global.css`, `global-fonts.css`), `sacred.aug`, `sacred.components` (every component module) and `sacred.themes` (`holo`, `acid`, `redline`). Each shipped file starts with the order statement `@layer sacred.vendor, sacred.base, sacred.aug, sacred.components, sacred.themes;`. Your unlayered CSS now beats all library CSS whatever the load order or specificity, including the library hover and focus states, so a plain `.x { color: red }` now beats the library `.x:hover`. Doubled selectors and import order tricks that beat a library class are no longer needed. To rank your own layers against the library, state `@layer reset, sacred, app;` before the library loads. Browsers without `@layer` support (before 2022) style nothing. `dist/styles/*.css` and `dist/themes/*.css` are now written by a post-pack step instead of being copied. The augmented-ui border and inlay defaults in `aug.css` now use `:where()` and win through the layer order.

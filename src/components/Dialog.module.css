@@ -1,0 +1,43 @@
+.root {
+  display: block;
+  background: var(--theme-surface-float);
+  box-shadow: var(--theme-shadow-float-geometry) var(--theme-shadow-float-color);
+  font-weight: 400;
+  max-width: 56ch;
+  min-width: 24ch;
+  margin: 0;
+  padding: 0;
+}
+
+.header {
+  background: var(--theme-surface-inverse);
+  color: var(--theme-ink-inverse);
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  display: block;
+}
+
+.message {
+  display: block;
+  margin: 0;
+  text-align: center;
+  padding: 0 2ch 0 2ch;
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 24ch;
+  margin: 0 auto 0 auto;
+  padding: 0 2ch 0 2ch;
+}
+
+.root:where([data-augmented-ui]) {
+  box-shadow: none;
+}
+
+.root:where([data-aug-inlay]) {
+  background: none;
+}

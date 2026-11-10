@@ -1,0 +1,87 @@
+.root {
+  position: relative;
+  display: block;
+}
+
+.label {
+  background: var(--theme-surface-chip);
+  display: block;
+}
+
+.placeholder {
+  font-style: italic;
+  color: var(--theme-ink-subdued);
+}
+
+.displayed {
+  overflow: hidden;
+  white-space: nowrap;
+  pointer-events: none;
+  overflow-wrap: anywhere;
+  background: var(--theme-surface-input);
+  box-shadow: inset 0 0 0 var(--theme-line-width-strong) var(--theme-line);
+}
+
+.focused {
+  .block {
+    background: var(--theme-accent);
+  }
+
+  .placeholder {
+    background: var(--theme-accent);
+  }
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.blink {
+  animation: blink 1s step-start 0s infinite;
+}
+
+.block {
+  display: inline-block;
+  min-width: 1ch;
+  background: var(--theme-surface-inverse);
+  color: var(--theme-ink-inverse);
+  height: calc(var(--font-size) * var(--theme-line-height-base));
+  vertical-align: bottom;
+}
+
+.inputContainer {
+  position: relative;
+  display: block;
+}
+
+.hidden {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  color: transparent;
+  background: transparent;
+  caret-color: transparent;
+  border: none;
+  outline: none;
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
+  line-height: var(--theme-line-height-base);
+  font-size: var(--font-size);
+  font-family: inherit;
+
+  &:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0px 1000px var(--theme-accent) inset;
+  }
+}
+
+.root:where([data-aug-border]) > .inputContainer > .displayed {
+  box-shadow: none;
+}
+
+.root:where([data-aug-inlay]) > .inputContainer > .displayed {
+  background: none;
+}

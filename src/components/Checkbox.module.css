@@ -1,0 +1,63 @@
+.section {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  .right {
+    padding-bottom: calc(8px * var(--theme-line-height-base));
+    box-shadow: inset 0 var(--theme-line-width) 0 0 var(--theme-line-subdued);
+  }
+
+  &:last-child {
+    .right {
+      padding-bottom: 0;
+    }
+  }
+}
+
+.checked {
+}
+
+.focused {
+  .figure {
+    background: var(--theme-accent);
+  }
+}
+
+.relative {
+  position: relative;
+  flex-shrink: 0;
+  display: inline-block;
+  vertical-align: baseline;
+}
+
+.figure {
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  color: var(--theme-ink);
+  background: var(--theme-control-foreground);
+  align-self: stretch;
+  display: inline-block;
+  padding: 0 1ch 0 1ch;
+}
+
+.right {
+  background: var(--theme-control-background);
+  min-width: 10%;
+  width: 100%;
+  align-self: stretch;
+}
+
+.input {
+  top: 0;
+  left: 0;
+  opacity: 0;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+}
+
+.section:where([data-aug-border]) > .right {
+  box-shadow: none;
+}

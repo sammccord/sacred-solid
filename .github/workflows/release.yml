@@ -1,0 +1,51 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+
+      - uses: voidzero-dev/setup-vp@v1.22.0
+        with:
+          node-version: "24"
+          cache: true
+
+      - run: vp check
+      - run: vp test
+      - run: vp pack
+
+      - name: Configure git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Require an npm that supports trusted publishing
+        run: |
+          required=11.5.1
+          current="$(npm --version)"
+          if [ "$(printf '%s\n' "$required" "$current" | sort -V | head -n1)" != "$required" ]; then
+            echo "npm $current is older than $required, which trusted publishing needs"
+            exit 1
+          fi
+
+      - name: Version and publish pending changesets
+        run: scripts/release.sh
+        env:
+          RELEASE_BRANCH: ${{ github.ref_name }}
+          NPM_CONFIG_PROVENANCE: "true"

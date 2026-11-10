@@ -1,0 +1,16 @@
+.window {
+  display: block;
+  background: var(--theme-surface-window);
+  box-shadow: var(--theme-shadow-window-geometry) var(--theme-shadow-window-color);
+  margin: 0;
+  padding: calc(var(--theme-line-height-base) * 1rem) min(2ch, 4vw) calc(var(--theme-line-height-base) * 1rem) min(2ch, 4vw);
+  min-width: min(24ch, 100%);
+}
+
+.window:where([data-augmented-ui]) {
+  box-shadow: none;
+}
+
+.window:where([data-aug-inlay]) {
+  background: none;
+}

@@ -1,0 +1,37 @@
+.root {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5ch;
+  white-space: nowrap;
+}
+
+.cap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: calc(var(--theme-line-height-base) * 1.5rem);
+  height: calc(var(--theme-line-height-base) * 1.5rem);
+  border: var(--theme-line-width-strong) solid var(--theme-control-foreground);
+  color: var(--theme-control-foreground);
+  font-family: inherit;
+  font-size: 1em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.long {
+  font-size: 0.6em;
+}
+
+.label {
+  margin-left: 0.5ch;
+  color: var(--theme-ink);
+}
+
+.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--theme-control-foreground);
+}

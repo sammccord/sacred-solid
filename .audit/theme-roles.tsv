@@ -1,0 +1,331 @@
+ts	phase	decision	why	evidence	result
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-line-strong	border fill in the aug example	README.md | aug border example | bg	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-focused-foreground -> --theme-accent	emphasis hue	playground/aug.tsx | ACCENT | color	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-background-modal -> --theme-surface-panel	panel fill	playground/aug.tsx | Dialog, Card inlay, Window | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-line-strong	border bg of an aug frame	playground/aug.tsx | FRAME | color	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-background -> --theme-ink-inverse	text on the accent fill	playground/aug.tsx | Swatch | color	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-background -> --theme-surface-page	inlay shows the page fill	playground/aug.tsx | inlay | bg	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-window-background -> --theme-surface-window	kitchen sink copy names the token; React baseline copy patched to match	playground/section-5.tsx | Window prose | text	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-window-shadow -> --theme-shadow-window-color	kitchen sink copy names the token; React baseline copy patched to match	playground/section-5.tsx | Window prose | text	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-focused-foreground -> --theme-accent	emphasis hue, one role for fill, text and focus line	src/components/Accordion.module.css | .flex > &:hover | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-background -> --theme-surface-page	page fill	src/components/ActionBar.module.css | .root | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-border -> --theme-line	inset edge line	src/components/ActionBar.module.css | .root | box-shadow	migrated
+2026-11-09T02:39:28Z	theme-roles	literal 1px -> --theme-line-width	line thickness constant	src/components/ActionBar.module.css | .root | box-shadow	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-button-background -> --theme-control-background	control body fill	src/components/ActionButton.module.css | .content | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-button-foreground -> --theme-control-foreground	control chrome tone, kept as one role for fill, text and outline	src/components/ActionButton.module.css | .content | box-shadow	migrated
+2026-11-09T02:39:28Z	theme-roles	literal 2px -> --theme-line-width-strong	line thickness constant	src/components/ActionButton.module.css | .content | box-shadow	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-button-foreground -> --theme-control-foreground	control chrome tone, kept as one role for fill, text and outline	src/components/ActionButton.module.css | .hotkey | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-ink	text color	src/components/ActionButton.module.css | .hotkey | color	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-focused-foreground -> --theme-accent	emphasis hue, one role for fill, text and focus line	src/components/ActionButton.module.css | .root > &:active | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-focused-foreground -> --theme-accent	emphasis hue, one role for fill, text and focus line	src/components/ActionButton.module.css | .root > &:active .content | box-shadow	migrated
+2026-11-09T02:39:28Z	theme-roles	literal 2px -> --theme-line-width-strong	line thickness constant	src/components/ActionButton.module.css | .root > &:active .content | box-shadow	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-focused-foreground -> --theme-accent	emphasis hue, one role for fill, text and focus line	src/components/ActionButton.module.css | .root > &:active .hotkey | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-focused-foreground -> --theme-accent	emphasis hue, one role for fill, text and focus line	src/components/ActionButton.module.css | .root > &:focus | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-focused-foreground -> --theme-accent	emphasis hue, one role for fill, text and focus line	src/components/ActionButton.module.css | .root > &:focus .content | box-shadow	migrated
+2026-11-09T02:39:28Z	theme-roles	literal 2px -> --theme-line-width-strong	line thickness constant	src/components/ActionButton.module.css | .root > &:focus .content | box-shadow	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-focused-foreground -> --theme-accent	emphasis hue, one role for fill, text and focus line	src/components/ActionButton.module.css | .root > &:focus .hotkey | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-focused-foreground -> --theme-accent	emphasis hue, one role for fill, text and focus line	src/components/ActionButton.module.css | .root > &:hover .content | box-shadow	migrated
+2026-11-09T02:39:28Z	theme-roles	literal 2px -> --theme-line-width-strong	line thickness constant	src/components/ActionButton.module.css | .root > &:hover .content | box-shadow	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-focused-foreground -> --theme-accent	emphasis hue, one role for fill, text and focus line	src/components/ActionButton.module.css | .root > &:hover .hotkey | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-focused-foreground -> --theme-accent	emphasis hue, one role for fill, text and focus line	src/components/ActionButton.module.css | .selected > .content | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-button-foreground -> --theme-control-foreground	control chrome tone, kept as one role for fill, text and outline	src/components/ActionListItem.module.css | .icon | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-ink	text color	src/components/ActionListItem.module.css | .item | color	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-focused-foreground -> --theme-accent	emphasis hue, one role for fill, text and focus line	src/components/ActionListItem.module.css | .item > &:active .icon | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-focused-foreground -> --theme-accent	emphasis hue, one role for fill, text and focus line	src/components/ActionListItem.module.css | .item > &:focus .icon | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-ink	text color	src/components/ActionListItem.module.css | .item > &:hover | color	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-focused-foreground -> --theme-accent	emphasis hue, one role for fill, text and focus line	src/components/ActionListItem.module.css | .item > &:hover .icon | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-ink	text color	src/components/ActionListItem.module.css | .item > &:visited | color	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-button-background -> --theme-control-background	control body fill	src/components/ActionListItem.module.css | .text | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-border -> --theme-surface-float	raised fill	src/components/AlertBanner.module.css | .root | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-border-subdued -> --theme-shadow-float-color	float elevation, offsets move to shadow-float-geometry	src/components/AlertBanner.module.css | .root | box-shadow	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-window-shadow -> --theme-surface-sunken	recessed fill, new role	src/components/Avatar.module.css | .placeholder | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-focused-foreground -> --theme-accent	emphasis hue, one role for fill, text and focus line	src/components/Avatar.module.css | .placeholder > &:hover, &:active > &::before | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-focused-foreground -> --theme-accent	emphasis hue, one role for fill, text and focus line	src/components/Avatar.module.css | .root, a.root > &:hover, &:active > &::before | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-border -> --theme-surface-chip	chip fill, a label, bar, nav item or scrollbar thumb that is not a floating panel	src/components/Badge.module.css | .root | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-surface-inverse	ink used as a fill	src/components/BarLoader.module.css | .bar | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-border -> --theme-surface-chip	chip fill, a label, bar, nav item or scrollbar thumb that is not a floating panel	src/components/BarLoader.module.css | .root | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-border-subdued -> --theme-surface-subdued	muted fill, new role	src/components/BarProgress.module.css | .root | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-surface-inverse	ink used as a fill	src/components/Block.module.css | .block | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-border -> --theme-surface-chip	chip fill, a label, bar, nav item or scrollbar thumb that is not a floating panel	src/components/BreadCrumbs.module.css | .link | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-ink	text color	src/components/BreadCrumbs.module.css | .link | color	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-focused-foreground -> --theme-accent	emphasis hue, one role for fill, text and focus line	src/components/BreadCrumbs.module.css | .link > &:active | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-focused-foreground -> --theme-accent	emphasis hue, one role for fill, text and focus line	src/components/BreadCrumbs.module.css | .link > &:focus | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-focused-foreground -> --theme-accent	emphasis hue, one role for fill, text and focus line	src/components/BreadCrumbs.module.css | .link > &:hover | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-ink	text color	src/components/BreadCrumbs.module.css | .link > &:hover | color	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-ink	text color	src/components/BreadCrumbs.module.css | .link > &:visited | color	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-button-background -> --theme-control-background	control body fill	src/components/Button.module.css | .disabled | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-button-foreground -> --theme-control-foreground	control chrome tone, kept as one role for fill, text and outline	src/components/Button.module.css | .disabled | color	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-button -> --theme-control	primary control fill	src/components/Button.module.css | .primary | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-button-text -> --theme-control-ink	text drawn on the primary control fill	src/components/Button.module.css | .primary | color	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-focused-foreground -> --theme-accent	emphasis hue, one role for fill, text and focus line	src/components/Button.module.css | .primary > &:active | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-focused-foreground -> --theme-accent	emphasis hue, one role for fill, text and focus line	src/components/Button.module.css | .primary > &:focus | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-focused-foreground -> --theme-accent	emphasis hue, one role for fill, text and focus line	src/components/Button.module.css | .primary > &:hover | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-background -> --theme-surface-page	page fill	src/components/Button.module.css | .secondary | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-border -> --theme-line	inset edge line	src/components/Button.module.css | .secondary | box-shadow	migrated
+2026-11-09T02:39:28Z	theme-roles	literal 1px -> --theme-line-width	line thickness constant	src/components/Button.module.css | .secondary | box-shadow	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-ink	text color	src/components/Button.module.css | .secondary | color	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-focused-foreground -> --theme-accent	emphasis hue, one role for fill, text and focus line	src/components/Button.module.css | .secondary > &:active | background	migrated
+2026-11-09T02:39:28Z	theme-roles	literal 1px -> --theme-line-width	line thickness constant	src/components/Button.module.css | .secondary > &:active | box-shadow	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-focused-foreground -> --theme-accent	emphasis hue, one role for fill, text and focus line	src/components/Button.module.css | .secondary > &:focus | background	migrated
+2026-11-09T02:39:28Z	theme-roles	literal 1px -> --theme-line-width	line thickness constant	src/components/Button.module.css | .secondary > &:focus | box-shadow	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-focused-foreground -> --theme-accent	emphasis hue, one role for fill, text and focus line	src/components/Button.module.css | .secondary > &:hover | background	migrated
+2026-11-09T02:39:28Z	theme-roles	literal 1px -> --theme-line-width	line thickness constant	src/components/Button.module.css | .secondary > &:hover | box-shadow	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-focused-foreground -> --theme-accent	emphasis hue, one role for fill, text and focus line	src/components/CanvasPlatformer.module.css | .root > &:focus, &:active | box-shadow	migrated
+2026-11-09T02:39:28Z	theme-roles	literal 1px -> --theme-line-width	line thickness constant	src/components/CanvasPlatformer.module.css | .root > &:focus, &:active | box-shadow	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-border -> --theme-line	platform glyph in the line tone	src/components/CanvasPlatformer.tsx | getPropertyValue | --theme-border	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-ink	player glyph color	src/components/CanvasPlatformer.tsx | getPropertyValue | --theme-text	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-focused-foreground -> --theme-accent	emphasis hue, one role for fill, text and focus line	src/components/CanvasSnake.module.css | .root > &:focus, &:active | box-shadow	migrated
+2026-11-09T02:39:28Z	theme-roles	literal 1px -> --theme-line-width	line thickness constant	src/components/CanvasSnake.module.css | .root > &:focus, &:active | box-shadow	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-focused-foreground -> --theme-accent	food glyph color	src/components/CanvasSnake.tsx | getPropertyValue | --theme-focused-foreground	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-ink	snake glyph color	src/components/CanvasSnake.tsx | getPropertyValue | --theme-text	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-line-strong	ink used as an edge line	src/components/Card.module.css | .children | box-shadow	migrated
+2026-11-09T02:39:28Z	theme-roles	literal 2px -> --theme-line-width-strong	line thickness constant	src/components/Card.module.css | .children | box-shadow	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-line-strong	ink used as an edge line	src/components/Card.module.css | .left | box-shadow	migrated
+2026-11-09T02:39:28Z	theme-roles	literal 2px -> --theme-line-width-strong	line thickness constant	src/components/Card.module.css | .left | box-shadow	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-line-strong	ink used as an edge line	src/components/Card.module.css | .leftCorner | box-shadow	migrated
+2026-11-09T02:39:28Z	theme-roles	literal 2px -> --theme-line-width-strong	line thickness constant	src/components/Card.module.css | .leftCorner | box-shadow	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-line-strong	ink used as an edge line	src/components/Card.module.css | .right | box-shadow	migrated
+2026-11-09T02:39:28Z	theme-roles	literal 2px -> --theme-line-width-strong	line thickness constant	src/components/Card.module.css | .right | box-shadow	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-line-strong	ink used as an edge line	src/components/Card.module.css | .rightCorner | box-shadow	migrated
+2026-11-09T02:39:28Z	theme-roles	literal 2px -> --theme-line-width-strong	line thickness constant	src/components/Card.module.css | .rightCorner | box-shadow	migrated
+2026-11-09T02:39:28Z	theme-roles	literal 6px -> --theme-line-width-double	local var replaced by the global width constant, declaration deleted	src/components/CardDouble.module.css | .card | --card-double-border-width	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-line-strong	ink used as an edge line	src/components/CardDouble.module.css | .children | border-bottom	migrated
+2026-11-09T02:39:28Z	theme-roles	var(--card-double-border-width) -> --theme-line-width-double	local width var replaced by the constant	src/components/CardDouble.module.css | .children | border-bottom	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-line-strong	ink used as an edge line	src/components/CardDouble.module.css | .children | border-left	migrated
+2026-11-09T02:39:28Z	theme-roles	var(--card-double-border-width) -> --theme-line-width-double	local width var replaced by the constant	src/components/CardDouble.module.css | .children | border-left	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-line-strong	ink used as an edge line	src/components/CardDouble.module.css | .children | border-right	migrated
+2026-11-09T02:39:28Z	theme-roles	var(--card-double-border-width) -> --theme-line-width-double	local width var replaced by the constant	src/components/CardDouble.module.css | .children | border-right	migrated
+2026-11-09T02:39:28Z	theme-roles	var(--card-double-border-width) -> --theme-line-width-double	local width var replaced by the constant	src/components/CardDouble.module.css | .children | padding-bottom	migrated
+2026-11-09T02:39:28Z	theme-roles	var(--card-double-border-width) -> --theme-line-width-double	local width var replaced by the constant	src/components/CardDouble.module.css | .children | padding-left	migrated
+2026-11-09T02:39:28Z	theme-roles	var(--card-double-border-width) -> --theme-line-width-double	local width var replaced by the constant	src/components/CardDouble.module.css | .children | padding-right	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-line-strong	ink used as an edge line	src/components/CardDouble.module.css | .left | border-left	migrated
+2026-11-09T02:39:28Z	theme-roles	var(--card-double-border-width) -> --theme-line-width-double	local width var replaced by the constant	src/components/CardDouble.module.css | .left | border-left	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-line-strong	ink used as an edge line	src/components/CardDouble.module.css | .left | border-top	migrated
+2026-11-09T02:39:28Z	theme-roles	var(--card-double-border-width) -> --theme-line-width-double	local width var replaced by the constant	src/components/CardDouble.module.css | .left | border-top	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-line-strong	ink used as an edge line	src/components/CardDouble.module.css | .leftCorner | border-left	migrated
+2026-11-09T02:39:28Z	theme-roles	var(--card-double-border-width) -> --theme-line-width-double	local width var replaced by the constant	src/components/CardDouble.module.css | .leftCorner | border-left	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-line-strong	ink used as an edge line	src/components/CardDouble.module.css | .leftCorner | border-top	migrated
+2026-11-09T02:39:28Z	theme-roles	var(--card-double-border-width) -> --theme-line-width-double	local width var replaced by the constant	src/components/CardDouble.module.css | .leftCorner | border-top	migrated
+2026-11-09T02:39:28Z	theme-roles	literal 6px -> --theme-line-width-double	padding that offsets the double border	src/components/CardDouble.module.css | .leftCorner | padding	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-line-strong	ink used as an edge line	src/components/CardDouble.module.css | .right | border-right	migrated
+2026-11-09T02:39:28Z	theme-roles	var(--card-double-border-width) -> --theme-line-width-double	local width var replaced by the constant	src/components/CardDouble.module.css | .right | border-right	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-line-strong	ink used as an edge line	src/components/CardDouble.module.css | .right | border-top	migrated
+2026-11-09T02:39:28Z	theme-roles	var(--card-double-border-width) -> --theme-line-width-double	local width var replaced by the constant	src/components/CardDouble.module.css | .right | border-top	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-line-strong	ink used as an edge line	src/components/CardDouble.module.css | .rightCorner | border-right	migrated
+2026-11-09T02:39:28Z	theme-roles	var(--card-double-border-width) -> --theme-line-width-double	local width var replaced by the constant	src/components/CardDouble.module.css | .rightCorner | border-right	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-line-strong	ink used as an edge line	src/components/CardDouble.module.css | .rightCorner | border-top	migrated
+2026-11-09T02:39:28Z	theme-roles	var(--card-double-border-width) -> --theme-line-width-double	local width var replaced by the constant	src/components/CardDouble.module.css | .rightCorner | border-top	migrated
+2026-11-09T02:39:28Z	theme-roles	literal 6px -> --theme-line-width-double	padding that offsets the double border	src/components/CardDouble.module.css | .rightCorner | padding	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-button-foreground -> --theme-control-foreground	control chrome tone, kept as one role for fill, text and outline	src/components/Checkbox.module.css | .figure | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-ink	text color	src/components/Checkbox.module.css | .figure | color	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-focused-foreground -> --theme-accent	emphasis hue, one role for fill, text and focus line	src/components/Checkbox.module.css | .focused > .figure | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-button-background -> --theme-control-background	control body fill	src/components/Checkbox.module.css | .right | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-border-subdued -> --theme-line-subdued	hairline divider	src/components/Checkbox.module.css | .section > .right | box-shadow	migrated
+2026-11-09T02:39:28Z	theme-roles	literal 1px -> --theme-line-width	line thickness constant	src/components/Checkbox.module.css | .section > .right | box-shadow	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-border-subdued -> --theme-surface-subdued	muted fill, new role	src/components/Chessboard.module.css | .cell | background-color	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-focused-foreground -> --theme-accent	emphasis hue, one role for fill, text and focus line	src/components/Chessboard.module.css | .dark | background-color	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-focused-foreground-subdued -> --theme-accent-subdued	translucent emphasis hue	src/components/Chessboard.module.css | .light | background-color	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-border-subdued -> --theme-surface-subdued	muted fill, new role	src/components/CodeBlock.module.css | .content | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-background -> --theme-surface-page	page fill	src/components/CodeBlock.module.css | .number | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-border-subdued -> --theme-surface-subdued	muted fill, new role	src/components/CodeBlock.module.css | .root | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-focused-foreground -> --theme-accent	emphasis hue, one role for fill, text and focus line	src/components/DOMSnake.module.css | .food | background-color	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-focused-foreground -> --theme-accent	emphasis hue, one role for fill, text and focus line	src/components/DOMSnake.module.css | .grid > &:focus, &:active | box-shadow	migrated
+2026-11-09T02:39:28Z	theme-roles	literal 1px -> --theme-line-width	line thickness constant	src/components/DOMSnake.module.css | .grid > &:focus, &:active | box-shadow	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-surface-inverse	ink used as a fill	src/components/DOMSnake.module.css | .snake | background-color	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-focused-foreground -> --theme-accent	emphasis hue, one role for fill, text and focus line	src/components/DataTable.module.css | .row > &:focus, &:active | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-focused-foreground-subdued -> --theme-accent-subdued	translucent emphasis hue	src/components/DataTable.module.css | keyframes flash > 0% | background-color	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-ink	text color	src/components/DatePicker.module.css | .button | color	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-focused-foreground -> --theme-accent	emphasis hue, one role for fill, text and focus line	src/components/DatePicker.module.css | .button > &:focus, &:active | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-focused-foreground -> --theme-accent	emphasis hue, one role for fill, text and focus line	src/components/DatePicker.module.css | .cell > &:focus, &:active | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-border -> --theme-surface-chip	chip fill, a label, bar, nav item or scrollbar thumb that is not a floating panel	src/components/DatePicker.module.css | .controls | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-border-subdued -> --theme-surface-subdued	muted fill, new role	src/components/DatePicker.module.css | .days | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-border -> --theme-surface-chip	chip fill, a label, bar, nav item or scrollbar thumb that is not a floating panel	src/components/DatePicker.module.css | .header | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-border -> --theme-line	grid rules are lines	src/components/DebugGrid.tsx | background-image | --theme-border	migrated
+2026-11-09T02:39:28Z	theme-roles	literal 1px -> --theme-line-width	grid rule thickness	src/components/DebugGrid.tsx | background-image | literal 1px	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-surface-inverse	ink used as a fill	src/components/Dialog.module.css | .header | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-background -> --theme-ink-inverse	text drawn on an ink fill	src/components/Dialog.module.css | .header | color	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-border -> --theme-surface-float	raised fill	src/components/Dialog.module.css | .root | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-border-subdued -> --theme-shadow-float-color	float elevation, offsets move to shadow-float-geometry	src/components/Dialog.module.css | .root | box-shadow	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-border -> --theme-line	fading rule, the divider is a line	src/components/Divider.module.css | .gradient | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-line-strong	the element is a drawn rule, fill is its line	src/components/Divider.module.css | .line | background	migrated
+2026-11-09T02:39:28Z	theme-roles	literal 2px -> --theme-line-width-strong	line thickness constant	src/components/Divider.module.css | .line | height	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-button-foreground -> --theme-control-foreground	control chrome tone, kept as one role for fill, text and outline	src/components/Drawer.module.css | .action | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-ink	text color	src/components/Drawer.module.css | .action | color	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-focused-foreground -> --theme-accent	emphasis hue, one role for fill, text and focus line	src/components/Drawer.module.css | .action > &:focus, &:active | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-background-input -> --theme-surface-input	input field fill	src/components/Drawer.module.css | .right | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-background-modal-footer -> --theme-surface-panel-footer	panel footer fill	src/components/DropdownMenu.module.css | .footer | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-border -> --theme-surface-float	raised fill	src/components/DropdownMenu.module.css | .root | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-surface-inverse	ink used as a fill	src/components/Input.module.css | .block | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-background -> --theme-ink-inverse	text drawn on an ink fill	src/components/Input.module.css | .block | color	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-background-input -> --theme-surface-input	input field fill	src/components/Input.module.css | .displayed | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-border -> --theme-line	inset edge line	src/components/Input.module.css | .displayed | box-shadow	migrated
+2026-11-09T02:39:28Z	theme-roles	literal 2px -> --theme-line-width-strong	line thickness constant	src/components/Input.module.css | .displayed | box-shadow	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-focused-foreground -> --theme-accent	emphasis hue, one role for fill, text and focus line	src/components/Input.module.css | .focused > .block | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-focused-foreground -> --theme-accent	emphasis hue, one role for fill, text and focus line	src/components/Input.module.css | .focused > .placeholder | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-focused-foreground -> --theme-accent	emphasis hue, one role for fill, text and focus line	src/components/Input.module.css | .hidden > &:-webkit-autofill | -webkit-box-shadow	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-border -> --theme-surface-chip	chip fill, a label, bar, nav item or scrollbar thumb that is not a floating panel	src/components/Input.module.css | .label | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-overlay -> --theme-ink-subdued	placeholder text, not a scrim	src/components/Input.module.css | .placeholder | color	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-focused-foreground -> --theme-accent	emphasis hue, one role for fill, text and focus line	src/components/ListItem.module.css | .root > &:focus, &:active | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-ink	glyph color	src/components/MatrixLoader.tsx | getPropertyValue | --theme-text	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-border -> --theme-surface-float	raised fill	src/components/Message.module.css | .bubble | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-border-subdued -> --theme-shadow-float-color	float elevation, offsets move to shadow-float-geometry	src/components/Message.module.css | .bubble | box-shadow	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-border -> --theme-surface-float	raised fill	src/components/Message.module.css | .triangle | border-right	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-focused-foreground -> --theme-accent	emphasis hue, one role for fill, text and focus line	src/components/MessageViewer.module.css | .bubble | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-focused-foreground -> --theme-accent	emphasis hue, one role for fill, text and focus line	src/components/MessageViewer.module.css | .triangle | border-left	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-border -> --theme-surface-chip	chip fill, a label, bar, nav item or scrollbar thumb that is not a floating panel	src/components/Navigation.module.css | .logo | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-ink	text color	src/components/Navigation.module.css | .logo | color	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-focused-foreground -> --theme-accent	emphasis hue, one role for fill, text and focus line	src/components/Navigation.module.css | .logo > &:active | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-focused-foreground -> --theme-accent	emphasis hue, one role for fill, text and focus line	src/components/Navigation.module.css | .logo > &:focus | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-focused-foreground -> --theme-accent	emphasis hue, one role for fill, text and focus line	src/components/Navigation.module.css | .logo > &:hover | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-ink	text color	src/components/Navigation.module.css | .logo > &:hover | color	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-ink	text color	src/components/Navigation.module.css | .logo > &:visited | color	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-border -> --theme-surface-chip	chip fill, a label, bar, nav item or scrollbar thumb that is not a floating panel	src/components/Navigation.module.css | .root | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-surface-inverse	ink used as a fill	src/components/NumberRangeSlider.module.css | .amount | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-background -> --theme-ink-inverse	text drawn on an ink fill	src/components/NumberRangeSlider.module.css | .amount | color	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-border-subdued -> --theme-surface-subdued	muted fill, new role	src/components/NumberRangeSlider.module.css | .slider | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-button-foreground -> --theme-control-foreground	control chrome tone, kept as one role for fill, text and outline	src/components/NumberRangeSlider.module.css | .slider > &::-moz-range-thumb | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-border-subdued -> --theme-surface-subdued	muted fill, new role	src/components/NumberRangeSlider.module.css | .slider > &::-moz-range-track | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-border-subdued -> --theme-surface-subdued	muted fill, new role	src/components/NumberRangeSlider.module.css | .slider > &::-ms-fill-lower | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-border-subdued -> --theme-surface-subdued	muted fill, new role	src/components/NumberRangeSlider.module.css | .slider > &::-ms-fill-upper | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-button-foreground -> --theme-control-foreground	control chrome tone, kept as one role for fill, text and outline	src/components/NumberRangeSlider.module.css | .slider > &::-ms-thumb | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-border-subdued -> --theme-surface-subdued	muted fill, new role	src/components/NumberRangeSlider.module.css | .slider > &::-webkit-slider-runnable-track | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-button-foreground -> --theme-control-foreground	control chrome tone, kept as one role for fill, text and outline	src/components/NumberRangeSlider.module.css | .slider > &::-webkit-slider-thumb | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-focused-foreground -> --theme-accent	emphasis hue, one role for fill, text and focus line	src/components/NumberRangeSlider.module.css | .slider > &:active | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-focused-foreground -> --theme-accent	emphasis hue, one role for fill, text and focus line	src/components/NumberRangeSlider.module.css | .slider > &:focus | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-focused-foreground -> --theme-accent	emphasis hue, one role for fill, text and focus line	src/components/NumberRangeSlider.module.css | .slider > &:hover | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-border -> --theme-surface-float	raised fill	src/components/Popover.module.css | .root | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-border-subdued -> --theme-shadow-ring-color	ring elevation, offsets move to shadow-ring-geometry	src/components/Popover.module.css | .root | box-shadow	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-background -> --theme-ink-inverse	mark drawn on the ink filled figure	src/components/RadioButton.module.css | .dot | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-button-foreground -> --theme-control-foreground	control chrome tone, kept as one role for fill, text and outline	src/components/RadioButton.module.css | .figure | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-ink	text color	src/components/RadioButton.module.css | .figure | color	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-focused-foreground -> --theme-accent	emphasis hue, one role for fill, text and focus line	src/components/RadioButton.module.css | .focused > .figure | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-button-background -> --theme-control-background	control body fill	src/components/RadioButton.module.css | .right | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-border-subdued -> --theme-line-subdued	hairline divider	src/components/RadioButton.module.css | .section > .right | box-shadow	migrated
+2026-11-09T02:39:28Z	theme-roles	literal 1px -> --theme-line-width	line thickness constant	src/components/RadioButton.module.css | .section > .right | box-shadow	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-surface-inverse	ink used as a fill	src/components/RadioButton.module.css | .selected > .figure | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-focused-foreground -> --theme-accent	emphasis hue, one role for fill, text and focus line	src/components/Row.module.css | .row > &:focus | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-focused-foreground -> --theme-accent	emphasis hue, one role for fill, text and focus line	src/components/RowEllipsis.module.css | .row > &:focus, &:active | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-button-foreground -> --theme-control-foreground	control chrome tone, kept as one role for fill, text and outline	src/components/Select.module.css | .control | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-surface-inverse	ink used as a fill	src/components/Select.module.css | .control > &.focused | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-background -> --theme-ink-inverse	text drawn on an ink fill	src/components/Select.module.css | .control > &.focused | color	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-border -> --theme-surface-chip	chip fill, a label, bar, nav item or scrollbar thumb that is not a floating panel	src/components/Select.module.css | .display | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-ink	text color	src/components/Select.module.css | .display | color	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-focused-foreground -> --theme-accent	emphasis hue, one role for fill, text and focus line	src/components/Select.module.css | .display > &:active | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-focused-foreground -> --theme-accent	emphasis hue, one role for fill, text and focus line	src/components/Select.module.css | .display > &:focus | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-focused-foreground -> --theme-accent	emphasis hue, one role for fill, text and focus line	src/components/Select.module.css | .display > &:hover | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-focused-foreground -> --theme-accent	emphasis hue, one role for fill, text and focus line	src/components/Select.module.css | .item > &:active | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-focused-foreground -> --theme-accent	emphasis hue, one role for fill, text and focus line	src/components/Select.module.css | .item > &:focus | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-focused-foreground -> --theme-accent	emphasis hue, one role for fill, text and focus line	src/components/Select.module.css | .item > &:hover | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-border-subdued -> --theme-surface-subdued	muted fill, new role	src/components/Select.module.css | .menu | background-color	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-focused-foreground -> --theme-accent	emphasis hue, one role for fill, text and focus line	src/components/SidebarLayout.module.css | .handle > &:active > .line | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-focused-foreground -> --theme-accent	emphasis hue, one role for fill, text and focus line	src/components/SidebarLayout.module.css | .handle > &:focus > .line | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-focused-foreground -> --theme-accent	emphasis hue, one role for fill, text and focus line	src/components/SidebarLayout.module.css | .handle > &:hover > .line | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-line-strong	the element is a drawn rule, fill is its line	src/components/SidebarLayout.module.css | .line | background	migrated
+2026-11-09T02:39:28Z	theme-roles	literal 2px -> --theme-line-width-strong	line thickness constant	src/components/SidebarLayout.module.css | .line | width	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-focused-foreground -> --theme-accent	emphasis hue, one role for fill, text and focus line	src/components/SimpleTable.module.css | .root tbody tr:focus | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-background -> --theme-surface-page	page fill	src/components/SimpleTable.module.css | .scrollWrapper | scrollbar-color	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-border -> --theme-surface-chip	chip fill, a label, bar, nav item or scrollbar thumb that is not a floating panel	src/components/SimpleTable.module.css | .scrollWrapper | scrollbar-color	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-border -> --theme-surface-chip	chip fill, a label, bar, nav item or scrollbar thumb that is not a floating panel	src/components/SimpleTable.module.css | .scrollWrapper::-webkit-scrollbar-thumb | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-border -> --theme-surface-chip	chip fill, a label, bar, nav item or scrollbar thumb that is not a floating panel	src/components/SimpleTable.module.css | .scrollWrapper::-webkit-scrollbar-thumb:hover | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-background -> --theme-surface-page	page fill	src/components/SimpleTable.module.css | .scrollWrapper::-webkit-scrollbar-track | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-focused-foreground -> --theme-accent	emphasis hue, one role for fill, text and focus line	src/components/TableRow.module.css | .root > &:focus, &:active | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-surface-inverse	ink used as a fill	src/components/TextArea.module.css | .block | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-focused-foreground -> --theme-accent	emphasis hue, one role for fill, text and focus line	src/components/TextArea.module.css | .focused > .block | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-focused-foreground -> --theme-accent	emphasis hue, one role for fill, text and focus line	src/components/TextArea.module.css | .focused > .placeholder | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-border -> --theme-surface-float	raised fill	src/components/Tooltip.module.css | .root | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-border-subdued -> --theme-shadow-tooltip-color	tooltip elevation, offsets move to shadow-tooltip-geometry	src/components/Tooltip.module.css | .root | box-shadow	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-focused-foreground -> --theme-accent	emphasis hue, one role for fill, text and focus line	src/components/TreeView.module.css | .item > &:focus, &:active | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-window-background -> --theme-surface-window	window body fill	src/components/Window.module.css | .window | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-window-shadow -> --theme-shadow-window-color	window elevation, offsets move to shadow-window-geometry	src/components/Window.module.css | .window | box-shadow	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-line-strong	ink used as an edge line	src/components/examples/DashboardRadar.module.css | .ne | border-bottom	migrated
+2026-11-09T02:39:28Z	theme-roles	literal 2px -> --theme-line-width-strong	line thickness constant	src/components/examples/DashboardRadar.module.css | .ne | border-bottom	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-line-strong	ink used as an edge line	src/components/examples/DashboardRadar.module.css | .ne | border-left	migrated
+2026-11-09T02:39:28Z	theme-roles	literal 2px -> --theme-line-width-strong	line thickness constant	src/components/examples/DashboardRadar.module.css | .ne | border-left	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-line-strong	ink used as an edge line	src/components/examples/DashboardRadar.module.css | .nw | border-bottom	migrated
+2026-11-09T02:39:28Z	theme-roles	literal 2px -> --theme-line-width-strong	line thickness constant	src/components/examples/DashboardRadar.module.css | .nw | border-bottom	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-line-strong	ink used as an edge line	src/components/examples/DashboardRadar.module.css | .nw | border-right	migrated
+2026-11-09T02:39:28Z	theme-roles	literal 2px -> --theme-line-width-strong	line thickness constant	src/components/examples/DashboardRadar.module.css | .nw | border-right	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-line-strong	ink used as an edge line	src/components/examples/DashboardRadar.module.css | .se | border-left	migrated
+2026-11-09T02:39:28Z	theme-roles	literal 2px -> --theme-line-width-strong	line thickness constant	src/components/examples/DashboardRadar.module.css | .se | border-left	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-line-strong	ink used as an edge line	src/components/examples/DashboardRadar.module.css | .se | border-top	migrated
+2026-11-09T02:39:28Z	theme-roles	literal 2px -> --theme-line-width-strong	line thickness constant	src/components/examples/DashboardRadar.module.css | .se | border-top	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-line-strong	ink used as an edge line	src/components/examples/DashboardRadar.module.css | .sw | border-right	migrated
+2026-11-09T02:39:28Z	theme-roles	literal 2px -> --theme-line-width-strong	line thickness constant	src/components/examples/DashboardRadar.module.css | .sw | border-right	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-line-strong	ink used as an edge line	src/components/examples/DashboardRadar.module.css | .sw | border-top	migrated
+2026-11-09T02:39:28Z	theme-roles	literal 2px -> --theme-line-width-strong	line thickness constant	src/components/examples/DashboardRadar.module.css | .sw | border-top	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-background -> --theme-surface-page	page fill	src/components/examples/Denabase.module.css | .absoluteTag | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-line-strong	ink used as an edge line	src/components/examples/Denabase.module.css | .absoluteTag | box-shadow	migrated
+2026-11-09T02:39:28Z	theme-roles	literal 2px -> --theme-line-width-strong	line thickness constant	src/components/examples/Denabase.module.css | .absoluteTag | box-shadow	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-line-strong	ink used as an edge line	src/components/examples/Denabase.module.css | .box | box-shadow	migrated
+2026-11-09T02:39:28Z	theme-roles	literal 2px -> --theme-line-width-strong	line thickness constant	src/components/examples/Denabase.module.css | .box | box-shadow	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-line-strong	ink used as an edge line	src/components/examples/Denabase.module.css | .box > &:first-child | box-shadow	migrated
+2026-11-09T02:39:28Z	theme-roles	literal 2px -> --theme-line-width-strong	line thickness constant	src/components/examples/Denabase.module.css | .box > &:first-child | box-shadow	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-line-strong	ink used as an edge line	src/components/examples/Denabase.module.css | .largeSection | box-shadow	migrated
+2026-11-09T02:39:28Z	theme-roles	literal 2px -> --theme-line-width-strong	line thickness constant	src/components/examples/Denabase.module.css | .largeSection | box-shadow	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-line-strong	ink used as an edge line	src/components/examples/Denabase.module.css | .largeWithBorder | box-shadow	migrated
+2026-11-09T02:39:28Z	theme-roles	literal 2px -> --theme-line-width-strong	line thickness constant	src/components/examples/Denabase.module.css | .largeWithBorder | box-shadow	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-line-strong	ink used as an edge line	src/components/examples/Denabase.module.css | .secondaryTag | box-shadow	migrated
+2026-11-09T02:39:28Z	theme-roles	literal 2px -> --theme-line-width-strong	line thickness constant	src/components/examples/Denabase.module.css | .secondaryTag | box-shadow	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-line-strong	ink used as an edge line	src/components/examples/Denabase.module.css | .smallSection | box-shadow	migrated
+2026-11-09T02:39:28Z	theme-roles	literal 2px -> --theme-line-width-strong	line thickness constant	src/components/examples/Denabase.module.css | .smallSection | box-shadow	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-line-strong	ink used as an edge line	src/components/examples/Denabase.module.css | .smallWithBorder | box-shadow	migrated
+2026-11-09T02:39:28Z	theme-roles	literal 2px -> --theme-line-width-strong	line thickness constant	src/components/examples/Denabase.module.css | .smallWithBorder | box-shadow	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-line-strong	ink used as an edge line	src/components/examples/Denabase.module.css | .tag | box-shadow	migrated
+2026-11-09T02:39:28Z	theme-roles	literal 2px -> --theme-line-width-strong	line thickness constant	src/components/examples/Denabase.module.css | .tag | box-shadow	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-background-modal -> --theme-surface-panel	modal panel fill	src/components/modals/ModalAlert.module.css | .root | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-border-subdued -> --theme-shadow-ring-color	ring elevation, offsets move to shadow-ring-geometry	src/components/modals/ModalAlert.module.css | .root | box-shadow	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-background-modal -> --theme-surface-panel	modal panel fill	src/components/modals/ModalCanvasPlatformer.module.css | .root | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-border-subdued -> --theme-shadow-ring-color	ring elevation, offsets move to shadow-ring-geometry	src/components/modals/ModalCanvasPlatformer.module.css | .root | box-shadow	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-background-modal -> --theme-surface-panel	modal panel fill	src/components/modals/ModalCanvasSnake.module.css | .root | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-border-subdued -> --theme-shadow-ring-color	ring elevation, offsets move to shadow-ring-geometry	src/components/modals/ModalCanvasSnake.module.css | .root | box-shadow	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-background-modal -> --theme-surface-panel	modal panel fill	src/components/modals/ModalChess.module.css | .root | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-border-subdued -> --theme-shadow-ring-color	ring elevation, offsets move to shadow-ring-geometry	src/components/modals/ModalChess.module.css | .root | box-shadow	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-background-modal -> --theme-surface-panel	modal panel fill	src/components/modals/ModalCreateAccount.module.css | .root | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-border-subdued -> --theme-shadow-ring-color	ring elevation, offsets move to shadow-ring-geometry	src/components/modals/ModalCreateAccount.module.css | .root | box-shadow	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-background-modal -> --theme-surface-panel	modal panel fill	src/components/modals/ModalError.module.css | .root | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-border-subdued -> --theme-shadow-ring-color	ring elevation, offsets move to shadow-ring-geometry	src/components/modals/ModalError.module.css | .root | box-shadow	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-background-modal -> --theme-surface-panel	modal panel fill	src/components/modals/ModalMatrixModes.module.css | .root | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-border-subdued -> --theme-shadow-ring-color	ring elevation, offsets move to shadow-ring-geometry	src/components/modals/ModalMatrixModes.module.css | .root | box-shadow	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-border-subdued -> --theme-surface-subdued	link fill	src/styles/global.css | a | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-ink	text color	src/styles/global.css | a | color	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-focused-foreground -> --theme-accent	emphasis fill	src/styles/global.css | a:hover, a:focus, a:active | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-ink	text color	src/styles/global.css | a:hover, a:focus, a:active | color	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-focused-foreground -> --theme-accent	same expression as the legacy value in every block, so the computed color is unchanged	src/styles/global.css | body.theme-light, body.theme-dark, light tints, dark tints | --theme-accent	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-focused-foreground-subdued -> --theme-accent-subdued	same expression as the legacy value in every block, so the computed color is unchanged	src/styles/global.css | body.theme-light, body.theme-dark, light tints, dark tints | --theme-accent-subdued	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-button -> --theme-control	same expression as the legacy value in every block, so the computed color is unchanged	src/styles/global.css | body.theme-light, body.theme-dark, light tints, dark tints | --theme-control	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-button-background -> --theme-control-background	same expression as the legacy value in every block, so the computed color is unchanged	src/styles/global.css | body.theme-light, body.theme-dark, light tints, dark tints | --theme-control-background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-button-foreground -> --theme-control-foreground	same expression as the legacy value in every block, so the computed color is unchanged	src/styles/global.css | body.theme-light, body.theme-dark, light tints, dark tints | --theme-control-foreground	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-button-text -> --theme-control-ink	same expression as the legacy value in every block, so the computed color is unchanged	src/styles/global.css | body.theme-light, body.theme-dark, light tints, dark tints | --theme-control-ink	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-ink	same expression as the legacy value in every block, so the computed color is unchanged	src/styles/global.css | body.theme-light, body.theme-dark, light tints, dark tints | --theme-ink	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-background -> --theme-ink-inverse	same expression as the legacy value in every block, so the computed color is unchanged	src/styles/global.css | body.theme-light, body.theme-dark, light tints, dark tints | --theme-ink-inverse	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-overlay -> --theme-ink-subdued	same expression as the legacy value in every block, so the computed color is unchanged	src/styles/global.css | body.theme-light, body.theme-dark, light tints, dark tints | --theme-ink-subdued	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-border -> --theme-line	same expression as the legacy value in every block, so the computed color is unchanged	src/styles/global.css | body.theme-light, body.theme-dark, light tints, dark tints | --theme-line	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-line-strong	same expression as the legacy value in every block, so the computed color is unchanged	src/styles/global.css | body.theme-light, body.theme-dark, light tints, dark tints | --theme-line-strong	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-border-subdued -> --theme-line-subdued	same expression as the legacy value in every block, so the computed color is unchanged	src/styles/global.css | body.theme-light, body.theme-dark, light tints, dark tints | --theme-line-subdued	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-border-subdued -> --theme-shadow-float-color	same expression as the legacy value in every block, so the computed color is unchanged	src/styles/global.css | body.theme-light, body.theme-dark, light tints, dark tints | --theme-shadow-float-color	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-border-subdued -> --theme-shadow-ring-color	same expression as the legacy value in every block, so the computed color is unchanged	src/styles/global.css | body.theme-light, body.theme-dark, light tints, dark tints | --theme-shadow-ring-color	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-border-subdued -> --theme-shadow-tooltip-color	same expression as the legacy value in every block, so the computed color is unchanged	src/styles/global.css | body.theme-light, body.theme-dark, light tints, dark tints | --theme-shadow-tooltip-color	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-window-shadow -> --theme-shadow-window-color	same expression as the legacy value in every block, so the computed color is unchanged	src/styles/global.css | body.theme-light, body.theme-dark, light tints, dark tints | --theme-shadow-window-color	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-border -> --theme-surface-float	same expression as the legacy value in every block, so the computed color is unchanged	src/styles/global.css | body.theme-light, body.theme-dark, light tints, dark tints | --theme-surface-float	migrated
+2026-11-09T02:39:28Z	theme-roles	split of --theme-surface-float -> --theme-surface-chip	new role, same value as surface-float in every block so the computed color is unchanged	src/styles/global.css | body.theme-light, body.theme-dark, light tints, dark tints | --theme-surface-chip	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-background-input -> --theme-surface-input	same expression as the legacy value in every block, so the computed color is unchanged	src/styles/global.css | body.theme-light, body.theme-dark, light tints, dark tints | --theme-surface-input	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-surface-inverse	same expression as the legacy value in every block, so the computed color is unchanged	src/styles/global.css | body.theme-light, body.theme-dark, light tints, dark tints | --theme-surface-inverse	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-background -> --theme-surface-page	same expression as the legacy value in every block, so the computed color is unchanged	src/styles/global.css | body.theme-light, body.theme-dark, light tints, dark tints | --theme-surface-page	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-background-modal -> --theme-surface-panel	same expression as the legacy value in every block, so the computed color is unchanged	src/styles/global.css | body.theme-light, body.theme-dark, light tints, dark tints | --theme-surface-panel	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-background-modal-footer -> --theme-surface-panel-footer	same expression as the legacy value in every block, so the computed color is unchanged	src/styles/global.css | body.theme-light, body.theme-dark, light tints, dark tints | --theme-surface-panel-footer	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-border-subdued -> --theme-surface-subdued	same expression as the legacy value in every block, so the computed color is unchanged	src/styles/global.css | body.theme-light, body.theme-dark, light tints, dark tints | --theme-surface-subdued	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-window-shadow -> --theme-surface-sunken	same expression as the legacy value in every block, so the computed color is unchanged	src/styles/global.css | body.theme-light, body.theme-dark, light tints, dark tints | --theme-surface-sunken	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-window-background -> --theme-surface-window	same expression as the legacy value in every block, so the computed color is unchanged	src/styles/global.css | body.theme-light, body.theme-dark, light tints, dark tints | --theme-surface-window	migrated
+2026-11-09T02:39:28Z	theme-roles	literal 1px -> --theme-line-width	new constant, set once	src/styles/global.css | html, body | --theme-line-width	migrated
+2026-11-09T02:39:28Z	theme-roles	literal 6px -> --theme-line-width-double	new constant, replaces the local card var	src/styles/global.css | html, body | --theme-line-width-double	migrated
+2026-11-09T02:39:28Z	theme-roles	literal 2px -> --theme-line-width-strong	new constant, set once	src/styles/global.css | html, body | --theme-line-width-strong	migrated
+2026-11-09T02:39:28Z	theme-roles	literal 1ch 1ch 0 0 -> --theme-shadow-float-geometry	new constant, offsets only	src/styles/global.css | html, body | --theme-shadow-float-geometry	migrated
+2026-11-09T02:39:28Z	theme-roles	literal 0 0 0 1ch -> --theme-shadow-ring-geometry	new constant, spread only	src/styles/global.css | html, body | --theme-shadow-ring-geometry	migrated
+2026-11-09T02:39:28Z	theme-roles	literal 0.5ch 0.5ch 0 0 -> --theme-shadow-tooltip-geometry	new constant, offsets only	src/styles/global.css | html, body | --theme-shadow-tooltip-geometry	migrated
+2026-11-09T02:39:28Z	theme-roles	literal 1ch calc(...) 0 0 -> --theme-shadow-window-geometry	new constant, offsets only	src/styles/global.css | html, body | --theme-shadow-window-geometry	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-background -> --theme-surface-page	page fill	src/styles/global.css | html, body | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-text -> --theme-ink	text color	src/styles/global.css | html, body | color	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-border -> --theme-surface-chip	chip fill, a label, bar, nav item or scrollbar thumb that is not a floating panel	src/styles/global.css | html, body &::-webkit-scrollbar-thumb | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-background -> --theme-surface-page	scrollbar track matches the page	src/styles/global.css | html, body &::-webkit-scrollbar-track | background	migrated
+2026-11-09T02:39:28Z	theme-roles	--theme-border -> --theme-line	fixture string only	tests/aug.test.ts | augAttributes | bg	migrated
+2026-11-09T02:39:28Z	theme-roles	new component fill -> --theme-surface-float	Surface is an overlay panel fill, stripped by data-aug-inlay	src/components/Surface.module.css | .surface | background	migrated

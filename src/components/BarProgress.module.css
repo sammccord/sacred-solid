@@ -1,0 +1,28 @@
+.root {
+  display: block;
+  background: var(--theme-surface-subdued);
+  white-space: nowrap;
+  text-align: left;
+  vertical-align: bottom;
+  overflow: hidden;
+  position: relative;
+}
+
+.measure {
+  visibility: hidden;
+  position: absolute;
+  pointer-events: none;
+}
+
+.solid {
+  height: 0.5rem;
+}
+
+.fill {
+  height: 100%;
+  background: var(--theme-surface-inverse);
+}
+
+.root:where([data-aug-inlay]) {
+  background: none;
+}
