@@ -1,35 +1,42 @@
 import type { JSX } from "@solidjs/web";
-import { createSignal, Show, omit } from "solid-js";
+import { Collapsible, CollapsiblePanel, CollapsibleTrigger } from "@ui-sdk/solid/collapsible";
+import { createSignal, omit, untrack } from "solid-js";
 import type { AugProps } from "../aug/index.ts";
 import { styleAttributes, type ThemeProps } from "../style/index.ts";
 import styles from "./Drawer.module.css";
 import { classNames } from "../common/utilities.ts";
 
-export interface DrawerProps extends Omit<JSX.HTMLAttributes<HTMLDivElement>, "defaultValue"> {
+export interface DrawerProps extends Omit<
+  JSX.HTMLAttributes<HTMLDivElement>,
+  "defaultValue" | "style"
+> {
   children?: JSX.Element;
   defaultValue?: boolean;
+  label?: string;
+  style?: JSX.CSSProperties;
   aug?: AugProps;
   theme?: ThemeProps;
 }
 
 export function Drawer(props: DrawerProps) {
-  const rest = omit(props, "class", "aug", "theme", "children", "defaultValue");
-  const [expand, setExpand] = createSignal(props.defaultValue ?? false);
+  const rest = omit(props, "class", "aug", "theme", "children", "defaultValue", "label", "style");
+  const initial = untrack(() => props.defaultValue ?? false);
+  const [expand, setExpand] = createSignal(initial);
 
   return (
-    <div
+    <Collapsible
       class={classNames(styles.root, props.class)}
-      {...rest}
-      {...styleAttributes(props, rest.style)}
+      defaultOpen={initial}
+      onOpenChange={setExpand}
+      {...(rest as Record<string, unknown>)}
+      {...styleAttributes(props, props.style)}
     >
-      <Show when={expand()}>
-        <div class={styles.side}>{props.children}</div>
-      </Show>
+      <CollapsiblePanel class={styles.side}>{props.children}</CollapsiblePanel>
       <div class={styles.right}>
-        <button class={styles.action} onClick={() => setExpand(!expand())}>
+        <CollapsibleTrigger class={styles.action} aria-label={props.label ?? "Toggle drawer"}>
           {expand() ? "⭠" : "⭢"}
-        </button>
+        </CollapsibleTrigger>
       </div>
-    </div>
+    </Collapsible>
   );
 }

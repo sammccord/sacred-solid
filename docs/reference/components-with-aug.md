@@ -6,7 +6,7 @@ The element column lists the tags that receive the output of `styleAttributes`, 
 
 <!-- generated:start components -->
 
-69 exported components take `aug` and `theme`. 19 of them render no element with the attributes and pass both props to another component.
+69 exported components take `aug` and `theme`. 21 of them render no element with the attributes and pass both props to another component.
 
 | Component               | Element with the attributes | Forwards to                           | Note                                                                                                                            |
 | ----------------------- | --------------------------- | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
@@ -33,10 +33,10 @@ The element column lists the tags that receive the output of `styleAttributes`, 
 | `ContentFluid`          | `<div>`                     | none                                  |                                                                                                                                 |
 | `DOMSnake`              | `<div>`                     | none                                  |                                                                                                                                 |
 | `DataTable`             | `<table>`                   | none                                  |                                                                                                                                 |
-| `DatePicker`            | `<div>`                     | none                                  |                                                                                                                                 |
+| `DatePicker`            | none                        | `Calendar`                            |                                                                                                                                 |
 | `Dialog`                | `<div>`                     | `AlertDialogContent`                  |                                                                                                                                 |
 | `Divider`               | `<div>`                     | none                                  | The element depends on `type`.                                                                                                  |
-| `Drawer`                | `<div>`                     | none                                  |                                                                                                                                 |
+| `Drawer`                | none                        | `Collapsible`                         |                                                                                                                                 |
 | `DropdownMenu`          | none                        | `MenuContent`                         |                                                                                                                                 |
 | `DropdownMenuTrigger`   | `<div>`                     | none                                  | The attributes go on the wrapper around the trigger. The menu opens in a portal on `document.body` and gets none.               |
 | `Grid`                  | `<div>`                     | none                                  |                                                                                                                                 |

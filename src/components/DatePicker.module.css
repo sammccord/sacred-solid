@@ -1,5 +1,6 @@
 .root {
   display: inline-block;
+  vertical-align: bottom;
   user-select: none;
 }
 
@@ -31,34 +32,39 @@
 
 .date {
   min-width: 10%;
+  margin: 0;
   padding: 0 1ch 0 1ch;
+  font: inherit;
   text-align: left;
   width: 100%;
 }
 
-.header {
-  background: var(--theme-surface-chip);
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
+.grid {
+  border-collapse: collapse;
+  border-spacing: 0;
+  background: var(--theme-surface-subdued);
+}
+
+.grid th,
+.grid td {
+  height: calc(var(--theme-line-height-base) * 1em);
+  padding: 0 1ch 0 1ch;
+  line-height: calc(var(--theme-line-height-base) * 1em);
+  font-weight: inherit;
   text-align: center;
 }
 
-.days {
-  background: var(--theme-surface-subdued);
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  grid-template-rows: repeat(6, min-content);
-  align-items: start;
-  min-height: calc(var(--theme-line-height-base) * 6em);
+.header {
+  background: var(--theme-surface-chip);
 }
 
 .cell {
   outline: none;
-  padding: 0 1ch 0 1ch;
-  text-align: center;
+  cursor: pointer;
 
   &:focus,
-  &:active {
+  &:active,
+  &[data-selected] {
     background: var(--theme-accent);
   }
 }

@@ -364,25 +364,35 @@ describe("Select", () => {
 });
 
 describe("DatePicker", () => {
-  test("renders a 42 cell grid for the given month and switches months", () => {
-    const { container } = render(() => <DatePicker year={2024} month={2} />);
-    const days = container.querySelector('[class*="days"]') as HTMLElement;
-    expect(days.children.length).toBe(42);
-    expect(container.querySelector('[class*="date"]')?.textContent).toBe("2024 FEBRUARY");
-    const labelled = days.querySelectorAll("[aria-label]");
-    expect(labelled.length).toBe(29);
-    expect(labelled[0]?.getAttribute("aria-label")).toBe("2024-02-01");
-    expect(days.children[4]?.getAttribute("aria-label")).toBe("2024-02-01");
-    fireEvent.click(screen.getByLabelText("Next month"));
-    expect(container.querySelector('[class*="date"]')?.textContent).toBe("2024 MARCH");
-    expect(days.querySelectorAll("[aria-label]").length).toBe(31);
-    expect(days.children.length).toBe(42);
+  const settle = async () => {
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    flush();
+  };
+
+  test("is a named 6-week grid for the month that switches months and reports a pick", async () => {
+    const onChange = vi.fn();
+    render(() => <DatePicker year={2024} month={2} onChange={onChange} />);
+    await settle();
+    const grid = screen.getByRole("grid", { name: "February 2024" });
+    expect(grid.querySelectorAll("tbody tr")).toHaveLength(6);
+    const days = screen.getAllByRole("gridcell");
+    expect(days).toHaveLength(29);
+    expect(days[0]?.getAttribute("aria-label")).toBe("Thursday, February 1, 2024");
+    expect(days.filter((day) => day.tabIndex === 0)).toHaveLength(1);
+    fireEvent.click(days[9]!);
+    await settle();
+    expect(onChange).toHaveBeenCalledWith("2024-02-10");
+    fireEvent.click(screen.getByRole("button", { name: "Next month" }));
+    await settle();
+    expect(screen.getByRole("heading").textContent).toBe("2024 MARCH");
+    expect(screen.getAllByRole("gridcell")).toHaveLength(31);
   });
 
-  test("Previous month wraps to December of the previous year", () => {
-    const { container } = render(() => <DatePicker year={2024} month={1} />);
-    fireEvent.click(screen.getByLabelText("Previous month"));
-    expect(container.querySelector('[class*="date"]')?.textContent).toBe("2023 DECEMBER");
+  test("Previous month wraps to December of the previous year", async () => {
+    render(() => <DatePicker year={2024} month={1} />);
+    fireEvent.click(screen.getByRole("button", { name: "Previous month" }));
+    await settle();
+    expect(screen.getByRole("heading").textContent).toBe("2023 DECEMBER");
     expect(screen.getAllByText("SU").length).toBe(1);
   });
 });
