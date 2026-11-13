@@ -6,7 +6,7 @@ The element column lists the tags that receive the output of `styleAttributes`, 
 
 <!-- generated:start components -->
 
-69 exported components take `aug` and `theme`. 12 of them render no element with the attributes and pass both props to another component.
+69 exported components take `aug` and `theme`. 13 of them render no element with the attributes and pass both props to another component.
 
 | Component               | Element with the attributes | Forwards to                           | Note                                                                                                                            |
 | ----------------------- | --------------------------- | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
@@ -49,7 +49,7 @@ The element column lists the tags that receive the output of `styleAttributes`, 
 | `Message`               | `<div>`                     | none                                  |                                                                                                                                 |
 | `MessageViewer`         | `<div>`                     | none                                  |                                                                                                                                 |
 | `Navigation`            | `<nav>`                     | none                                  |                                                                                                                                 |
-| `NumberRangeSlider`     | `<div>`                     | none                                  |                                                                                                                                 |
+| `NumberRangeSlider`     | none                        | `Slider`                              |                                                                                                                                 |
 | `Panel`                 | `<section>`                 | none                                  | The attributes go on the root `section`. The header and the body get none. The body has no padding unless you pass `padding`.   |
 | `Popover`               | `<div>`                     | none                                  |                                                                                                                                 |
 | `RadioButton`           | `<div>`                     | none                                  |                                                                                                                                 |

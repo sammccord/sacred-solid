@@ -388,16 +388,30 @@ describe("DatePicker", () => {
 });
 
 describe("NumberRangeSlider", () => {
-  test("pads the amount to the width of max and follows the slider", () => {
-    const { container } = render(() => <NumberRangeSlider defaultValue={42} max={5000} />);
-    const slider = screen.getByRole("slider") as HTMLInputElement;
+  test("pads the amount to the width of max and follows the named thumb", () => {
+    const onChange = vi.fn();
+    const { container } = render(() => (
+      <form>
+        <NumberRangeSlider
+          name="amount"
+          label="Amount"
+          defaultValue={42}
+          max={5000}
+          onChange={onChange}
+        />
+      </form>
+    ));
+    const thumb = screen.getByRole("slider", { name: "Amount" }) as HTMLInputElement;
     const amount = container.querySelector('[class*="amount"]') as HTMLElement;
     expect(amount.textContent).toBe("0042");
-    expect(slider.value).toBe("42");
-    slider.value = "1234";
-    fireEvent.input(slider);
-    expect(amount.textContent).toBe("1234");
-    expect(slider.getAttribute("max")).toBe("5000");
+    expect(thumb.value).toBe("42");
+    expect(thumb.getAttribute("max")).toBe("5000");
+    fireEvent.keyDown(thumb, { key: "ArrowRight" });
+    expect(amount.textContent).toBe("0043");
+    expect(onChange).toHaveBeenLastCalledWith(43);
+    fireEvent.keyDown(thumb, { key: "End" });
+    expect(amount.textContent).toBe("5000");
+    expect(new FormData(container.querySelector("form")!).get("amount")).toBe("5000");
   });
 });
 

@@ -13,94 +13,42 @@
 }
 
 .slider {
-  border-radius: 0;
   display: block;
-  margin: 0;
-  padding: 0;
   width: 100%;
   min-width: 10%;
-
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-
+  height: calc(var(--font-size) * var(--theme-line-height-base));
+  position: relative;
   background: var(--theme-surface-subdued);
+  cursor: pointer;
+  touch-action: none;
 
-  &:focus {
-    background: linear-gradient(to right, transparent, var(--theme-accent));
-    outline: none;
-  }
-
-  &:hover {
-    background: linear-gradient(to right, transparent, var(--theme-accent));
-    cursor: pointer;
-  }
-
-  &:active {
+  &:hover,
+  &:focus-within,
+  &[data-dragging] {
     background: linear-gradient(to right, transparent, var(--theme-accent));
   }
 
-  &::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    font-size: var(--font-size);
-    width: 1ch;
-    height: calc(var(--font-size) * var(--theme-line-height-base));
-    background: var(--theme-control-foreground);
-    vertical-align: bottom;
-    cursor: pointer;
-    border-radius: 0;
-  }
-
-  &::-webkit-slider-runnable-track {
-    height: calc(var(--font-size) * var(--theme-line-height-base));
-    background: var(--theme-surface-subdued);
-    border-radius: 0;
-  }
-
-  &::-moz-range-thumb {
-    -moz-appearance: none;
-    appearance: none;
-    font-size: var(--font-size);
-    width: 1ch;
-    height: calc(var(--font-size) * var(--theme-line-height-base));
-    background: var(--theme-control-foreground);
-    vertical-align: bottom;
-    cursor: pointer;
-    border: none;
-    border-radius: 0;
-  }
-
-  &::-moz-range-track {
-    height: calc(var(--font-size) * var(--theme-line-height-base));
-    background: var(--theme-surface-subdued);
-    border-radius: 0;
-  }
-
-  &::-ms-thumb {
-    appearance: none;
-    font-size: var(--font-size);
-    width: 1ch;
-    height: calc(var(--font-size) * var(--theme-line-height-base));
-    background: var(--theme-control-foreground);
-    vertical-align: bottom;
-    cursor: pointer;
-    border: none;
-    border-radius: 0;
-  }
-
-  &::-ms-track {
-    height: calc(var(--font-size) * var(--theme-line-height-base));
-    background: transparent;
-    border-color: transparent;
-    color: transparent;
-  }
-
-  &::-ms-fill-lower {
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
     background: var(--theme-surface-subdued);
   }
+}
 
-  &::-ms-fill-upper {
-    background: var(--theme-surface-subdued);
-  }
+.track {
+  position: relative;
+  height: 100%;
+  margin: 0 0.5ch;
+}
+
+.indicator {
+  height: 100%;
+}
+
+.thumb {
+  width: 1ch;
+  height: 100%;
+  background: var(--theme-control-foreground);
+  outline: 0;
 }
