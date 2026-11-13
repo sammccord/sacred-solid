@@ -17,7 +17,6 @@ export function Window(props: WindowProps) {
   return (
     <section
       class={classNames(styles.window, props.class)}
-      role="dialog"
       {...rest}
       {...styleAttributes(props, rest.style)}
     >

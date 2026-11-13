@@ -15,7 +15,18 @@ import { toggleDebugGrid } from "../DebugGrid.tsx";
 import styles from "./DefaultActionBar.module.css";
 import { useModals } from "./ModalContext.tsx";
 
-const MENU_CONTAINER_SELECTOR = '[role="menu"], [role="listbox"], [role="grid"]';
+const MENU_CONTAINER_SELECTOR = [
+  "menu-content",
+  "select-content",
+  "calendar-grid",
+  "toolbar",
+  "tabs-list",
+  "tree",
+  "radio-group",
+  "slider",
+]
+  .map((slot) => `[data-slot="${slot}"]`)
+  .join(", ");
 
 function onHandleSubmit(event: KeyboardEvent) {
   const target = event.target;

@@ -125,13 +125,13 @@ describe("ActionButton", () => {
 });
 
 describe("ActionListItem", () => {
-  test("div variant: Enter and space click the element, space is default-prevented", () => {
+  test("without href or a part role it is a native button that activates on click", () => {
     const onClick = vi.fn();
     render(() => <ActionListItem onClick={onClick}>Item</ActionListItem>);
-    const item = screen.getByRole("button");
-    fireEvent.keyDown(item, { key: "Enter" });
-    expect(fireEvent.keyDown(item, { key: " " })).toBe(false);
-    expect(onClick).toHaveBeenCalledTimes(2);
+    const item = screen.getByRole("button", { name: "Item" });
+    expect(item.tagName).toBe("BUTTON");
+    fireEvent.click(item);
+    expect(onClick).toHaveBeenCalledTimes(1);
   });
 
   test("menuitem role leaves keyboard activation to the parent", () => {
@@ -145,7 +145,7 @@ describe("ActionListItem", () => {
     expect(onClick).not.toHaveBeenCalled();
   });
 
-  test("href renders an anchor with link role", () => {
+  test("href renders a native anchor", () => {
     render(() => (
       <ActionListItem href="/x" target="_blank" icon="i">
         Go
@@ -182,7 +182,7 @@ describe("Avatar", () => {
     const { container } = render(() => <Avatar href="/me" target="_blank" />);
     const link = container.querySelector("a") as HTMLAnchorElement;
     expect(link.className).toBe(avatarStyles.placeholder);
-    expect(link.getAttribute("role")).toBe("link");
+    expect(link.hasAttribute("role")).toBe(false);
     expect(link.getAttribute("href")).toBe("/me");
   });
 

@@ -54,6 +54,7 @@ State and effects:
 - `useState` becomes `createSignal`. Read with `count()`, write with `setCount(...)`.
 - Derived values are plain functions or `createMemo`. Do not copy props into signals unless the original did so to own the value (for example `defaultValue`).
 - This port runs on Solid 2. Read `node_modules/solid-js/skills/solid-2.0/SKILL.md` before writing Solid code.
+- Interactive behavior comes from ui-sdk. When the React code hand-rolls a menu, listbox, dialog, tabs, tree, slider, toggle or similar, build it from the matching `@ui-sdk/solid` part and keep the React look in CSS. Follow the ui-sdk skill and `node_modules/@ui-sdk/solid/docs/llms.txt`.
 - `useEffect(() => {}, [])` becomes `onSettled`. Return the cleanup from the callback. `onCleanup` inside `onSettled` throws.
 - `useEffect` with dependencies becomes `createEffect(compute, apply)`. The compute reads the dependencies and returns them, the apply runs the side effect and returns its cleanup.
 - `useRef` for a DOM node becomes `let el: HTMLDivElement | undefined;` and `ref={(node) => (el = node)}`. The bare `ref={el}` form trips the `no-unassigned-vars` lint. For a mutable value that is not reactive, use a plain `let`.

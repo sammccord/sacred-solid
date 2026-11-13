@@ -100,7 +100,7 @@ test("Table, TableRow and TableColumn nest into a focusable table body", () => {
   expect(row.querySelector("td")!.textContent).toBe("x");
 });
 
-test("Text renders a paragraph and Window a dialog section", () => {
+test("Text renders a paragraph and Window a plain section", () => {
   const { container } = render(() => (
     <>
       <Text>hello</Text>
@@ -109,7 +109,7 @@ test("Text renders a paragraph and Window a dialog section", () => {
   ));
   expect(container.querySelector("p")!.textContent).toBe("hello");
   const win = container.querySelector("section")!;
-  expect(win.getAttribute("role")).toBe("dialog");
+  expect(win.hasAttribute("role")).toBe(false);
   expect(win.getAttribute("aria-label")).toBe("w");
 });
 

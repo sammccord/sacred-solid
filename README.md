@@ -2,7 +2,7 @@
 
 SolidJS port of [SRCL](https://github.com/internet-development/www-sacred), the Sacred Computer component library with terminal aesthetics. Same markup and behavior, with its own CSS and a role based theming vocabulary. A pixel diff against the React kitchen sink stays as the regression gate for refactors that must not change anything visible.
 
-It targets Solid 2. Install `solid-js` and `@solidjs/web` 2.0.0-rc.21 or newer next to it.
+It targets Solid 2 and builds its interactive parts on [ui-sdk](https://ui-sdk.dev). Install `solid-js` and `@solidjs/web` 2.0.0-rc.21 or newer, and `@ui-sdk/solid` and `@ui-sdk/core`, next to it.
 
 The library is client-only. Components build DOM templates at import time, so import it from browser code or a bundler that targets the client.
 
@@ -43,6 +43,7 @@ Every stylesheet sits in the `sacred` cascade layers, so your own plain CSS beat
 | `onChange` on text inputs                | `onInput` fires per keystroke, `onChange` fires on commit             |
 | `DefaultMetaTags`                        | not ported, put the tags in your `index.html`                         |
 | `Button theme="SECONDARY"`               | `Button variant="SECONDARY"`, `theme` is the token override prop      |
+| hand-written keyboard, focus and ARIA    | ui-sdk parts: menus, select, tabs, dialogs, tree, calendar and more   |
 
 The unused helpers in `common/utilities.ts` and the `API`, `Users`, `Tiers` constants were dropped. The Next.js routes, the `/llm` doc routes and the Simulacrum CLI (`scripts/cli`, `scripts/python`) stay in the React repo.
 

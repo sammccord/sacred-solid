@@ -1,0 +1,14 @@
+ts	phase	decision	why	evidence	result
+2026-11-13T21:17:52Z	frame	keep each component's public props and look, swap its interactive internals for ui-sdk parts	user accepted departure from React; smallest change for library users	per-component commits on branch ui-sdk	scoped
+2026-11-13T21:17:52Z	prototype	Tabs first to prove ui-sdk on Solid 2 rc.21, jsdom (ui-sdk stubs in tests/setup.ts), vp pack externals and the playground	riskiest unknowns before the sweep	b26f56b, dist imports @ui-sdk/solid/* only	kept
+2026-11-13T21:17:52Z	deps	@ui-sdk/solid and @ui-sdk/core become peer dependencies (and dev dependencies)	ui-sdk asks the app and components to share one core copy	package.json	kept
+2026-11-13T21:17:52Z	triggers	caller-supplied trigger elements become ui-sdk triggers by spreading the part's props onto them in render	keeps the existing API and one tab stop	DropdownMenuTrigger, HoverComponentTrigger, Dialog	kept
+2026-11-13T21:17:52Z	menu	DropdownMenu becomes the MenuContent panel and must sit inside DropdownMenuTrigger	ui-sdk menus are anchored top-layer popups	tests/c.test.tsx	api change
+2026-11-13T21:17:52Z	radios	RadioButton becomes an item inside RadioButtonGroup; name, selected, onSelect move to the group	ui-sdk RadioGroup owns value and roving focus	tests/b.test.tsx	api change
+2026-11-13T21:17:52Z	modals	modal stack dialogs use modal=trap-focus; titles come from the first Card/CardDouble h2; close returns focus	stack needs page clicks while a modal is open; dialogs need a name; dialogs unmount before ui-sdk restores focus	browser probe: Escape returns focus to the opener	kept
+2026-11-13T21:17:52Z	dialog	Dialog is an AlertDialog with trigger/open/defaultOpen, else an inline panel without role=dialog	keeps kitchen-sink and concept pages inline	tests/b.test.tsx	kept
+2026-11-13T21:17:52Z	focus	findNextFocusable skips tabindex=-1, disabled and aria-hidden	ui-sdk hidden form inputs were picked as focus targets	Checkbox ArrowRight test	kept
+2026-11-13T21:17:52Z	parity	kitchen sink and concept pages pixel-identical except slider thumb edge (100px), disabled button glyph antialias (132px), pre-existing window (3849px)	parity is the visual regression gate	scripts/parity.ts check	accepted
+2026-11-13T21:17:52Z	parity	23 interaction slices differ: ui-sdk menu placement, no pre-highlight on pointer-opened menus, focus moves into dialogs	intended behavior change	.parity/diff	accepted
+2026-11-13T21:17:52Z	skipped	SidebarLayout resize handle stays hand-rolled; Avatar, ScrollArea, ComboBox have no ui-sdk behavior to replace	Resizable sizes in percent, sacred in ch; the others hand-roll no behavior	tests/conventions.test.ts allowlist	open
+2026-11-13T21:17:52Z	gate	conventions test bans hand-written interactive roles in src	encode the rule	tests/conventions.test.ts	kept

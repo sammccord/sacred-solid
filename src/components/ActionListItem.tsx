@@ -1,5 +1,6 @@
 import type { JSX } from "@solidjs/web";
-import { Show, omit } from "solid-js";
+import { Button } from "@ui-sdk/solid/button";
+import { Match, Switch, omit } from "solid-js";
 import type { AugProps } from "../aug/index.ts";
 import { styleAttributes, type ThemeProps } from "../style/index.ts";
 import styles from "./ActionListItem.module.css";
@@ -20,44 +21,46 @@ export interface ActionListItemProps extends Omit<
 
 export function ActionListItem(props: ActionListItemProps) {
   const rest = omit(props, "class", "aug", "theme", "style", "icon", "children", "href", "target");
-  const resolvedRole = () => props.role || (props.href ? "link" : "button");
+  const content = () => (
+    <>
+      <figure class={styles.icon}>{props.icon}</figure>
+      <span class={styles.text}>{props.children}</span>
+    </>
+  );
 
-  const handleKeyDown: JSX.EventHandler<HTMLElement, KeyboardEvent> = (e) => {
-    if (e.key === "Enter" || e.key === " ") {
-      if (e.key === " ") e.preventDefault();
-      e.currentTarget.click();
-    }
-  };
-
+  //NOTE: A role means a ui-sdk part (a menu item) renders this element and owns its keys and tab stop.
   return (
-    <Show
-      when={props.href}
+    <Switch
       fallback={
-        <div
-          class={classNames(styles.item, props.class)}
-          onKeyDown={props.role === "menuitem" ? undefined : handleKeyDown}
-          tabindex={0}
-          {...(rest as JSX.HTMLAttributes<HTMLDivElement>)}
-          role={resolvedRole()}
+        <Button
+          class={classNames(styles.item, styles.button, props.class)}
+          {...(rest as Record<string, unknown>)}
           {...styleAttributes(props, props.style)}
         >
-          <figure class={styles.icon}>{props.icon}</figure>
-          <span class={styles.text}>{props.children}</span>
-        </div>
+          {content()}
+        </Button>
       }
     >
-      <a
-        class={classNames(styles.item, props.class)}
-        href={props.href}
-        target={props.target}
-        tabindex={0}
-        {...(rest as JSX.HTMLAttributes<HTMLAnchorElement>)}
-        role={resolvedRole()}
-        {...styleAttributes(props, props.style)}
-      >
-        <figure class={styles.icon}>{props.icon}</figure>
-        <span class={styles.text}>{props.children}</span>
-      </a>
-    </Show>
+      <Match when={props.href}>
+        <a
+          class={classNames(styles.item, props.class)}
+          href={props.href}
+          target={props.target}
+          {...(rest as JSX.HTMLAttributes<HTMLAnchorElement>)}
+          {...styleAttributes(props, props.style)}
+        >
+          {content()}
+        </a>
+      </Match>
+      <Match when={props.role}>
+        <div
+          class={classNames(styles.item, props.class)}
+          {...(rest as JSX.HTMLAttributes<HTMLDivElement>)}
+          {...styleAttributes(props, props.style)}
+        >
+          {content()}
+        </div>
+      </Match>
+    </Switch>
   );
 }

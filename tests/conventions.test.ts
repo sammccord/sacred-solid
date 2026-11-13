@@ -41,3 +41,15 @@ test.each(banned)("src has no %s", (_name, pattern) => {
   const offenders = files.filter((file) => pattern.test(readFileSync(file, "utf8")));
   expect(offenders).toEqual([]);
 });
+
+const INTERACTIVE_ROLE =
+  /role="(listbox|menu|menuitem|dialog|alertdialog|tablist|tab|tabpanel|tree|treeitem|slider|radiogroup|radio|switch|grid|gridcell|toolbar|option|checkbox|button|progressbar|separator|link)"/;
+const HAND_ROLLED_ALLOWED = ["src/components/SidebarLayout.tsx"];
+
+test("interactive roles come from ui-sdk parts, not hand-written attributes", () => {
+  const offenders = files.filter(
+    (file) =>
+      !HAND_ROLLED_ALLOWED.includes(file) && INTERACTIVE_ROLE.test(readFileSync(file, "utf8")),
+  );
+  expect(offenders).toEqual([]);
+});

@@ -39,8 +39,6 @@ export function Avatar(props: AvatarProps) {
         {...styleAttributes(own, combinedStyle())}
         href={props.href}
         target={props.target}
-        tabindex={0}
-        role="link"
       />
     </Show>
   );

@@ -27,7 +27,7 @@ export function BreadCrumbs(props: BreadCrumbsProps) {
         {(item, index) => {
           const isLast = () => index() === props.items.length - 1;
           const linkElement = (
-            <a class={styles.link} href={item.url} target="_blank" tabindex={0} role="link">
+            <a class={styles.link} href={item.url} target="_blank">
               {item.name}
             </a>
           );

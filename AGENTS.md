@@ -34,7 +34,7 @@ release. Add a tool name to select part of the graph. For example, run
 
 SolidJS port of `www-sacred` (SRCL). Read `README.md` first.
 
-- `src/components/` mirrors `www-sacred/components/` file for file. Keep the markup, class lists and behavior identical to the React original. The stylesheets are the exception, this port owns its CSS.
+- `src/components/` mirrors `www-sacred/components/` file for file. Keep the look identical to the React original, which pixel parity checks. Interactive behavior (keyboard, focus, ARIA, popups, form values) comes from ui-sdk parts, so markup and behavior follow ui-sdk where a part exists and may differ from React. Never hand-write an interactive `role`. `tests/conventions.test.ts` enforces it. To make a caller's element a trigger, `spread` the part's props onto it in the part's `render`, as `DropdownMenuTrigger` does. The stylesheets are this port's own.
 - Solid 2 (`solid-js` and `@solidjs/web`). Read `node_modules/solid-js/skills/solid-2.0/SKILL.md` before writing Solid code.
 - Never destructure props. Use `omit` for rest spreads and `mergeDefaults` from `common/utilities.ts` for default props. Solid's `merge` lets an explicit `undefined` replace a default, React's default parameters do not. Style objects use kebab-case keys and explicit units. `tests/conventions.test.ts` enforces the silent ones.
 - `src/index.ts` is generated: `vpx scripts/gen-index.ts`.
