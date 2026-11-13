@@ -8,7 +8,6 @@ import { ButtonGroup } from "../src/components/ButtonGroup.tsx";
 import { ComboBox } from "../src/components/ComboBox.tsx";
 import { DebugGrid, toggleDebugGrid } from "../src/components/DebugGrid.tsx";
 import { OutsideElementEvent } from "../src/components/detectors/OutsideElementEvent.tsx";
-import { DropdownMenu } from "../src/components/DropdownMenu.tsx";
 import { DropdownMenuTrigger } from "../src/components/DropdownMenuTrigger.tsx";
 import { HoverComponentTrigger } from "../src/components/HoverComponentTrigger.tsx";
 import { ModalStack } from "../src/components/ModalStack.tsx";
@@ -112,179 +111,122 @@ describe("OutsideElementEvent", () => {
   });
 });
 
-describe("DropdownMenu", () => {
-  function setup() {
-    const onClose = vi.fn();
-    const first = vi.fn();
-    const second = vi.fn();
-    const documentKeys = vi.fn();
-    const result = render(() => (
-      <DropdownMenu
-        onClose={onClose}
-        items={[
-          { icon: "⊹", children: "One", onClick: first },
-          { icon: "⊹", children: "Two", onClick: second },
-          { icon: "⊹", children: "Three" },
-        ]}
-      />
-    ));
-    document.addEventListener("keydown", documentKeys);
-    const items = screen.getAllByRole("menuitem");
-    return { onClose, first, second, documentKeys, items, ...result };
-  }
-
-  test("arrows move focus with wrapping", () => {
-    const { items } = setup();
-    items[0]?.focus();
-    fireEvent.keyDown(items[0] as HTMLElement, { key: "ArrowDown" });
-    expect(document.activeElement).toBe(items[1]);
-    fireEvent.keyDown(items[2] as HTMLElement, { key: "ArrowDown" });
-    expect(document.activeElement).toBe(items[0]);
-    fireEvent.keyDown(items[0] as HTMLElement, { key: "ArrowUp" });
-    expect(document.activeElement).toBe(items[2]);
-  });
-
-  test("Enter and Space activate the focused item and close the menu", () => {
-    const { items, first, second, onClose } = setup();
-    fireEvent.keyDown(items[0] as HTMLElement, { key: "Enter" });
-    expect(first).toHaveBeenCalledTimes(1);
-    fireEvent.keyDown(items[1] as HTMLElement, { key: " " });
-    expect(second).toHaveBeenCalledTimes(1);
-    expect(onClose).toHaveBeenCalledTimes(2);
-  });
-
-  test("handled keys never reach document listeners", () => {
-    const { items, documentKeys, onClose } = setup();
-    fireEvent.keyDown(items[0] as HTMLElement, { key: "ArrowDown" });
-    fireEvent.keyDown(items[0] as HTMLElement, { key: "Escape" });
-    expect(documentKeys).not.toHaveBeenCalled();
-    expect(onClose).toHaveBeenCalledTimes(1);
-  });
-
-  test("Escape on the document closes through the hotkey fallback", () => {
-    const { onClose } = setup();
-    press(document, "Escape");
-    expect(onClose).toHaveBeenCalledTimes(1);
-  });
-
-  test("the footer Close button still activates from the keyboard", () => {
-    const { onClose } = setup();
-    const close = screen.getByText("Close").closest("[role=button]") as HTMLElement;
-    fireEvent.keyDown(close, { key: "Enter" });
-    expect(onClose).toHaveBeenCalledTimes(1);
-  });
-
-  test("clicking an item runs its handler then onClose", () => {
-    const { items, first, onClose } = setup();
-    fireEvent.click(items[0] as HTMLElement);
-    expect(first).toHaveBeenCalledTimes(1);
-    expect(onClose).toHaveBeenCalledTimes(1);
-  });
-
-  test("a modal item opens its modal and leaves the menu open", () => {
-    const onClose = vi.fn();
-    const { modals } = withModals(() => (
-      <DropdownMenu
-        onClose={onClose}
-        items={[{ children: "Open it", modal: ModalAlert, modalProps: { message: "hi" } }]}
-      />
-    ));
-    fireEvent.click(screen.getByRole("menuitem"));
-    expect(modals().modalStack()).toHaveLength(1);
-    expect(onClose).not.toHaveBeenCalled();
-  });
-});
+const settle = async () => {
+  await new Promise((resolve) => setTimeout(resolve, 0));
+  flush();
+};
 
 describe("DropdownMenuTrigger", () => {
   function setup(hotkey?: string) {
-    const picked = vi.fn();
-    const result = render(() => (
-      <DropdownMenuTrigger hotkey={hotkey} items={[{ children: "Pick me", onClick: picked }]}>
+    const first = vi.fn();
+    const second = vi.fn();
+    const result = withModals(() => (
+      <DropdownMenuTrigger
+        hotkey={hotkey}
+        items={[
+          { icon: "⊹", children: "One", onClick: first },
+          { icon: "⊹", children: "Two", onClick: second },
+          { icon: "⊹", children: "Open it", modal: ModalAlert, modalProps: { message: "hi" } },
+        ]}
+      >
         <ActionButton>Menu</ActionButton>
       </DropdownMenuTrigger>
     ));
     const trigger = screen.getByText("Menu").closest("[role=button]") as HTMLElement;
-    return { picked, trigger, ...result };
+    const menu = () => document.querySelector<HTMLElement>('[data-slot="menu-content"]');
+    const isOpen = () => trigger.getAttribute("aria-expanded") === "true";
+    return { first, second, trigger, menu, isOpen, ...result };
   }
 
-  test("click opens a menu portaled to body, locks its width and focuses the first item", () => {
-    vi.spyOn(HTMLElement.prototype, "getBoundingClientRect").mockReturnValue({
-      width: 123,
-      height: 40,
-      top: 0,
-      left: 0,
-      right: 123,
-      bottom: 40,
-      x: 0,
-      y: 0,
-      toJSON: () => ({}),
-    });
-    const { trigger } = setup();
-    expect(screen.queryByRole("menu")).toBeNull();
-
-    fireEvent.click(trigger);
-    const menu = screen.getByRole("menu");
-    expect(menu.parentElement?.parentElement).toBe(document.body);
-    expect(menu.getAttribute("aria-label")).toBe("menu");
-    expect(menu.style.width).toBe("123px");
-    expect(menu.style.position).toBe("absolute");
-    expect(menu.style.zIndex).toBe("var(--z-index-page-dropdown-menus)");
-    expect(document.activeElement).toBe(screen.getByRole("menuitem"));
+  test("the caller's element is the trigger and carries the menu button semantics", () => {
+    const { trigger, isOpen } = setup();
+    expect(trigger.getAttribute("data-slot")).toBe("menu-trigger");
+    expect(trigger.getAttribute("aria-haspopup")).toBe("menu");
+    expect(isOpen()).toBe(false);
+    expect(document.querySelectorAll("[role=button][tabindex='0']")).toHaveLength(1);
   });
 
-  test("Enter on the focused trigger opens the menu", () => {
+  test("click opens the menu with every item and the close footer", () => {
+    const { trigger, menu, isOpen } = setup();
+    fireEvent.click(trigger);
+    expect(isOpen()).toBe(true);
+    expect(menu()?.getAttribute("role")).toBe("menu");
+    expect(screen.getAllByRole("menuitem").map((item) => item.textContent)).toEqual([
+      "⊹One",
+      "⊹Two",
+      "⊹Open it",
+    ]);
+    expect(menu()?.querySelector("footer")?.textContent).toContain("Press escape to");
+  });
+
+  test("Enter on the trigger opens the menu on the first item, arrows wrap", async () => {
     const { trigger } = setup();
     trigger.focus();
     fireEvent.keyDown(trigger, { key: "Enter" });
-    expect(screen.getByRole("menu")).toBeTruthy();
+    await settle();
+    const items = screen.getAllByRole("menuitem");
+    expect(document.activeElement).toBe(items[0]);
+    fireEvent.keyDown(items[0]!, { key: "ArrowUp" });
+    expect(document.activeElement).toBe(items[2]);
+    fireEvent.keyDown(items[2]!, { key: "ArrowDown" });
+    expect(document.activeElement).toBe(items[0]);
   });
 
-  test("mousedown outside closes it and returns focus to the trigger", () => {
-    const { trigger } = setup();
-    fireEvent.click(trigger);
-    expect(screen.getByRole("menu")).toBeTruthy();
-    fireEvent.mouseDown(document.body);
-    expect(screen.queryByRole("menu")).toBeNull();
+  test("choosing an item runs it, closes the menu and returns focus to the trigger", async () => {
+    const { trigger, first, second, isOpen } = setup();
+    trigger.focus();
+    fireEvent.keyDown(trigger, { key: "Enter" });
+    await settle();
+    press(document.activeElement!, "ArrowDown");
+    press(document.activeElement!, "Enter");
+    await settle();
+    expect(second).toHaveBeenCalledTimes(1);
+    expect(first).not.toHaveBeenCalled();
+    expect(isOpen()).toBe(false);
     expect(document.activeElement).toBe(trigger);
   });
 
-  test("mousedown then click on the trigger reopens, as in React", () => {
-    const { trigger } = setup();
-    fireEvent.click(trigger);
-    fireEvent.mouseDown(trigger);
-    expect(screen.queryByRole("menu")).toBeNull();
-    fireEvent.click(trigger);
-    expect(screen.getByRole("menu")).toBeTruthy();
-  });
-
-  test("Escape inside the menu closes it", () => {
-    const { trigger } = setup();
-    fireEvent.click(trigger);
-    fireEvent.keyDown(screen.getByRole("menuitem"), { key: "Escape" });
-    expect(screen.queryByRole("menu")).toBeNull();
+  test("Escape closes the menu and returns focus to the trigger", async () => {
+    const { trigger, isOpen } = setup();
+    trigger.focus();
+    fireEvent.keyDown(trigger, { key: "Enter" });
+    await settle();
+    fireEvent.keyDown(document.activeElement!, { key: "Escape" });
+    await settle();
+    expect(isOpen()).toBe(false);
     expect(document.activeElement).toBe(trigger);
   });
 
-  test("choosing an item runs it and closes the menu", () => {
-    const { trigger, picked } = setup();
+  test("the footer Close button closes the menu", async () => {
+    const { trigger, isOpen } = setup();
     fireEvent.click(trigger);
-    fireEvent.click(screen.getByRole("menuitem"));
-    expect(picked).toHaveBeenCalledTimes(1);
-    expect(screen.queryByRole("menu")).toBeNull();
+    fireEvent.click(screen.getByText("Close").closest("[role=button]")!);
+    await settle();
+    expect(isOpen()).toBe(false);
   });
 
-  test("the hotkey toggles the menu", () => {
-    setup("ctrl+o");
+  test("a modal item opens its modal and leaves the menu open", () => {
+    const { trigger, isOpen, modals } = setup();
+    fireEvent.click(trigger);
+    fireEvent.click(screen.getByRole("menuitem", { name: "⊹ Open it" }));
+    expect(modals().modalStack()).toHaveLength(1);
+    expect(isOpen()).toBe(true);
+  });
+
+  test("the hotkey toggles the menu", async () => {
+    const { isOpen } = setup("ctrl+o");
     press(document, "o", { ctrlKey: true });
-    expect(screen.getByRole("menu")).toBeTruthy();
+    await settle();
+    expect(isOpen()).toBe(true);
     press(document, "o", { ctrlKey: true });
-    expect(screen.queryByRole("menu")).toBeNull();
+    await settle();
+    expect(isOpen()).toBe(false);
   });
 
   test("without a hotkey, ctrl+o does nothing", () => {
-    setup();
+    const { isOpen } = setup();
     press(document, "o", { ctrlKey: true });
-    expect(screen.queryByRole("menu")).toBeNull();
+    expect(isOpen()).toBe(false);
   });
 });
 
@@ -353,17 +295,21 @@ describe("ButtonGroup", () => {
     expect(onClick).toHaveBeenCalledTimes(1);
   });
 
-  test("items with a menu open a dropdown via openHotkey and click", () => {
+  test("items with a menu open a dropdown via click and toggle it with openHotkey", async () => {
     render(() => (
       <ButtonGroup
         items={[{ body: "Fonts", openHotkey: "ctrl+o", items: [{ children: "Alpha" }] }]}
       />
     ));
-    fireEvent.click(screen.getByText("Fonts"));
-    expect(screen.getByText("Alpha")).toBeTruthy();
-    fireEvent.mouseDown(document.body);
+    const trigger = screen.getByText("Fonts").closest("[role=button]")!;
+    fireEvent.click(trigger);
+    expect(screen.getByRole("menuitem").textContent).toBe("Alpha");
     press(document, "o", { ctrlKey: true });
-    expect(screen.getByText("Alpha")).toBeTruthy();
+    await settle();
+    expect(trigger.getAttribute("aria-expanded")).toBe("false");
+    press(document, "o", { ctrlKey: true });
+    await settle();
+    expect(trigger.getAttribute("aria-expanded")).toBe("true");
   });
 });
 

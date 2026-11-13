@@ -1,6 +1,13 @@
 .root {
   display: block;
+  width: max-content;
+  max-width: var(--available-width);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  color: var(--theme-ink);
   background: var(--theme-surface-float);
+  font: inherit;
   font-weight: 400;
 }
 

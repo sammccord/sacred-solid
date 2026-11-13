@@ -1,12 +1,14 @@
 import type { JSX } from "@solidjs/web";
-import { Show } from "solid-js";
+import { Show, omit } from "solid-js";
 import type { AugProps } from "../aug/index.ts";
 import { styleAttributes, type ThemeProps } from "../style/index.ts";
 import styles from "./ActionListItem.module.css";
 import { classNames } from "../common/utilities.ts";
 
-export interface ActionListItemProps {
-  class?: string;
+export interface ActionListItemProps extends Omit<
+  JSX.HTMLAttributes<HTMLElement>,
+  "style" | "children"
+> {
   aug?: AugProps;
   theme?: ThemeProps;
   style?: JSX.CSSProperties;
@@ -14,15 +16,13 @@ export interface ActionListItemProps {
   children?: JSX.Element;
   href?: string;
   target?: string;
-  onClick?: JSX.EventHandler<HTMLDivElement, MouseEvent>;
-  role?: JSX.HTMLAttributes<HTMLDivElement>["role"];
 }
 
 export function ActionListItem(props: ActionListItemProps) {
+  const rest = omit(props, "class", "aug", "theme", "style", "icon", "children", "href", "target");
   const resolvedRole = () => props.role || (props.href ? "link" : "button");
 
-  //NOTE(jimmylee): When role="menuitem", the parent menu container handles keyboard activation.
-  const handleKeyDown: JSX.EventHandler<HTMLDivElement, KeyboardEvent> = (e) => {
+  const handleKeyDown: JSX.EventHandler<HTMLElement, KeyboardEvent> = (e) => {
     if (e.key === "Enter" || e.key === " ") {
       if (e.key === " ") e.preventDefault();
       e.currentTarget.click();
@@ -35,11 +35,11 @@ export function ActionListItem(props: ActionListItemProps) {
       fallback={
         <div
           class={classNames(styles.item, props.class)}
-          onClick={props.onClick}
           onKeyDown={props.role === "menuitem" ? undefined : handleKeyDown}
-          {...styleAttributes(props, props.style)}
           tabindex={0}
+          {...(rest as JSX.HTMLAttributes<HTMLDivElement>)}
           role={resolvedRole()}
+          {...styleAttributes(props, props.style)}
         >
           <figure class={styles.icon}>{props.icon}</figure>
           <span class={styles.text}>{props.children}</span>
@@ -50,9 +50,10 @@ export function ActionListItem(props: ActionListItemProps) {
         class={classNames(styles.item, props.class)}
         href={props.href}
         target={props.target}
-        {...styleAttributes(props, props.style)}
         tabindex={0}
+        {...(rest as JSX.HTMLAttributes<HTMLAnchorElement>)}
         role={resolvedRole()}
+        {...styleAttributes(props, props.style)}
       >
         <figure class={styles.icon}>{props.icon}</figure>
         <span class={styles.text}>{props.children}</span>

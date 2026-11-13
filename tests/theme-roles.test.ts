@@ -195,6 +195,7 @@ const FLOAT_CONSUMERS = [
   "Message",
   "Panel",
   "Popover",
+  "Select",
   "Surface",
   "Tooltip",
 ].map((name) => `src/components/${name}.module.css`);

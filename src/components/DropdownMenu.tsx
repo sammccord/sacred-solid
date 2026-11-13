@@ -1,14 +1,13 @@
 import type { JSX } from "@solidjs/web";
-import { type Component, For, Show, omit } from "solid-js";
+import { MenuContent, MenuItem } from "@ui-sdk/solid/menu";
+import { type Component, For, omit } from "solid-js";
 import type { AugProps } from "../aug/index.ts";
 import { styleAttributes, type ThemeProps } from "../style/index.ts";
-import { SPACE } from "../common/utilities.ts";
-import { createHotkeys } from "../modules/hotkeys/index.ts";
+import { classNames, SPACE } from "../common/utilities.ts";
 import { ActionButton } from "./ActionButton.tsx";
 import { ActionListItem } from "./ActionListItem.tsx";
 import styles from "./DropdownMenu.module.css";
-import { ModalTrigger } from "./ModalTrigger.tsx";
-import { classNames } from "../common/utilities.ts";
+import { useModals } from "./page/ModalContext.tsx";
 
 export interface DropdownMenuItem {
   children?: JSX.Element;
@@ -22,126 +21,57 @@ export interface DropdownMenuItem {
 
 export interface DropdownMenuProps extends Omit<
   JSX.HTMLAttributes<HTMLDivElement>,
-  "children" | "onClose"
+  "children" | "onClose" | "style"
 > {
-  onClose?: (event?: MouseEvent | TouchEvent | KeyboardEvent) => void;
+  onClose?: () => void;
   items?: DropdownMenuItem[];
+  style?: JSX.CSSProperties;
   aug?: AugProps;
   theme?: ThemeProps;
 }
 
 export function DropdownMenu(props: DropdownMenuProps) {
-  const rest = omit(props, "class", "onClose", "items", "style", "ref", "aug", "theme");
+  const rest = omit(props, "class", "onClose", "items", "style", "aug", "theme");
+  const { open } = useModals();
 
-  let menu: HTMLDivElement | undefined;
-
-  const handleClose = () => {
-    props.onClose?.();
-  };
-
-  createHotkeys("Escape", handleClose);
-
-  // Solid delegates onKeyDown to document, so stopPropagation alone would not keep the
-  //menu's keys away from document hotkeys. Delegation also keeps the footer button's own key handler working.
-  const consume = (event: KeyboardEvent) => {
-    event.preventDefault();
-    event.stopPropagation();
-    event.stopImmediatePropagation();
-  };
-
-  const handleKeyDown: JSX.EventHandler<HTMLDivElement, KeyboardEvent> = (event) => {
-    if (!menu) return;
-
-    const menuItems = Array.from(menu.querySelectorAll<HTMLElement>('[role="menuitem"]'));
-    if (menuItems.length === 0) return;
-
-    const currentIndex = menuItems.indexOf(event.target as HTMLElement);
-
-    switch (event.key) {
-      case "ArrowDown": {
-        consume(event);
-        const next = currentIndex < menuItems.length - 1 ? currentIndex + 1 : 0;
-        menuItems[next]?.focus();
-        break;
-      }
-      case "ArrowUp": {
-        consume(event);
-        const prev = currentIndex > 0 ? currentIndex - 1 : menuItems.length - 1;
-        menuItems[prev]?.focus();
-        break;
-      }
-      case "Enter":
-      case " ": {
-        consume(event);
-        if (currentIndex >= 0) {
-          menuItems[currentIndex]?.click();
-        }
-        break;
-      }
-      case "Escape": {
-        consume(event);
-        handleClose();
-        break;
-      }
+  const select = (each: DropdownMenuItem, event: Event) => {
+    if (each.modal) {
+      event.preventDefault();
+      open(each.modal as Component<Record<string, unknown>>, each.modalProps ?? {});
+      return;
     }
+    each.onClick?.();
   };
 
   return (
-    <div
-      ref={(element) => {
-        menu = element;
-        const forwarded = props.ref;
-        if (typeof forwarded === "function") forwarded(element);
-      }}
+    <MenuContent
       class={classNames(styles.root, props.class)}
       {...rest}
       {...styleAttributes(props, props.style)}
-      role="menu"
-      onKeyDown={handleKeyDown}
     >
-      <Show when={props.items}>
-        {(items) => (
-          <For each={items()}>
-            {(each) => (
-              <Show
-                when={each.modal}
-                fallback={
-                  <ActionListItem
-                    icon={each.icon}
-                    href={each.href}
-                    target={each.target}
-                    role="menuitem"
-                    onClick={() => {
-                      each.onClick?.();
-                      props.onClose?.();
-                    }}
-                  >
-                    {each.children}
-                  </ActionListItem>
-                }
+      <For each={props.items ?? []}>
+        {(each) => (
+          <MenuItem
+            onSelect={(event) => select(each, event)}
+            render={(itemProps) => (
+              <ActionListItem
+                {...itemProps}
+                icon={each.icon}
+                href={each.modal ? undefined : each.href}
+                target={each.target}
               >
-                {(modal) => (
-                  <ModalTrigger
-                    modal={modal() as Component<Record<string, unknown>>}
-                    modalProps={each.modalProps}
-                  >
-                    <ActionListItem icon={each.icon} role="menuitem">
-                      {each.children}
-                    </ActionListItem>
-                  </ModalTrigger>
-                )}
-              </Show>
+                {each.children}
+              </ActionListItem>
             )}
-          </For>
+          />
         )}
-      </Show>
-
+      </For>
       <footer class={styles.footer}>
         Press escape to{SPACE}
         <ActionButton hotkey="Esc" onClick={() => props.onClose?.()}>
           Close
         </ActionButton>
       </footer>
-    </div>
+    </MenuContent>
   );
 }

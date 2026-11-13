@@ -1,4 +1,5 @@
 import type { JSX } from "@solidjs/web";
+import { Menu } from "@ui-sdk/solid/menu";
 import type { AugProps } from "../src/aug/index.ts";
 import type { StyleProps, ThemeProps } from "../src/style/index.ts";
 import { ModalStack } from "../src/components/ModalStack.tsx";
@@ -160,7 +161,14 @@ export const cases: Case[] = [
   ["Divider gradient", (s) => <Divider type="GRADIENT" {...s} />],
   ["Divider double", (s) => <Divider type="DOUBLE" {...s} />],
   ["Drawer", (s) => <Drawer {...s}>x</Drawer>],
-  ["DropdownMenu", (s) => <DropdownMenu {...s} />],
+  [
+    "DropdownMenu",
+    (s) => (
+      <Menu defaultOpen>
+        <DropdownMenu {...s} />
+      </Menu>
+    ),
+  ],
   [
     "DropdownMenuTrigger",
     (s) => (
