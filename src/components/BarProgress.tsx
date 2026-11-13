@@ -1,4 +1,5 @@
 import type { JSX } from "@solidjs/web";
+import { Progress } from "@ui-sdk/solid/progress";
 import { createEffect, createSignal, onCleanup, onSettled, Show, untrack } from "solid-js";
 import type { AugProps } from "../aug/index.ts";
 import { classNames, mergeDefaults } from "../common/utilities.ts";
@@ -8,6 +9,7 @@ import styles from "./BarProgress.module.css";
 export type BarProgressVariant = "char" | "solid";
 
 export interface BarProgressProps {
+  label?: string;
   class?: string;
   aug?: AugProps;
   theme?: ThemeProps;
@@ -84,13 +86,11 @@ export function BarProgress(allProps: BarProgressProps) {
   const barStr = () => props.fillChar.repeat(Math.round((cappedProgress() / 100) * maxChars()));
 
   return (
-    <div
+    <Progress
       class={classNames(styles.root, props.variant === "solid" && styles.solid, props.class)}
       ref={containerRef}
-      aria-valuenow={cappedProgress()}
-      aria-valuemin={0}
-      aria-valuemax={100}
-      role="progressbar"
+      value={cappedProgress()}
+      aria-label={props.label ?? "Progress"}
       {...styleAttributes(props, props.style)}
     >
       <Show
@@ -106,6 +106,6 @@ export function BarProgress(allProps: BarProgressProps) {
       >
         <div class={styles.fill} style={{ width: `${cappedProgress()}%` }} />
       </Show>
-    </div>
+    </Progress>
   );
 }

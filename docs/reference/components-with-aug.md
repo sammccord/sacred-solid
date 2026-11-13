@@ -6,7 +6,7 @@ The element column lists the tags that receive the output of `styleAttributes`, 
 
 <!-- generated:start components -->
 
-69 exported components take `aug` and `theme`. 14 of them render no element with the attributes and pass both props to another component.
+69 exported components take `aug` and `theme`. 16 of them render no element with the attributes and pass both props to another component.
 
 | Component               | Element with the attributes | Forwards to                           | Note                                                                                                                            |
 | ----------------------- | --------------------------- | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
@@ -18,8 +18,8 @@ The element column lists the tags that receive the output of `styleAttributes`, 
 | `AlertBanner`           | `<div>`                     | none                                  |                                                                                                                                 |
 | `Avatar`                | `<figure>`, `<a>`, `<div>`  | none                                  | With children, the attributes go on the wrapping `div`. The `figure` or `a` inside gets none.                                   |
 | `Badge`                 | `<span>`                    | none                                  |                                                                                                                                 |
-| `BarLoader`             | `<div>`                     | none                                  |                                                                                                                                 |
-| `BarProgress`           | `<div>`                     | none                                  |                                                                                                                                 |
+| `BarLoader`             | none                        | `Progress`                            |                                                                                                                                 |
+| `BarProgress`           | none                        | `Progress`                            |                                                                                                                                 |
 | `Block`                 | `<span>`                    | none                                  |                                                                                                                                 |
 | `BlockLoader`           | `<span>`                    | none                                  |                                                                                                                                 |
 | `BreadCrumbs`           | `<nav>`                     | none                                  |                                                                                                                                 |
