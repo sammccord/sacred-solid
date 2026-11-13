@@ -298,52 +298,78 @@ describe("RadioButtonGroup", () => {
 
 describe("Select", () => {
   const options = ["red", "green", "blue"];
+  const settle = () => new Promise((resolve) => setTimeout(resolve, 0));
 
-  test("opens on click, selects with a click, reports and closes", () => {
+  test("names the trigger, opens on click, selects with a click, reports and closes", async () => {
     const onChange = vi.fn();
-    render(() => <Select name="c" options={options} placeholder="pick" onChange={onChange} />);
-    const button = screen.getByRole("button");
-    expect(button.textContent).toBe("pick");
-    expect(button.getAttribute("aria-expanded")).toBe("false");
-    fireEvent.click(button);
-    expect(button.getAttribute("aria-expanded")).toBe("true");
+    render(() => (
+      <Select name="c" label="Color" options={options} placeholder="pick" onChange={onChange} />
+    ));
+    const trigger = screen.getByRole("combobox", { name: "Color" });
+    expect(trigger.textContent).toBe("pick");
+    expect(trigger.getAttribute("aria-expanded")).toBe("false");
+    fireEvent.click(trigger);
+    expect(trigger.getAttribute("aria-expanded")).toBe("true");
     const items = screen.getAllByRole("option");
     expect(items.map((i) => i.textContent)).toEqual(options);
-    expect(items[0]?.getAttribute("aria-selected")).toBe("true");
-    fireEvent.click(items[1] as HTMLElement);
+    fireEvent.click(items[1]!);
+    await settle();
+    flush();
     expect(onChange).toHaveBeenCalledWith("green");
-    expect(button.textContent).toBe("green");
-    expect(screen.queryByRole("listbox")).toBeNull();
-    expect(document.activeElement).toBe(button);
+    expect(trigger.textContent).toBe("green");
+    expect(trigger.getAttribute("aria-expanded")).toBe("false");
+    expect(document.activeElement).toBe(trigger);
   });
 
-  test("keyboard: ArrowDown opens and focuses the selected option, arrows move, Enter picks", () => {
+  test("keyboard: ArrowDown opens on the selected option, arrows move, Enter picks", async () => {
     const onChange = vi.fn();
-    render(() => <Select name="c" options={options} defaultValue="green" onChange={onChange} />);
-    const button = screen.getByRole("button");
-    button.focus();
-    fireEvent.keyDown(button, { key: "ArrowDown" });
-    const items = screen.getAllByRole("option");
-    expect(document.activeElement).toBe(items[1]);
-    fireEvent.keyDown(items[1] as HTMLElement, { key: "ArrowDown" });
-    expect(document.activeElement).toBe(items[2]);
-    expect(items[2]?.getAttribute("aria-selected")).toBe("true");
-    fireEvent.keyDown(items[2] as HTMLElement, { key: "ArrowDown" });
-    expect(document.activeElement).toBe(items[2]);
-    fireEvent.keyDown(items[2] as HTMLElement, { key: "ArrowUp" });
-    expect(document.activeElement).toBe(items[1]);
-    fireEvent.keyDown(items[1] as HTMLElement, { key: "Enter" });
-    expect(onChange).toHaveBeenCalledWith("green");
-    expect(screen.queryByRole("listbox")).toBeNull();
+    render(() => (
+      <Select name="c" label="Color" options={options} defaultValue="green" onChange={onChange} />
+    ));
+    const trigger = screen.getByRole("combobox", { name: "Color" });
+    trigger.focus();
+    fireEvent.keyDown(trigger, { key: "ArrowDown" });
+    await settle();
+    flush();
+    const highlighted = () => document.querySelector("[data-highlighted]")?.textContent;
+    expect(highlighted()).toBe("green");
+    fireEvent.keyDown(document.activeElement!, { key: "ArrowDown" });
+    expect(highlighted()).toBe("blue");
+    fireEvent.keyDown(document.activeElement!, { key: "Enter" });
+    await settle();
+    flush();
+    expect(onChange).toHaveBeenCalledWith("blue");
+    expect(trigger.getAttribute("aria-expanded")).toBe("false");
   });
 
-  test("Escape closes the menu and returns focus to the button", () => {
-    render(() => <Select name="c" options={options} />);
-    const button = screen.getByRole("button");
-    fireEvent.click(button);
-    fireEvent.keyDown(screen.getAllByRole("option")[0] as HTMLElement, { key: "Escape" });
-    expect(screen.queryByRole("listbox")).toBeNull();
-    expect(document.activeElement).toBe(button);
+  test("Escape closes the list and returns focus to the trigger", async () => {
+    const onChange = vi.fn();
+    render(() => <Select name="c" label="Color" options={options} onChange={onChange} />);
+    const trigger = screen.getByRole("combobox", { name: "Color" });
+    fireEvent.click(trigger);
+    await settle();
+    fireEvent.keyDown(document.activeElement!, { key: "Escape" });
+    await settle();
+    flush();
+    expect(trigger.getAttribute("aria-expanded")).toBe("false");
+    expect(document.activeElement).toBe(trigger);
+    expect(onChange).not.toHaveBeenCalled();
+  });
+
+  test("the arrow beside the trigger toggles the list and the value submits under name", async () => {
+    const { container } = render(() => (
+      <form>
+        <Select name="color" label="Color" options={options} defaultValue="blue" />
+      </form>
+    ));
+    const trigger = screen.getByRole("combobox", { name: "Color" });
+    fireEvent.click(container.querySelector("figure")!);
+    expect(trigger.getAttribute("aria-expanded")).toBe("true");
+    fireEvent.click(container.querySelector("figure")!);
+    await settle();
+    flush();
+    expect(trigger.getAttribute("aria-expanded")).toBe("false");
+    expect(container.querySelector<HTMLInputElement>('[name="color"]')?.value).toBe("blue");
   });
 });
 

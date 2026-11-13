@@ -54,12 +54,16 @@
 }
 
 .menu {
-  background-color: var(--theme-surface-subdued);
-  left: 3ch;
-  list-style-type: none;
+  background-color: var(--theme-surface-float);
+  border: 0;
+  color: var(--theme-ink);
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size);
+  line-height: calc(var(--theme-line-height-base) * 1rem);
+  margin: 0;
+  outline: 0;
   padding: 0;
-  right: 0;
-  z-index: var(--z-index-page-select);
+  width: var(--anchor-width);
 }
 
 .item {
@@ -73,7 +77,8 @@
     background: var(--theme-accent);
   }
 
-  &:focus {
+  &:focus,
+  &[data-highlighted] {
     background: var(--theme-accent);
     border: 0;
     outline: 0;

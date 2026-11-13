@@ -69,10 +69,10 @@ Fills for pages, panels, inputs and chips.
 - `--theme-surface-panel` is read by `ModalAlert`, `ModalCanvasPlatformer`, `ModalCanvasSnake`, `ModalChess`, `ModalCreateAccount`, `ModalError`, `ModalMatrixModes`.
 - `--theme-surface-panel-footer` is read by `DropdownMenu`.
 - `--theme-surface-window` is read by `Window`.
-- `--theme-surface-float` is read by `AlertBanner`, `Dialog`, `DropdownMenu`, `Message`, `Panel`, `Popover`, `Surface`, `Tooltip`.
+- `--theme-surface-float` is read by `AlertBanner`, `Dialog`, `DropdownMenu`, `Message`, `Panel`, `Popover`, `Select`, `Surface`, `Tooltip`.
 - `--theme-surface-chip` is read by `Badge`, `BarLoader`, `BreadCrumbs`, `DatePicker`, `Input`, `Navigation`, `Select`, `SimpleTable`, `global.css`.
 - `--theme-surface-inverse` is read by `BarLoader`, `BarProgress`, `Block`, `DOMSnake`, `Dialog`, `Input`, `NumberRangeSlider`, `Panel`, `RadioButton`, `Select`, `TextArea`.
-- `--theme-surface-subdued` is read by `BarProgress`, `Chessboard`, `CodeBlock`, `DatePicker`, `NumberRangeSlider`, `ScrollArea`, `Select`, `global.css`.
+- `--theme-surface-subdued` is read by `BarProgress`, `Chessboard`, `CodeBlock`, `DatePicker`, `NumberRangeSlider`, `ScrollArea`, `global.css`.
 - `--theme-surface-sunken` is read by `Avatar`.
 
 ## Line tokens
