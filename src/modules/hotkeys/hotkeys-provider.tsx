@@ -1,5 +1,6 @@
 //NOTE(jimmylee): ported from https://github.com/JohannesKlauss/react-hotkeys-hook/blob/main/src/HotkeysProvider.tsx
-import { type Accessor, createContext, createSignal, type JSX, useContext } from "solid-js";
+import type { JSX } from "@solidjs/web";
+import { type Accessor, createContext, createSignal, useContext } from "solid-js";
 import { deepEqual } from "../../common/utilities.ts";
 import type { Hotkey } from "./types.ts";
 
@@ -62,5 +63,5 @@ export function HotkeysProvider(props: HotkeysProviderProps) {
     removeHotkey: (hotkey) => setHotkeys((prev) => prev.filter((h) => !deepEqual(h, hotkey))),
   };
 
-  return <HotkeysContext.Provider value={value}>{props.children}</HotkeysContext.Provider>;
+  return <HotkeysContext value={value}>{props.children}</HotkeysContext>;
 }

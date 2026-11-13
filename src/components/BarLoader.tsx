@@ -1,4 +1,4 @@
-import { createEffect, createSignal, onCleanup } from "solid-js";
+import { createEffect, createSignal } from "solid-js";
 import type { AugProps } from "../aug/index.ts";
 import { styleAttributes, type ThemeProps } from "../style/index.ts";
 import styles from "./BarLoader.module.css";
@@ -15,23 +15,23 @@ export interface BarLoaderProps {
 export function BarLoader(props: BarLoaderProps) {
   const [currentProgress, setCurrentProgress] = createSignal<number>(props.progress || 0);
 
-  createEffect(() => {
-    const progress = props.progress;
-    const intervalRate = props.intervalRate;
+  createEffect(
+    () => [props.progress, props.intervalRate] as const,
+    ([progress, intervalRate]) => {
+      if (progress !== undefined) {
+        setCurrentProgress(progress);
+        return;
+      }
 
-    if (progress !== undefined) {
-      setCurrentProgress(progress);
-      return;
-    }
+      if (!intervalRate) return;
 
-    if (!intervalRate) return;
+      const interval = setInterval(() => {
+        setCurrentProgress((prev) => (prev + 10) % 110);
+      }, intervalRate);
 
-    const interval = setInterval(() => {
-      setCurrentProgress((prev) => (prev + 10) % 110);
-    }, intervalRate);
-
-    onCleanup(() => clearInterval(interval));
-  });
+      return () => clearInterval(interval);
+    },
+  );
 
   return (
     <div class={classNames(styles.root, props.class)} {...styleAttributes(props)}>

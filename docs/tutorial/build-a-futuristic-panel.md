@@ -18,7 +18,7 @@ Now replace `src/index.tsx` with this.
 import "sacred-solid/global-fonts.css";
 import "sacred-solid/global.css";
 import "sacred-solid/style.css";
-import { render } from "solid-js/web";
+import { render } from "@solidjs/web";
 import { Card } from "sacred-solid";
 
 render(() => <Card title="STATUS">Systems nominal.</Card>, document.body);
@@ -38,7 +38,7 @@ A translucent panel needs something behind it. Replace `src/index.tsx` with this
 import "sacred-solid/global-fonts.css";
 import "sacred-solid/global.css";
 import "sacred-solid/style.css";
-import { render } from "solid-js/web";
+import { render } from "@solidjs/web";
 import { Card } from "sacred-solid";
 
 const STRIPES = "repeating-linear-gradient(45deg, #ff2d95 0 12px, #2b2bff 12px 24px)";
@@ -66,7 +66,7 @@ import "sacred-solid/global-fonts.css";
 import "sacred-solid/global.css";
 import "sacred-solid/themes/holo.css";
 import "sacred-solid/style.css";
-import { render } from "solid-js/web";
+import { render } from "@solidjs/web";
 import { Card, Utilities } from "sacred-solid";
 
 const STRIPES = "repeating-linear-gradient(45deg, #ff2d95 0 12px, #2b2bff 12px 24px)";
@@ -98,7 +98,7 @@ import "sacred-solid/global-fonts.css";
 import "sacred-solid/global.css";
 import "sacred-solid/themes/holo.css";
 import "sacred-solid/style.css";
-import { render } from "solid-js/web";
+import { render } from "@solidjs/web";
 import { Card, Utilities } from "sacred-solid";
 
 const STRIPES = "repeating-linear-gradient(45deg, #ff2d95 0 12px, #2b2bff 12px 24px)";
@@ -139,7 +139,7 @@ import "sacred-solid/global-fonts.css";
 import "sacred-solid/global.css";
 import "sacred-solid/themes/holo.css";
 import "sacred-solid/style.css";
-import { render } from "solid-js/web";
+import { render } from "@solidjs/web";
 import { Card, Utilities } from "sacred-solid";
 
 const STRIPES = "repeating-linear-gradient(45deg, #ff2d95 0 12px, #2b2bff 12px 24px)";
@@ -181,7 +181,7 @@ import "sacred-solid/global-fonts.css";
 import "sacred-solid/global.css";
 import "sacred-solid/themes/holo.css";
 import "sacred-solid/style.css";
-import { render } from "solid-js/web";
+import { render } from "@solidjs/web";
 import { Surface, Utilities } from "sacred-solid";
 
 const STRIPES = "repeating-linear-gradient(45deg, #ff2d95 0 12px, #2b2bff 12px 24px)";

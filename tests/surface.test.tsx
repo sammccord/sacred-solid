@@ -1,5 +1,5 @@
 import { render } from "@solidjs/testing-library";
-import { createSignal } from "solid-js";
+import { createSignal, flush } from "solid-js";
 import { expect, test } from "vite-plus/test";
 import { Surface } from "../src/components/Surface.tsx";
 
@@ -126,11 +126,15 @@ test("glow and blur follow prop changes", () => {
   const { backdrop, outer } = parts(container);
   dropShadow(outer.style.filter, "cyan", "6px");
   setGlow("pink");
+  flush();
   setBlur("9px");
+  flush();
   dropShadow(outer.style.filter, "pink", "6px");
   expect(backdrop.style.getPropertyValue("backdrop-filter")).toBe("blur(9px)");
   setGlow(undefined);
+  flush();
   setBlur(undefined);
+  flush();
   expect(outer.style.filter).toBe("");
   expect(backdrop.style.getPropertyValue("backdrop-filter")).toBe("");
 });

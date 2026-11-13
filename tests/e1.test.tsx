@@ -85,24 +85,24 @@ describe("UpdatingDataTable", () => {
     ["CCC", "Gamma", "$20.00", "9"],
   ];
 
-  test("re-sorts rows by price descending each second and keeps the header", () => {
+  test("re-sorts rows by price descending each second and keeps the header", async () => {
     vi.useFakeTimers();
     vi.spyOn(Math, "random").mockReturnValue(0.5);
     const { container } = render(() => <UpdatingDataTable data={DATA} />);
     const order = () => (container.textContent ?? "").match(/AAA|BBB|CCC/g);
     expect(order()).toEqual(["AAA", "BBB", "CCC"]);
 
-    vi.advanceTimersByTime(1000);
+    await vi.advanceTimersByTimeAsync(1000);
     expect(order()).toEqual(["BBB", "CCC", "AAA"]);
     expect(container.textContent).toContain("SYMBOL");
     expect(container.textContent).toContain("$30.00");
   });
 
-  test("clamps holdings at one and scales prices by the random factor", () => {
+  test("clamps holdings at one and scales prices by the random factor", async () => {
     vi.useFakeTimers();
     vi.spyOn(Math, "random").mockReturnValue(0);
     const { container } = render(() => <UpdatingDataTable data={DATA} />);
-    vi.advanceTimersByTime(1000);
+    await vi.advanceTimersByTimeAsync(1000);
     const text = container.textContent ?? "";
     expect(text).toContain("$28.50");
     expect(text).toContain("$19.00");
@@ -111,12 +111,12 @@ describe("UpdatingDataTable", () => {
     expect(text.match(/\$\d+\.\d\d1/g)).toHaveLength(3);
   });
 
-  test("stops ticking after unmount", () => {
+  test("stops ticking after unmount", async () => {
     vi.useFakeTimers();
     const random = vi.spyOn(Math, "random");
     const { unmount } = render(() => <UpdatingDataTable data={DATA} />);
     unmount();
-    vi.advanceTimersByTime(3000);
+    await vi.advanceTimersByTimeAsync(3000);
     expect(random).not.toHaveBeenCalled();
   });
 });

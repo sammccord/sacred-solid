@@ -1,4 +1,5 @@
-import { type JSX, Show, splitProps } from "solid-js";
+import type { JSX } from "@solidjs/web";
+import { Show, omit } from "solid-js";
 import type { AugProps } from "../aug/index.ts";
 import { styleAttributes, type ThemeProps } from "../style/index.ts";
 import { classNames } from "../common/utilities.ts";
@@ -12,42 +13,35 @@ export interface ButtonProps extends JSX.ButtonHTMLAttributes<HTMLButtonElement>
 }
 
 export function Button(props: ButtonProps) {
-  const [local, rest] = splitProps(props, [
-    "class",
-    "aug",
-    "theme",
-    "variant",
-    "isDisabled",
-    "children",
-  ]);
+  const rest = omit(props, "class", "aug", "theme", "variant", "isDisabled", "children");
   const className = () =>
     classNames(
       styles.root,
-      local.isDisabled
+      props.isDisabled
         ? styles.disabled
-        : local.variant === "SECONDARY"
+        : props.variant === "SECONDARY"
           ? styles.secondary
           : styles.primary,
-      local.class,
+      props.class,
     );
 
   return (
     <Show
-      when={!local.isDisabled}
+      when={!props.isDisabled}
       fallback={
-        <div class={className()} {...styleAttributes(local)}>
-          {local.children}
+        <div class={className()} {...styleAttributes(props)}>
+          {props.children}
         </div>
       }
     >
       <button
         class={className()}
         role="button"
-        tabIndex={0}
+        tabindex={0}
         {...rest}
-        {...styleAttributes(local, rest.style)}
+        {...styleAttributes(props, rest.style)}
       >
-        {local.children}
+        {props.children}
       </button>
     </Show>
   );

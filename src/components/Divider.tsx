@@ -1,4 +1,5 @@
-import { type JSX, Match, Switch } from "solid-js";
+import type { JSX } from "@solidjs/web";
+import { Match, Switch } from "solid-js";
 import type { AugProps } from "../aug/index.ts";
 import { styleAttributes, type ThemeProps } from "../style/index.ts";
 import styles from "./Divider.module.css";

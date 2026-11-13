@@ -2,6 +2,8 @@
 
 SolidJS port of [SRCL](https://github.com/internet-development/www-sacred), the Sacred Computer component library with terminal aesthetics. Same markup and behavior, with its own CSS and a role based theming vocabulary. A pixel diff against the React kitchen sink stays as the regression gate for refactors that must not change anything visible.
 
+It targets Solid 2. Install `solid-js` and `@solidjs/web` 2.0.0-rc.21 or newer next to it.
+
 The library is client-only. Components build DOM templates at import time, so import it from browser code or a bundler that targets the client.
 
 ## Use it
@@ -11,7 +13,7 @@ import "sacred-solid/global-fonts.css";
 import "sacred-solid/global.css";
 import "sacred-solid/style.css";
 
-import { render } from "solid-js/web";
+import { render } from "@solidjs/web";
 import { Accordion, Card, DefaultActionBar, ModalStack, Providers } from "sacred-solid";
 
 render(

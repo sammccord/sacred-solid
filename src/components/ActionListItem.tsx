@@ -1,4 +1,5 @@
-import { type JSX, Show } from "solid-js";
+import type { JSX } from "@solidjs/web";
+import { Show } from "solid-js";
 import type { AugProps } from "../aug/index.ts";
 import { styleAttributes, type ThemeProps } from "../style/index.ts";
 import styles from "./ActionListItem.module.css";
@@ -37,7 +38,7 @@ export function ActionListItem(props: ActionListItemProps) {
           onClick={props.onClick}
           onKeyDown={props.role === "menuitem" ? undefined : handleKeyDown}
           {...styleAttributes(props, props.style)}
-          tabIndex={0}
+          tabindex={0}
           role={resolvedRole()}
         >
           <figure class={styles.icon}>{props.icon}</figure>
@@ -50,7 +51,7 @@ export function ActionListItem(props: ActionListItemProps) {
         href={props.href}
         target={props.target}
         {...styleAttributes(props, props.style)}
-        tabIndex={0}
+        tabindex={0}
         role={resolvedRole()}
       >
         <figure class={styles.icon}>{props.icon}</figure>

@@ -1,5 +1,5 @@
 import { render } from "@solidjs/testing-library";
-import { createSignal } from "solid-js";
+import { createSignal, flush } from "solid-js";
 import { beforeAll, describe, expect, test } from "vite-plus/test";
 import type { AugProps } from "../src/aug/index.ts";
 import type { ThemeProps } from "../src/style/index.ts";
@@ -70,9 +70,11 @@ test("aug follows prop changes", () => {
   const badge = container.querySelector<HTMLElement>("span");
   expect(badge?.getAttribute("data-augmented-ui")).toBe("tl-clip");
   setAug({ br: { mixin: "scoop", size: "4px" } });
+  flush();
   expect(badge?.getAttribute("data-augmented-ui")).toBe("br-scoop");
   expect(badge?.style.getPropertyValue("--aug-br")).toBe("4px");
   setAug(undefined);
+  flush();
   expect(badge?.hasAttribute("data-augmented-ui")).toBe(false);
 });
 
@@ -86,8 +88,10 @@ test("theme follows prop changes and component style wins", () => {
   const badge = container.querySelector<HTMLElement>("span");
   expect(badge?.style.getPropertyValue("--theme-line")).toBe("cyan");
   setTheme({ ink: "blue", line: "pink" });
+  flush();
   expect(badge?.style.getPropertyValue("--theme-line")).toBe("pink");
   expect(badge?.style.getPropertyValue("--theme-ink")).toBe("red");
   setTheme(undefined);
+  flush();
   expect(badge?.style.getPropertyValue("--theme-line")).toBe("");
 });

@@ -1,4 +1,5 @@
-import { type Component, type JSX, For, Show, splitProps } from "solid-js";
+import type { JSX } from "@solidjs/web";
+import { type Component, For, Show, omit } from "solid-js";
 import type { AugProps } from "../aug/index.ts";
 import { styleAttributes, type ThemeProps } from "../style/index.ts";
 import { SPACE } from "../common/utilities.ts";
@@ -30,20 +31,12 @@ export interface DropdownMenuProps extends Omit<
 }
 
 export function DropdownMenu(props: DropdownMenuProps) {
-  const [local, rest] = splitProps(props, [
-    "class",
-    "onClose",
-    "items",
-    "style",
-    "ref",
-    "aug",
-    "theme",
-  ]);
+  const rest = omit(props, "class", "onClose", "items", "style", "ref", "aug", "theme");
 
   let menu: HTMLDivElement | undefined;
 
   const handleClose = () => {
-    local.onClose?.();
+    props.onClose?.();
   };
 
   createHotkeys("Escape", handleClose);
@@ -97,16 +90,16 @@ export function DropdownMenu(props: DropdownMenuProps) {
     <div
       ref={(element) => {
         menu = element;
-        const forwarded = local.ref;
+        const forwarded = props.ref;
         if (typeof forwarded === "function") forwarded(element);
       }}
-      class={classNames(styles.root, local.class)}
+      class={classNames(styles.root, props.class)}
       {...rest}
-      {...styleAttributes(local, local.style)}
+      {...styleAttributes(props, props.style)}
       role="menu"
       onKeyDown={handleKeyDown}
     >
-      <Show when={local.items}>
+      <Show when={props.items}>
         {(items) => (
           <For each={items()}>
             {(each) => (
@@ -120,7 +113,7 @@ export function DropdownMenu(props: DropdownMenuProps) {
                     role="menuitem"
                     onClick={() => {
                       each.onClick?.();
-                      local.onClose?.();
+                      props.onClose?.();
                     }}
                   >
                     {each.children}
@@ -145,7 +138,7 @@ export function DropdownMenu(props: DropdownMenuProps) {
 
       <footer class={styles.footer}>
         Press escape to{SPACE}
-        <ActionButton hotkey="Esc" onClick={() => local.onClose?.()}>
+        <ActionButton hotkey="Esc" onClick={() => props.onClose?.()}>
           Close
         </ActionButton>
       </footer>

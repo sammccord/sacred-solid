@@ -1,8 +1,9 @@
-import { createEffect, createSignal, type JSX, mergeProps } from "solid-js";
+import type { JSX } from "@solidjs/web";
+import { createEffect, createSignal } from "solid-js";
 import type { AugProps } from "../aug/index.ts";
 import { styleAttributes, type ThemeProps } from "../style/index.ts";
 import styles from "./NumberRangeSlider.module.css";
-import { classNames } from "../common/utilities.ts";
+import { classNames, mergeDefaults } from "../common/utilities.ts";
 
 export interface NumberRangeSliderProps {
   class?: string;
@@ -15,20 +16,22 @@ export interface NumberRangeSliderProps {
 }
 
 export function NumberRangeSlider(allProps: NumberRangeSliderProps) {
-  const props = mergeProps({ defaultValue: 0, max: 5000, min: 0, step: 1 }, allProps);
+  const props = mergeDefaults({ defaultValue: 0, max: 5000, min: 0, step: 1 }, allProps);
   let sliderRef = undefined as HTMLInputElement | undefined;
   const [displayValue, setDisplayValue] = createSignal(props.defaultValue);
 
   const maxDigits = () => props.max.toString().length;
   const padValue = (value: number) => value.toString().padStart(maxDigits(), "0");
 
-  createEffect(() => {
-    const value = props.defaultValue;
-    if (sliderRef) {
-      sliderRef.value = String(value);
-    }
-    setDisplayValue(value);
-  });
+  createEffect(
+    () => props.defaultValue,
+    (value) => {
+      if (sliderRef) {
+        sliderRef.value = String(value);
+      }
+      setDisplayValue(value);
+    },
+  );
 
   const scrub: JSX.InputEventHandler<HTMLInputElement, InputEvent> = (event) => {
     setDisplayValue(parseInt(event.currentTarget.value, 10));
@@ -47,7 +50,7 @@ export function NumberRangeSlider(allProps: NumberRangeSliderProps) {
         ref={sliderRef}
         role="slider"
         step={props.step}
-        tabIndex={0}
+        tabindex={0}
         type="range"
       />
     </div>

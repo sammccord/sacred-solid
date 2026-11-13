@@ -82,12 +82,13 @@ If you wrote a `body.theme-*` block, copy the old value into every replacement i
 `augAttributes` is removed. A custom component calls `styleAttributes(props, style)` with an object that has `aug` and `theme`. It returns the attributes and the merged style for the root element.
 
 ```tsx
-import { type JSX, splitProps } from "solid-js";
+import type { JSX } from "@solidjs/web";
+import { omit } from "solid-js";
 import { type AugProps, styleAttributes, type ThemeProps } from "sacred-solid";
 
 export function Panel(props: { aug?: AugProps; theme?: ThemeProps; style?: JSX.CSSProperties }) {
-  const [local, rest] = splitProps(props, ["aug", "theme"]);
-  return <div {...rest} {...styleAttributes(local, rest.style)} />;
+  const rest = omit(props, "aug", "theme");
+  return <div {...rest} {...styleAttributes(props, rest.style)} />;
 }
 ```
 

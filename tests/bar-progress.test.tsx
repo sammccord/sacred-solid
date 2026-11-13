@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import { render } from "@solidjs/testing-library";
-import { createSignal } from "solid-js";
+import { createSignal, flush } from "solid-js";
 import { beforeAll, expect, test, vi } from "vite-plus/test";
 import { BarProgress } from "../src/components/BarProgress.tsx";
 
@@ -45,6 +45,7 @@ test("solid caps the fill at 100 percent and follows progress", () => {
   const fill = bar(container).firstElementChild as HTMLElement;
   expect(fill.style.width).toBe("100%");
   setProgress(25);
+  flush();
   expect(fill.style.width).toBe("25%");
   expect(bar(container).getAttribute("aria-valuenow")).toBe("25");
 });

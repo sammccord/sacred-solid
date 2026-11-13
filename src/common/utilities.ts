@@ -1,3 +1,4 @@
+import { merge } from "solid-js";
 //NOTE: Solid merges a literal {" "} into the neighboring text. React renders it as its own text node, which shifts layout by a sub-pixel. Using this identifier keeps the separate node.
 export const SPACE = " ";
 
@@ -55,11 +56,26 @@ export function isEmpty(text: unknown): boolean {
 export type ClassValue =
   | string
   | number
+  | boolean
   | null
   | undefined
-  | false
   | ClassValue[]
   | { [className: string]: unknown };
+
+//NOTE: React default parameters apply only when a prop is undefined. Solid 2's merge lets an explicit undefined win, so each default is re-read through a getter.
+export function mergeDefaults<D extends object, P extends object>(defaults: D, props: P) {
+  const resolved = {} as D;
+  for (const key of Object.keys(defaults) as (keyof D & string)[]) {
+    Object.defineProperty(resolved, key, {
+      enumerable: true,
+      get: () => {
+        const value = (props as Record<string, unknown>)[key];
+        return value === undefined ? defaults[key] : value;
+      },
+    });
+  }
+  return merge(defaults, props, resolved);
+}
 
 export type SlotClasses<Slot extends string> = { [K in Slot]?: string };
 
@@ -74,7 +90,7 @@ export function classNames(...args: ClassValue[]): string {
     } else if (Array.isArray(arg)) {
       const inner = classNames(...arg);
       if (inner) classes.push(inner);
-    } else {
+    } else if (arg !== true) {
       for (const key of Object.keys(arg)) {
         if (arg[key]) classes.push(key);
       }

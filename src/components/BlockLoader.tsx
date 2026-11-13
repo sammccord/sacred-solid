@@ -1,16 +1,9 @@
-import {
-  type JSX,
-  Show,
-  createEffect,
-  createMemo,
-  createSignal,
-  mergeProps,
-  onCleanup,
-} from "solid-js";
+import type { JSX } from "@solidjs/web";
+import { Show, createEffect, createMemo, createSignal } from "solid-js";
 import type { AugProps } from "../aug/index.ts";
 import { styleAttributes, type ThemeProps } from "../style/index.ts";
 import styles from "./BlockLoader.module.css";
-import { classNames } from "../common/utilities.ts";
+import { classNames, mergeDefaults } from "../common/utilities.ts";
 
 const SEQUENCES = [
   ["⠁", "⠂", "⠄", "⡀", "⢀", "⠠", "⠐", "⠈"],
@@ -33,20 +26,19 @@ export interface BlockLoaderProps extends Omit<JSX.HTMLAttributes<HTMLSpanElemen
 }
 
 export function BlockLoader(propsIn: BlockLoaderProps) {
-  const props = mergeProps({ mode: 0 }, propsIn);
+  const props = mergeDefaults({ mode: 0 }, propsIn);
   const [index, setIndex] = createSignal(0);
   const sequence = () => SEQUENCES[props.mode] as string[] | undefined;
   const indexLength = createMemo(() => sequence()?.length);
 
-  createEffect(() => {
-    const length = indexLength();
+  createEffect(indexLength, (length) => {
     if (length === undefined) return;
 
     const interval = window.setInterval(() => {
       setIndex((prevIndex) => (prevIndex + 1) % length);
     }, 100);
 
-    onCleanup(() => clearInterval(interval));
+    return () => clearInterval(interval);
   });
 
   return (

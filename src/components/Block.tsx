@@ -1,4 +1,5 @@
-import { type JSX, splitProps } from "solid-js";
+import type { JSX } from "@solidjs/web";
+import { omit } from "solid-js";
 import type { AugProps } from "../aug/index.ts";
 import { styleAttributes, type ThemeProps } from "../style/index.ts";
 import styles from "./Block.module.css";
@@ -11,15 +12,15 @@ export interface BlockProps extends JSX.HTMLAttributes<HTMLSpanElement> {
 }
 
 export function Block(props: BlockProps) {
-  const [local, rest] = splitProps(props, ["class", "aug", "theme", "children"]);
+  const rest = omit(props, "class", "aug", "theme", "children");
 
   return (
     <span
-      class={classNames(styles.block, local.class)}
+      class={classNames(styles.block, props.class)}
       {...rest}
-      {...styleAttributes(local, rest.style)}
+      {...styleAttributes(props, rest.style)}
     >
-      {local.children}
+      {props.children}
     </span>
   );
 }

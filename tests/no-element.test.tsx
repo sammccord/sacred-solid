@@ -1,6 +1,6 @@
 import { render } from "@solidjs/testing-library";
 import { readFileSync } from "node:fs";
-import type { JSX } from "solid-js";
+import type { JSX } from "@solidjs/web";
 import { beforeAll, expect, test } from "vite-plus/test";
 import { BodyPortal, DebugGrid, Providers } from "../src/index.ts";
 import { ModalProvider } from "../src/components/page/ModalContext.tsx";

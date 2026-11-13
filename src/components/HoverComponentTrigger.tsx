@@ -1,11 +1,10 @@
+import type { JSX } from "@solidjs/web";
 import {
   children as resolveChildren,
   createEffect,
   createSignal,
-  type JSX,
   Match,
-  onCleanup,
-  onMount,
+  onSettled,
   Show,
   Switch,
 } from "solid-js";
@@ -37,13 +36,13 @@ export function HoverComponentTrigger(props: HoverComponentTriggerProps) {
 
   const resolved = resolveChildren(() => props.children);
 
-  onMount(() => {
+  onSettled(() => {
     const child = resolved.toArray().find((node) => node instanceof HTMLElement);
     if (child) child.tabIndex = 0;
   });
 
-  createEffect(() => {
-    if (!open() || !triggerRef || !popoverRef) return;
+  createEffect(open, (isOpen) => {
+    if (!isOpen || !triggerRef || !popoverRef) return;
 
     const trigger = triggerRef;
     const popover = popoverRef;
@@ -60,11 +59,11 @@ export function HoverComponentTrigger(props: HoverComponentTriggerProps) {
     window.addEventListener("resize", updatePosition);
     window.addEventListener("scroll", updatePosition, true);
 
-    onCleanup(() => {
+    return () => {
       window.removeEventListener("resize", updatePosition);
       window.removeEventListener("scroll", updatePosition, true);
       mutationObserver.disconnect();
-    });
+    };
   });
 
   return (

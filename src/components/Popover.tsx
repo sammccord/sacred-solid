@@ -1,4 +1,5 @@
-import { type JSX, splitProps } from "solid-js";
+import type { JSX } from "@solidjs/web";
+import { omit } from "solid-js";
 import type { AugProps } from "../aug/index.ts";
 import { styleAttributes, type ThemeProps } from "../style/index.ts";
 import styles from "./Popover.module.css";
@@ -10,13 +11,13 @@ export interface PopoverProps extends JSX.HTMLAttributes<HTMLDivElement> {
 }
 
 export function Popover(props: PopoverProps) {
-  const [local, rest] = splitProps(props, ["class", "aug", "theme", "style"]);
+  const rest = omit(props, "class", "aug", "theme", "style");
 
   return (
     <div
-      class={classNames(styles.root, local.class)}
+      class={classNames(styles.root, props.class)}
       {...rest}
-      {...styleAttributes(local, local.style)}
+      {...styleAttributes(props, props.style)}
     />
   );
 }

@@ -1,14 +1,7 @@
-import {
-  createEffect,
-  createSignal,
-  type JSX,
-  mergeProps,
-  onCleanup,
-  onMount,
-  Show,
-} from "solid-js";
+import type { JSX } from "@solidjs/web";
+import { createEffect, createSignal, onCleanup, onSettled, Show, untrack } from "solid-js";
 import type { AugProps } from "../aug/index.ts";
-import { classNames } from "../common/utilities.ts";
+import { classNames, mergeDefaults } from "../common/utilities.ts";
 import { styleAttributes, type ThemeProps } from "../style/index.ts";
 import styles from "./BarProgress.module.css";
 
@@ -26,46 +19,49 @@ export interface BarProgressProps {
 }
 
 export function BarProgress(allProps: BarProgressProps) {
-  const props = mergeProps({ fillChar: "░", variant: "char" as BarProgressVariant }, allProps);
-  const [currentProgress, setCurrentProgress] = createSignal(props.progress ?? 0);
+  const props = mergeDefaults({ fillChar: "░", variant: "char" as BarProgressVariant }, allProps);
+  const [currentProgress, setCurrentProgress] = createSignal(untrack(() => props.progress ?? 0));
   const [containerWidth, setContainerWidth] = createSignal(0);
   const [charWidth, setCharWidth] = createSignal(0);
 
   let containerRef = undefined as HTMLDivElement | undefined;
   let measureRef = undefined as HTMLSpanElement | undefined;
 
-  createEffect(() => {
-    const progress = props.progress;
-    const intervalRate = props.intervalRate;
-    if (typeof progress === "number") {
-      setCurrentProgress(progress);
-      return;
-    }
-    if (!intervalRate) return;
-    const interval = setInterval(() => {
-      setCurrentProgress((prev) => (prev + 10) % 110);
-    }, intervalRate);
-    onCleanup(() => clearInterval(interval));
-  });
+  createEffect(
+    () => [props.progress, props.intervalRate] as const,
+    ([progress, intervalRate]) => {
+      if (typeof progress === "number") {
+        setCurrentProgress(progress);
+        return;
+      }
+      if (!intervalRate) return;
+      const interval = setInterval(() => {
+        setCurrentProgress((prev) => (prev + 10) % 110);
+      }, intervalRate);
+      return () => clearInterval(interval);
+    },
+  );
 
-  createEffect(() => {
-    void props.fillChar;
-    if (!measureRef) return;
-    const rect = measureRef.getBoundingClientRect();
-    if (rect.width > 0) {
-      setCharWidth(rect.width);
-    } else {
-      const frame = requestAnimationFrame(() => {
-        const retryRect = measureRef?.getBoundingClientRect();
-        if (retryRect && retryRect.width > 0) {
-          setCharWidth(retryRect.width);
-        }
-      });
-      onCleanup(() => cancelAnimationFrame(frame));
-    }
-  });
+  createEffect(
+    () => props.fillChar,
+    () => {
+      if (!measureRef) return;
+      const rect = measureRef.getBoundingClientRect();
+      if (rect.width > 0) {
+        setCharWidth(rect.width);
+      } else {
+        const frame = requestAnimationFrame(() => {
+          const retryRect = measureRef?.getBoundingClientRect();
+          if (retryRect && retryRect.width > 0) {
+            setCharWidth(retryRect.width);
+          }
+        });
+        onCleanup(() => cancelAnimationFrame(frame));
+      }
+    },
+  );
 
-  onMount(() => {
+  onSettled(() => {
     if (!containerRef) return;
     const observer = new ResizeObserver((entries) => {
       for (const entry of entries) {
@@ -73,7 +69,7 @@ export function BarProgress(allProps: BarProgressProps) {
       }
     });
     observer.observe(containerRef);
-    onCleanup(() => observer.disconnect());
+    return () => observer.disconnect();
   });
 
   const cappedProgress = () => Math.min(currentProgress(), 100);

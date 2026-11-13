@@ -1,4 +1,5 @@
-import { type JSX, splitProps } from "solid-js";
+import type { JSX } from "@solidjs/web";
+import { omit } from "solid-js";
 import type { AugProps } from "../aug/index.ts";
 import { styleAttributes, type ThemeProps } from "../style/index.ts";
 import styles from "./Grid.module.css";
@@ -11,15 +12,15 @@ export interface GridProps extends JSX.HTMLAttributes<HTMLDivElement> {
 }
 
 export function Grid(props: GridProps) {
-  const [local, rest] = splitProps(props, ["class", "aug", "theme", "children"]);
+  const rest = omit(props, "class", "aug", "theme", "children");
 
   return (
     <div
-      class={classNames(styles.grid, local.class)}
+      class={classNames(styles.grid, props.class)}
       {...rest}
-      {...styleAttributes(local, rest.style)}
+      {...styleAttributes(props, rest.style)}
     >
-      {local.children}
+      {props.children}
     </div>
   );
 }

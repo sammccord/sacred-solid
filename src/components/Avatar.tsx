@@ -1,7 +1,8 @@
-import { type JSX, children as resolveChildren, Show, splitProps } from "solid-js";
+import type { JSX } from "@solidjs/web";
+import { children as resolveChildren, Show, omit } from "solid-js";
 import type { AugProps } from "../aug/index.ts";
 import { type StyleProps, styleAttributes, type ThemeProps } from "../style/index.ts";
-import { classNames } from "../common/utilities.ts";
+import { type ClassValue, classNames } from "../common/utilities.ts";
 import styles from "./Avatar.module.css";
 
 export interface AvatarProps extends Omit<
@@ -18,44 +19,35 @@ export interface AvatarProps extends Omit<
 }
 
 export function Avatar(props: AvatarProps) {
-  const [local, rest] = splitProps(props, [
-    "class",
-    "src",
-    "style",
-    "href",
-    "target",
-    "children",
-    "aug",
-    "theme",
-  ]);
-  const resolved = resolveChildren(() => local.children);
+  const rest = omit(props, "class", "src", "style", "href", "target", "children", "aug", "theme");
+  const resolved = resolveChildren(() => props.children);
 
-  const className = (extra?: string) =>
-    classNames(local.src ? styles.root : styles.placeholder, extra);
+  const className = (extra?: ClassValue) =>
+    classNames(props.src ? styles.root : styles.placeholder, extra);
   const combinedStyle = (): JSX.CSSProperties => ({
-    ...local.style,
-    ...(local.src ? { "background-image": `url(${local.src})` } : {}),
+    ...props.style,
+    ...(props.src ? { "background-image": `url(${props.src})` } : {}),
   });
 
-  const avatarElement = (own: StyleProps = {}, extra?: string) => (
+  const avatarElement = (own: StyleProps = {}, extra?: ClassValue) => (
     <Show
-      when={local.href}
+      when={props.href}
       fallback={<figure class={className(extra)} {...styleAttributes(own, combinedStyle())} />}
     >
       <a
         class={className(extra)}
         {...styleAttributes(own, combinedStyle())}
-        href={local.href}
-        target={local.target}
-        tabIndex={0}
+        href={props.href}
+        target={props.target}
+        tabindex={0}
         role="link"
       />
     </Show>
   );
 
   return (
-    <Show when={resolved()} fallback={avatarElement(local, local.class)}>
-      <div class={classNames(styles.parent, local.class)} {...rest} {...styleAttributes(local)}>
+    <Show when={resolved()} fallback={avatarElement(props, props.class)}>
+      <div class={classNames(styles.parent, props.class)} {...rest} {...styleAttributes(props)}>
         {avatarElement()}
         <span class={styles.right}>{resolved()}</span>
       </div>

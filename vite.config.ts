@@ -1,6 +1,5 @@
 import { createHash } from "node:crypto";
-import solidRolldown from "rolldown-plugin-solid";
-import solid from "vite-plugin-solid";
+import solid from "@solidjs/vite-plugin";
 import { defineConfig } from "vite-plus";
 import { sacredLayers } from "./scripts/css-layers.ts";
 import { finishPackCss } from "./scripts/pack-css.ts";
@@ -35,7 +34,7 @@ export default defineConfig({
   },
   pack: {
     entry: ["src/index.ts"],
-    plugins: [sacredLayers(), solidRolldown()],
+    plugins: [sacredLayers(), solid({ refresh: false, dev: false })],
     deps: {
       alwaysBundle: ["augmented-ui/augmented-ui.min.css"],
       onlyBundle: ["augmented-ui"],
@@ -72,6 +71,7 @@ export default defineConfig({
   },
   test: {
     environment: "jsdom",
+    setupFiles: ["tests/setup.ts"],
     include: ["tests/**/*.test.{ts,tsx}"],
   },
 });

@@ -1,4 +1,5 @@
-import { createEffect, Index, type JSX } from "solid-js";
+import type { JSX } from "@solidjs/web";
+import { createEffect, For, untrack } from "solid-js";
 import type { AugProps } from "../aug/index.ts";
 import { styleAttributes, type ThemeProps } from "../style/index.ts";
 import styles from "./DataTable.module.css";
@@ -40,27 +41,29 @@ function toCss(color: RGBAColor): string {
 
 export function DataTable(props: DataTableProps) {
   let tableRef = undefined as HTMLTableElement | undefined;
-  let prevData = props.data;
+  let prevData = untrack(() => props.data);
 
-  createEffect(() => {
-    const data = props.data;
-    const rows = tableRef?.querySelectorAll<HTMLTableRowElement>("tr") ?? [];
-    for (let i = 1; i < data.length; i++) {
-      const cells = rows[i]?.querySelectorAll<HTMLTableCellElement>("td");
-      if (!cells) continue;
-      const row = data[i] ?? [];
-      for (let j = 0; j < row.length; j++) {
-        const cell = cells[j];
-        const changed = prevData[i]?.[j] !== row[j];
-        if (cell && changed) {
-          cell.classList.remove(styles.changed);
-          void cell.offsetWidth;
-          cell.classList.add(styles.changed);
+  createEffect(
+    () => props.data,
+    (data) => {
+      const rows = tableRef?.querySelectorAll<HTMLTableRowElement>("tr") ?? [];
+      for (let i = 1; i < data.length; i++) {
+        const cells = rows[i]?.querySelectorAll<HTMLTableCellElement>("td");
+        if (!cells) continue;
+        const row = data[i] ?? [];
+        for (let j = 0; j < row.length; j++) {
+          const cell = cells[j];
+          const changed = prevData[i]?.[j] !== row[j];
+          if (cell && changed) {
+            cell.classList.remove(styles.changed);
+            void cell.offsetWidth;
+            cell.classList.add(styles.changed);
+          }
         }
       }
-    }
-    prevData = data;
-  });
+      prevData = data;
+    },
+  );
 
   const handleKeyDown: JSX.EventHandler<HTMLTableElement, KeyboardEvent> = (event) => {
     const activeElement = document.activeElement;
@@ -115,10 +118,10 @@ export function DataTable(props: DataTableProps) {
       {...styleAttributes(props)}
     >
       <tbody class={styles.body}>
-        <Index each={props.data}>
+        <For keyed={false} each={props.data}>
           {(row, rowIndex) => (
-            <tr class={styles.row} tabIndex={0} onClick={() => alert("testing")}>
-              <Index each={row()}>
+            <tr class={styles.row} tabindex={0} onClick={() => alert("testing")}>
+              <For keyed={false} each={row()}>
                 {(cellContent, colIndex) => (
                   <td
                     class={styles.column}
@@ -129,10 +132,10 @@ export function DataTable(props: DataTableProps) {
                     {cellContent()}
                   </td>
                 )}
-              </Index>
+              </For>
             </tr>
           )}
-        </Index>
+        </For>
       </tbody>
     </table>
   );

@@ -1,7 +1,7 @@
 import "../src/styles/global-fonts.css";
 import "../src/styles/global.css";
 
-import { render } from "solid-js/web";
+import { render } from "@solidjs/web";
 import { DebugGrid } from "../src/components/DebugGrid.tsx";
 import { PageConceptTwo } from "../src/components/examples/PageConceptTwo.tsx";
 import { ModalStack } from "../src/components/ModalStack.tsx";

@@ -1,19 +1,17 @@
+import type { JSX } from "@solidjs/web";
 import {
-  batch,
   createEffect,
   createMemo,
   createSignal,
   createUniqueId,
-  type JSX,
-  mergeProps,
-  onCleanup,
-  onMount,
+  onSettled,
   Show,
-  splitProps,
+  omit,
+  untrack,
 } from "solid-js";
 import type { AugProps } from "../aug/index.ts";
 import { styleAttributes, type ThemeProps } from "../style/index.ts";
-import { classNames, findNextFocusable } from "../common/utilities.ts";
+import { classNames, findNextFocusable, mergeDefaults } from "../common/utilities.ts";
 import styles from "./Input.module.css";
 
 export interface InputProps extends Omit<JSX.InputHTMLAttributes<HTMLInputElement>, "onChange"> {
@@ -27,8 +25,9 @@ export interface InputProps extends Omit<JSX.InputHTMLAttributes<HTMLInputElemen
 }
 
 export function Input(allProps: InputProps) {
-  const props = mergeProps({ isBlink: true }, allProps);
-  const [local, rest] = splitProps(props, [
+  const props = mergeDefaults({ isBlink: true }, allProps);
+  const rest = omit(
+    props,
     "class",
     "aug",
     "theme",
@@ -41,48 +40,50 @@ export function Input(allProps: InputProps) {
     "id",
     "value",
     "defaultValue",
-  ]);
+  );
 
   const generatedId = createUniqueId();
-  const inputId = () => local.id || generatedId;
+  const inputId = () => props.id || generatedId;
 
   let inputRef = undefined as HTMLInputElement | undefined;
   let lastFocusDirection: "up" | "down" | null = null;
 
-  const [text, setText] = createSignal(
-    local.defaultValue?.toString() || local.value?.toString() || "",
+  const initialText = untrack(
+    () => props.defaultValue?.toString() || props.value?.toString() || "",
   );
+  const [text, setText] = createSignal(initialText);
   const [isFocused, setIsFocused] = createSignal(false);
-  const [selectionStart, setSelectionStart] = createSignal(text().length);
+  const [selectionStart, setSelectionStart] = createSignal(initialText.length);
 
-  createEffect(() => {
-    if (local.value !== undefined) {
-      const val = local.value.toString();
-      setText(val);
-      setSelectionStart(val.length);
-    }
-  });
+  createEffect(
+    () => props.value,
+    (value) => {
+      if (value !== undefined) {
+        const val = value.toString();
+        setText(val);
+        setSelectionStart(val.length);
+      }
+    },
+  );
 
   const syncSelection = () => {
     if (!inputRef) return;
     setSelectionStart(inputRef.selectionStart ?? text().length);
   };
 
-  onMount(() => {
+  onSettled(() => {
     const onSelectionChange = () => {
       if (document.activeElement === inputRef) syncSelection();
     };
     document.addEventListener("selectionchange", onSelectionChange);
-    onCleanup(() => document.removeEventListener("selectionchange", onSelectionChange));
+    return () => document.removeEventListener("selectionchange", onSelectionChange);
   });
 
   const onHandleChange: JSX.InputEventHandler<HTMLInputElement, InputEvent> = (e) => {
-    batch(() => {
-      const value = e.currentTarget.value;
-      setText(value);
-      local.onChange?.(e);
-      setSelectionStart(e.currentTarget.selectionStart ?? value.length);
-    });
+    const value = e.currentTarget.value;
+    setText(value);
+    props.onChange?.(e);
+    setSelectionStart(e.currentTarget.selectionStart ?? value.length);
   };
 
   const onHandleFocus = () => {
@@ -119,15 +120,15 @@ export function Input(allProps: InputProps) {
     }
   };
 
-  const isPlaceholderVisible = () => !text() && local.placeholder;
+  const isPlaceholderVisible = () => !text() && props.placeholder;
   const containerClasses = () =>
-    classNames(styles.root, isFocused() && styles.focused, local.class);
+    classNames(styles.root, isFocused() && styles.focused, props.class);
 
-  const maskText = (t: string) => (local.type === "password" ? "•".repeat(t.length) : t);
+  const maskText = (t: string) => (props.type === "password" ? "•".repeat(t.length) : t);
 
   const beforeCaretText = createMemo(() =>
     isPlaceholderVisible()
-      ? (local.placeholder ?? "")
+      ? (props.placeholder ?? "")
       : maskText(text().substring(0, selectionStart())),
   );
   const afterCaretText = createMemo(() =>
@@ -135,18 +136,18 @@ export function Input(allProps: InputProps) {
   );
 
   return (
-    <div class={containerClasses()} {...styleAttributes(local)}>
-      <Show when={local.label}>
+    <div class={containerClasses()} {...styleAttributes(props)}>
+      <Show when={props.label}>
         <label for={inputId()} class={styles.label}>
-          {local.label}
+          {props.label}
         </label>
       </Show>
       <div class={styles.inputContainer}>
         <div class={classNames(styles.displayed, isPlaceholderVisible() && styles.placeholder)}>
           {beforeCaretText()}
           <Show when={!isPlaceholderVisible()}>
-            <span class={classNames(styles.block, local.isBlink && styles.blink)}>
-              {local.caretChars || ""}
+            <span class={classNames(styles.block, props.isBlink && styles.blink)}>
+              {props.caretChars || ""}
             </span>
           </Show>
           <Show when={!isPlaceholderVisible()}>{afterCaretText()}</Show>
@@ -156,8 +157,8 @@ export function Input(allProps: InputProps) {
           ref={inputRef}
           class={styles.hidden}
           value={text()}
-          aria-placeholder={local.placeholder}
-          type={local.type}
+          aria-placeholder={props.placeholder}
+          type={props.type}
           onFocus={onHandleFocus}
           onBlur={onHandleBlur}
           onInput={onHandleChange}

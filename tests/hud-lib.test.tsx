@@ -1,5 +1,5 @@
 import { fireEvent, render } from "@solidjs/testing-library";
-import { createSignal } from "solid-js";
+import { createSignal, flush } from "solid-js";
 import { beforeAll, expect, test } from "vite-plus/test";
 import { Accordion } from "../src/components/Accordion.tsx";
 import { KeyHint } from "../src/components/KeyHint.tsx";
@@ -74,6 +74,7 @@ test("ListItem selected sets a data attribute and forwards handlers and class", 
   const item = container.querySelector("li")!;
   expect(item.hasAttribute("data-selected")).toBe(false);
   setSelected(true);
+  flush();
   expect(item.hasAttribute("data-selected")).toBe(true);
   expect(item.classList.contains("row")).toBe(true);
   expect(item.getAttribute("data-augmented-ui")).toBe("inlay");
@@ -206,6 +207,7 @@ test("Tabs mounts a getter panel only while its tab is selected", () => {
   expect(container.querySelector("[role='tabpanel']")).toBeNull();
   expect(built).toBe(0);
   setValue("b");
+  flush();
   expect(container.querySelector("#lazy")).not.toBeNull();
   expect(built).toBeGreaterThan(0);
 });

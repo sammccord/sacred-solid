@@ -1,6 +1,6 @@
 import { render } from "@solidjs/testing-library";
 import { readFileSync } from "node:fs";
-import { createSignal } from "solid-js";
+import { createSignal, flush } from "solid-js";
 import { expect, test } from "vite-plus/test";
 import { topLevelRules } from "../scripts/docs/css.ts";
 import { KeyHint } from "../src/components/KeyHint.tsx";
@@ -55,6 +55,7 @@ test("tone picks the header class and defaults to outline", () => {
   expect(header.classList.contains(styles.outline!)).toBe(true);
   expect(header.classList.contains(styles.filled!)).toBe(false);
   setTone("filled");
+  flush();
   expect(header.classList.contains(styles.filled!)).toBe(true);
   expect(header.classList.contains(styles.outline!)).toBe(false);
 });
@@ -116,5 +117,6 @@ test("KeyHint follows key changes", () => {
   const { container } = render(() => <KeyHint keys={keys()}>HELP</KeyHint>);
   expect(container.querySelectorAll("kbd")).toHaveLength(1);
   setKeys(["H", "F"]);
+  flush();
   expect(container.querySelectorAll("kbd")).toHaveLength(2);
 });

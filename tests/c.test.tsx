@@ -1,5 +1,7 @@
 import { cleanup, fireEvent, render, screen } from "@solidjs/testing-library";
-import type { Component, JSX } from "solid-js";
+import type { JSX } from "@solidjs/web";
+import type { Component } from "solid-js";
+import { flush } from "solid-js";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vite-plus/test";
 import { ActionButton } from "../src/components/ActionButton.tsx";
 import { ButtonGroup } from "../src/components/ButtonGroup.tsx";
@@ -508,7 +510,7 @@ describe("DefaultActionBar", () => {
       <>
         <DefaultActionBar />
         <input aria-label="field" />
-        <div tabIndex={0} role="button" onClick={clicked}>
+        <div tabindex={0} role="button" onClick={clicked}>
           custom
         </div>
       </>
@@ -539,6 +541,7 @@ describe("modals", () => {
   function openModal<P extends object>(component: Component<P>, props: P) {
     const view = withModals(() => <ModalStack />);
     view.modals().open(component, props);
+    flush();
     return view;
   }
 
@@ -565,6 +568,7 @@ describe("modals", () => {
       title: "ERROR",
     });
     modals().open(ModalError, { message: "Bam", title: "ERROR" });
+    flush();
     expect(screen.getByText("Bam")).toBeTruthy();
 
     press(document, "Enter");

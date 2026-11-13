@@ -10,7 +10,7 @@ import { Providers } from "../src/components/Providers.tsx";
 
 afterEach(cleanup);
 
-const renderWithModals = (ui: () => import("solid-js").JSX.Element) =>
+const renderWithModals = (ui: () => import("@solidjs/web").JSX.Element) =>
   render(() => (
     <Providers>
       {ui()}

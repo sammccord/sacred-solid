@@ -1,4 +1,5 @@
-import { For, type JSX } from "solid-js";
+import type { JSX } from "@solidjs/web";
+import { For } from "solid-js";
 import css from "./hud.module.css";
 import { useStage } from "./Stage.tsx";
 

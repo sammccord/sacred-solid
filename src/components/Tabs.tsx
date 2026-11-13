@@ -1,4 +1,5 @@
-import { createSignal, createUniqueId, For, type JSX, Show, splitProps } from "solid-js";
+import type { JSX } from "@solidjs/web";
+import { createSignal, createUniqueId, For, Show, omit } from "solid-js";
 import type { AugProps } from "../aug/index.ts";
 import { classNames, type SlotClasses } from "../common/utilities.ts";
 import { styleAttributes, type ThemeProps } from "../style/index.ts";
@@ -24,7 +25,8 @@ export interface TabsProps extends Omit<JSX.HTMLAttributes<HTMLDivElement>, "onC
 }
 
 export function Tabs(props: TabsProps) {
-  const [local, rest] = splitProps(props, [
+  const rest = omit(
+    props,
     "class",
     "items",
     "value",
@@ -33,18 +35,18 @@ export function Tabs(props: TabsProps) {
     "classes",
     "aug",
     "theme",
-  ]);
+  );
   const baseId = createUniqueId();
-  const [inner, setInner] = createSignal(local.defaultValue ?? local.items[0]?.id ?? "");
-  const value = () => local.value ?? inner();
+  const [inner, setInner] = createSignal(props.defaultValue ?? props.items[0]?.id ?? "");
+  const value = () => props.value ?? inner();
   const tabId = (id: string) => `${baseId}-tab-${id}`;
   const panelId = (id: string) => `${baseId}-panel-${id}`;
-  const hasPanels = () => local.items.some((item) => "panel" in item);
-  const selected = () => local.items.find((item) => item.id === value());
+  const hasPanels = () => props.items.some((item) => "panel" in item);
+  const selected = () => props.items.find((item) => item.id === value());
 
   const select = (id: string) => {
-    if (local.value === undefined) setInner(id);
-    local.onChange?.(id);
+    if (props.value === undefined) setInner(id);
+    props.onChange?.(id);
   };
 
   const move = (event: KeyboardEvent, step: number) => {
@@ -52,7 +54,7 @@ export function Tabs(props: TabsProps) {
     const tabs = [...current.parentElement!.querySelectorAll<HTMLElement>("[role='tab']")];
     const next = (tabs.indexOf(current) + step + tabs.length) % tabs.length;
     event.preventDefault();
-    select(local.items[next]!.id);
+    select(props.items[next]!.id);
     tabs[next]!.focus();
   };
 
@@ -60,20 +62,20 @@ export function Tabs(props: TabsProps) {
     <>
       <div
         role="tablist"
-        class={classNames(styles.root, local.class)}
+        class={classNames(styles.root, props.class)}
         {...rest}
-        {...styleAttributes(local, rest.style)}
+        {...styleAttributes(props, rest.style)}
       >
-        <For each={local.items}>
+        <For each={props.items}>
           {(item) => (
             <button
               type="button"
               role="tab"
               id={hasPanels() ? tabId(item.id) : undefined}
               aria-controls={hasPanels() ? panelId(item.id) : undefined}
-              class={classNames(styles.tab, local.classes?.tab)}
-              aria-selected={item.id === value()}
-              tabIndex={item.id === value() ? 0 : -1}
+              class={classNames(styles.tab, props.classes?.tab)}
+              aria-selected={item.id === value() ? "true" : "false"}
+              tabindex={item.id === value() ? 0 : -1}
               onClick={() => select(item.id)}
               onKeyDown={(event) => {
                 if (event.key === "ArrowRight") move(event, 1);
@@ -81,9 +83,9 @@ export function Tabs(props: TabsProps) {
               }}
             >
               <Show when={item.icon !== undefined}>
-                <span class={classNames(styles.icon, local.classes?.icon)}>{item.icon}</span>
+                <span class={classNames(styles.icon, props.classes?.icon)}>{item.icon}</span>
               </Show>
-              <span class={classNames(styles.label, local.classes?.label)}>{item.label}</span>
+              <span class={classNames(styles.label, props.classes?.label)}>{item.label}</span>
             </button>
           )}
         </For>
@@ -95,7 +97,7 @@ export function Tabs(props: TabsProps) {
               role="tabpanel"
               id={panelId(item().id)}
               aria-labelledby={tabId(item().id)}
-              class={classNames(styles.panel, local.classes?.panel)}
+              class={classNames(styles.panel, props.classes?.panel)}
             >
               {item().panel}
             </div>

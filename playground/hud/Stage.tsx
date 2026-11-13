@@ -1,12 +1,5 @@
-import {
-  type Accessor,
-  createContext,
-  createSignal,
-  type JSX,
-  onCleanup,
-  onMount,
-  useContext,
-} from "solid-js";
+import type { JSX } from "@solidjs/web";
+import { type Accessor, createContext, createSignal, onSettled, useContext } from "solid-js";
 import css from "./hud.module.css";
 
 export interface Point {
@@ -21,9 +14,7 @@ interface StageContext {
 const StageContext = createContext<StageContext>();
 
 export function useStage(): StageContext {
-  const context = useContext(StageContext);
-  if (context === undefined) throw new Error("useStage needs a Stage ancestor");
-  return context;
+  return useContext(StageContext);
 }
 
 export interface StageProps {
@@ -46,10 +37,10 @@ export function Stage(props: StageProps) {
     setScale(Math.min(window.innerWidth / width(), window.innerHeight / height()));
   };
 
-  onMount(() => {
+  onSettled(() => {
     fit();
     window.addEventListener("resize", fit);
-    onCleanup(() => window.removeEventListener("resize", fit));
+    return () => window.removeEventListener("resize", fit);
   });
 
   const track = (event: MouseEvent) => {
@@ -74,7 +65,7 @@ export function Stage(props: StageProps) {
         }}
         onMouseMove={track}
       >
-        <StageContext.Provider value={{ pointer }}>{props.children}</StageContext.Provider>
+        <StageContext value={{ pointer }}>{props.children}</StageContext>
       </div>
     </div>
   );

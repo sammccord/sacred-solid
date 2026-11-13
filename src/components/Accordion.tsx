@@ -1,4 +1,5 @@
-import { type JSX, createSignal, Show } from "solid-js";
+import type { JSX } from "@solidjs/web";
+import { createSignal, Show } from "solid-js";
 import type { AugProps } from "../aug/index.ts";
 import { classNames, type SlotClasses } from "../common/utilities.ts";
 import type { ThemeProps } from "../style/index.ts";
@@ -21,7 +22,9 @@ export interface AccordionProps {
 export function Accordion(props: AccordionProps) {
   const [show, setShow] = createSignal(props.defaultValue ?? false);
 
-  const toggleShow = () => setShow((prev) => !prev);
+  const toggleShow = () => {
+    setShow((prev) => !prev);
+  };
 
   return (
     <>
@@ -29,7 +32,7 @@ export function Accordion(props: AccordionProps) {
         class={classNames(props.class, props.classes?.header)}
         aug={props.aug}
         theme={props.theme}
-        tabIndex={0}
+        tabindex={0}
         role="button"
         onClick={toggleShow}
         onKeyDown={(e) => {
@@ -38,7 +41,7 @@ export function Accordion(props: AccordionProps) {
             toggleShow();
           }
         }}
-        aria-expanded={show()}
+        aria-expanded={show() ? "true" : "false"}
       >
         <div class={classNames(styles.flex, show() ? styles.active : undefined)}>
           <span class={classNames(styles.icon, props.classes?.icon)}>

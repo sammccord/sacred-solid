@@ -1,0 +1,15 @@
+ts	phase	decision	why	evidence	result
+2026-11-13T19:43:46Z	frame	migrate the whole library to Solid 2 RC before installing ui-sdk	ui-sdk peers on solid-js and @solidjs/web >=2.0.0-rc.14; user chose full migration	npm view @ui-sdk/solid peerDependencies	scoped
+2026-11-13T19:43:46Z	baseline	record Solid 1 gates first: vp check, vp test 829/829, parity 77/80 pixel-identical with 3 modal slices off	need old-vs-new comparison for every gate	parity-before log, .parity/solid copy	captured
+2026-11-13T19:43:46Z	toolchain	@solidjs/vite-plugin for dev, test and pack (refresh off, dev off in pack); drop vite-plugin-solid and rolldown-plugin-solid	rolldown-plugin-solid has no Solid 2 release; the vite plugin's transform runs under rolldown	dist/index.mjs imports only solid-js and @solidjs/web, no refresh code	kept
+2026-11-13T19:43:46Z	codemod	scripted renames: solid-js/web to @solidjs/web, JSX type to @solidjs/web, splitProps to omit, mergeProps to merge, onMount to onSettled, Index to For keyed=false, tabIndex to tabindex	mechanical, 86 files	type errors 383 to 113	kept
+2026-11-13T19:43:46Z	effects	hand-convert 26 single-argument createEffect calls to compute/apply, cleanups returned from apply	Solid 2 has only the split form	vp check clean	kept
+2026-11-13T19:43:46Z	cleanup	move onCleanup inside onSettled to returned cleanups (20 blocks, scripted)	CLEANUP_IN_FORBIDDEN_SCOPE halts reactivity	tests 210 failing to 92	kept
+2026-11-13T19:43:46Z	aria	aria-expanded/aria-selected pass "true"/"false" strings	Solid 2 removes an attribute bound to false; React writes "false"	tests/conventions.test.ts ban	kept
+2026-11-13T19:43:46Z	defaults	add mergeDefaults; merge lets an explicit undefined replace a default	Panel tone={undefined} lost its outline default	panel.test.tsx, conventions ban on merge({	kept
+2026-11-13T19:43:46Z	portal	BodyPortal wraps Solid 2 Portal on document.body	Solid 2 delegates events per root; hand-inserted body nodes got no click handlers. Portal no longer adds a wrapper div	c.test dropdown and action bar tests pass	kept
+2026-11-13T19:43:46Z	context	optional contexts default to null	default-less createContext throws without a provider	a2 TreeView tests	kept
+2026-11-13T19:43:46Z	tests	tests/setup.ts flushes after every fireEvent; async fake timers; flush after direct signal writes	reads lag writes until the microtask	vp test 829/829	kept
+2026-11-13T19:43:46Z	snapshot	re-record markup snapshot from dist	only change is BarProgress attribute order, now matching React JSX order	tests/markup-no-class.json, www-sacred components/BarProgress.tsx:71	kept
+2026-11-13T19:43:46Z	parity	pixel parity 77/80 on both versions; flaky modal slices differ run to run and pass alone; Solid 1 vs Solid 2 DOM dumps identical except svg xmlns and the random matrix slice	compiler strips xmlns from svg templates; no visual effect	parity-after logs, isolated reruns 0 pixels	accepted
+2026-11-13T19:43:46Z	ui-sdk	install @ui-sdk/solid and @ui-sdk/core, AGENTS.md note, skills add ui-sdk for claude-code	user request	node_modules/@ui-sdk/solid/docs, .claude/skills/ui-sdk	done

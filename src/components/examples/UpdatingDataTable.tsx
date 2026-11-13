@@ -1,4 +1,4 @@
-import { createSignal, onCleanup, onMount } from "solid-js";
+import { createSignal, onSettled } from "solid-js";
 import { DataTable } from "../DataTable.tsx";
 
 export interface UpdatingDataTableProps {
@@ -32,9 +32,9 @@ function tick(prevData: string[][]): string[][] {
 export function UpdatingDataTable(props: UpdatingDataTableProps) {
   const [tableData, setTableData] = createSignal(props.data);
 
-  onMount(() => {
+  onSettled(() => {
     const interval = setInterval(() => setTableData(tick), 1000);
-    onCleanup(() => clearInterval(interval));
+    return () => clearInterval(interval);
   });
 
   return <DataTable class={props.class} data={tableData()} />;

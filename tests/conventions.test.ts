@@ -25,6 +25,14 @@ const banned: Array<[string, RegExp]> = [
   ["ts-ignore", /@ts-(ignore|nocheck)/],
   ["use client directive", /["']use client["']/],
   ["key prop", /\skey=\{/],
+  [
+    "merge with a defaults literal (an explicit undefined wins, use mergeDefaults)",
+    /\bmerge\(\s*\{/,
+  ],
+  [
+    'aria boolean bound to a boolean (false removes the attribute, pass "true" or "false")',
+    /aria-(?:expanded|selected|checked|pressed|hidden|disabled)=\{(?![^}]*\?\s*"true"\s*:\s*"false")[^}"]*\}/,
+  ],
 ];
 
 const files = sourceFiles("src");

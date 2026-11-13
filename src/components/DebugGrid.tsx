@@ -1,7 +1,7 @@
-import { onCleanup, onMount } from "solid-js";
+import { onSettled } from "solid-js";
 
 export function DebugGrid(): null {
-  onMount(() => {
+  onSettled(() => {
     const debugGrid = document.createElement("div");
     let isVisible = false;
 
@@ -42,12 +42,12 @@ export function DebugGrid(): null {
     window.addEventListener("debugGridToggle", handleDebugGridToggle);
     window.addEventListener("resize", setGridHeight);
 
-    onCleanup(() => {
+    return () => {
       document.body.removeChild(debugGrid);
       window.removeEventListener("resize", setGridHeight);
       window.removeEventListener("debugGridToggle", handleDebugGridToggle);
       observer.disconnect();
-    });
+    };
   });
 
   return null;

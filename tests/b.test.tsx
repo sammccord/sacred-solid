@@ -1,5 +1,5 @@
 import { cleanup, fireEvent, render, screen } from "@solidjs/testing-library";
-import { createSignal } from "solid-js";
+import { createSignal, flush } from "solid-js";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vite-plus/test";
 import { BarProgress } from "../src/components/BarProgress.tsx";
 import { Button } from "../src/components/Button.tsx";
@@ -30,6 +30,12 @@ afterEach(() => {
   vi.useRealTimers();
   vi.unstubAllGlobals();
 });
+
+function textBefore(el: Element | null | undefined) {
+  let node = el?.previousSibling;
+  while (node?.nodeType === Node.COMMENT_NODE) node = node.previousSibling;
+  return node?.textContent;
+}
 
 function type(el: HTMLInputElement | HTMLTextAreaElement, value: string) {
   el.value = value;
@@ -94,6 +100,7 @@ describe("Input", () => {
     const displayed = container.querySelector('[class*="displayed"]') as HTMLElement;
     expect(displayed.textContent).toBe("one");
     setValue("three");
+    flush();
     expect(displayed.textContent).toBe("three");
     expect((container.querySelector("input") as HTMLInputElement).value).toBe("three");
   });
@@ -105,7 +112,7 @@ describe("Input", () => {
     input.focus();
     input.setSelectionRange(2, 2);
     fireEvent.keyUp(input, { key: "ArrowLeft" });
-    expect(displayed.querySelector('[class*="block"]')?.previousSibling?.textContent).toBe("he");
+    expect(textBefore(displayed.querySelector('[class*="block"]'))).toBe("he");
     expect(displayed.textContent).toBe("hello");
   });
 
@@ -118,8 +125,7 @@ describe("Input", () => {
       </>
     ));
     const input = container.querySelector("input") as HTMLInputElement;
-    const caretLeftOf = () =>
-      container.querySelector('[class*="block"]')?.previousSibling?.textContent;
+    const caretLeftOf = () => textBefore(container.querySelector('[class*="block"]'));
     input.focus();
     const down = new KeyboardEvent("keydown", {
       key: "ArrowDown",
@@ -130,6 +136,7 @@ describe("Input", () => {
     expect(down.defaultPrevented).toBe(true);
     expect(document.activeElement?.id).toBe("after");
     input.focus();
+    flush();
     expect(input.selectionStart).toBe(5);
     expect(caretLeftOf()).toBe("hello");
 
@@ -138,6 +145,7 @@ describe("Input", () => {
     );
     expect(document.activeElement?.id).toBe("before");
     input.focus();
+    flush();
     expect(input.selectionStart).toBe(0);
     expect(caretLeftOf()).toBe("");
   });
@@ -155,26 +163,26 @@ describe("TextArea", () => {
     expect(onChange).toHaveBeenCalledTimes(1);
   });
 
-  test("autoPlay types the string out one character per interval and stops", () => {
+  test("autoPlay types the string out one character per interval and stops", async () => {
     vi.useFakeTimers();
     const { container } = render(() => <TextArea autoPlay="abc" autoPlaySpeedMS={10} />);
     const displayed = container.querySelector('[class*="displayed"]') as HTMLElement;
     expect(displayed.textContent).toBe("");
-    vi.advanceTimersByTime(10);
+    await vi.advanceTimersByTimeAsync(10);
     expect(displayed.textContent).toBe("a");
-    vi.advanceTimersByTime(20);
+    await vi.advanceTimersByTimeAsync(20);
     expect(displayed.textContent).toBe("abc");
-    vi.advanceTimersByTime(100);
+    await vi.advanceTimersByTimeAsync(100);
     expect(displayed.textContent).toBe("abc");
   });
 
-  test("typing cancels autoPlay", () => {
+  test("typing cancels autoPlay", async () => {
     vi.useFakeTimers();
     const { container } = render(() => <TextArea autoPlay="abcdef" autoPlaySpeedMS={10} />);
     const area = container.querySelector("textarea") as HTMLTextAreaElement;
-    vi.advanceTimersByTime(20);
+    await vi.advanceTimersByTimeAsync(20);
     type(area, "zz");
-    vi.advanceTimersByTime(100);
+    await vi.advanceTimersByTimeAsync(100);
     expect(container.querySelector('[class*="displayed"]')?.textContent).toBe("zz");
   });
 
@@ -407,16 +415,16 @@ describe("BarProgress", () => {
     expect(bar.textContent).toBe("#" + "#".repeat(5));
   });
 
-  test("intervalRate cycles progress by ten and wraps after 100", () => {
+  test("intervalRate cycles progress by ten and wraps after 100", async () => {
     vi.useFakeTimers();
     render(() => <BarProgress intervalRate={100} />);
     const bar = screen.getByRole("progressbar");
     expect(bar.getAttribute("aria-valuenow")).toBe("0");
-    vi.advanceTimersByTime(300);
+    await vi.advanceTimersByTimeAsync(300);
     expect(bar.getAttribute("aria-valuenow")).toBe("30");
-    vi.advanceTimersByTime(700);
+    await vi.advanceTimersByTimeAsync(700);
     expect(bar.getAttribute("aria-valuenow")).toBe("100");
-    vi.advanceTimersByTime(100);
+    await vi.advanceTimersByTimeAsync(100);
     expect(bar.getAttribute("aria-valuenow")).toBe("0");
   });
 });
@@ -448,6 +456,7 @@ describe("DataTable", () => {
     const sibling = container.querySelectorAll("tr")[2]?.querySelectorAll("td")[1] as HTMLElement;
     expect(cell.className).not.toMatch(/changed/);
     setRowsData([data[0] ?? [], ["a", "9"], data[2] ?? []]);
+    flush();
     const after = container.querySelectorAll("tr")[1]?.querySelectorAll("td")[1] as HTMLElement;
     expect(after).toBe(cell);
     expect(cell.textContent).toBe("9");

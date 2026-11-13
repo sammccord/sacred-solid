@@ -1,4 +1,5 @@
-import { type JSX, Index, createMemo } from "solid-js";
+import type { JSX } from "@solidjs/web";
+import { For, createMemo } from "solid-js";
 
 export interface SphereProps {
   class?: string;
@@ -66,9 +67,9 @@ export function Sphere(props: SphereProps) {
       style={props.style}
     >
       <g fill="none" stroke="currentColor" stroke-width="1">
-        <Index each={paths()}>
+        <For keyed={false} each={paths()}>
           {(path) => <path d={path()} vector-effect="non-scaling-stroke" />}
-        </Index>
+        </For>
       </g>
     </svg>
   );

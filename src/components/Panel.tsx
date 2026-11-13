@@ -1,6 +1,7 @@
-import { type JSX, mergeProps, Show, splitProps } from "solid-js";
+import type { JSX } from "@solidjs/web";
+import { Show, omit } from "solid-js";
 import type { AugProps } from "../aug/index.ts";
-import { classNames, type SlotClasses } from "../common/utilities.ts";
+import { classNames, type SlotClasses, mergeDefaults } from "../common/utilities.ts";
 import { styleAttributes, type ThemeProps } from "../style/index.ts";
 import styles from "./Panel.module.css";
 
@@ -26,8 +27,9 @@ export interface PanelProps extends Omit<JSX.HTMLAttributes<HTMLElement>, "title
 }
 
 export function Panel(allProps: PanelProps) {
-  const props = mergeProps({ tone: "outline" as PanelTone }, allProps);
-  const [local, rest] = splitProps(props, [
+  const props = mergeDefaults({ tone: "outline" as PanelTone }, allProps);
+  const rest = omit(
+    props,
     "title",
     "icon",
     "meta",
@@ -38,35 +40,35 @@ export function Panel(allProps: PanelProps) {
     "theme",
     "class",
     "children",
-  ]);
+  );
 
   return (
     <section
-      class={classNames(styles.root, local.class)}
+      class={classNames(styles.root, props.class)}
       {...rest}
-      {...styleAttributes(local, rest.style)}
+      {...styleAttributes(props, rest.style)}
     >
       <Show
-        when={local.title !== undefined || local.icon !== undefined || local.meta !== undefined}
+        when={props.title !== undefined || props.icon !== undefined || props.meta !== undefined}
       >
-        <header class={classNames(styles.header, TONE_CLASS[local.tone], local.classes?.header)}>
-          <Show when={local.icon !== undefined}>
-            <span class={classNames(styles.icon, local.classes?.icon)}>{local.icon}</span>
+        <header class={classNames(styles.header, TONE_CLASS[props.tone], props.classes?.header)}>
+          <Show when={props.icon !== undefined}>
+            <span class={classNames(styles.icon, props.classes?.icon)}>{props.icon}</span>
           </Show>
-          <Show when={local.title !== undefined}>
-            <h2 class={classNames(styles.title, local.classes?.title)}>{local.title}</h2>
+          <Show when={props.title !== undefined}>
+            <h2 class={classNames(styles.title, props.classes?.title)}>{props.title}</h2>
           </Show>
           <span class={styles.gap} />
-          <Show when={local.meta !== undefined}>
-            <span class={classNames(styles.meta, local.classes?.meta)}>{local.meta}</span>
+          <Show when={props.meta !== undefined}>
+            <span class={classNames(styles.meta, props.classes?.meta)}>{props.meta}</span>
           </Show>
         </header>
       </Show>
       <div
-        class={classNames(styles.body, local.classes?.body)}
-        style={local.padding === undefined ? undefined : { padding: local.padding }}
+        class={classNames(styles.body, props.classes?.body)}
+        style={props.padding === undefined ? undefined : { padding: props.padding }}
       >
-        {local.children}
+        {props.children}
       </div>
     </section>
   );

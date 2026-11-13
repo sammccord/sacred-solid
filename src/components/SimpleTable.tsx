@@ -1,4 +1,4 @@
-import { Index, Show } from "solid-js";
+import { For, Show } from "solid-js";
 import type { AugProps } from "../aug/index.ts";
 import { styleAttributes, type ThemeProps } from "../style/index.ts";
 import { classNames } from "../common/utilities.ts";
@@ -32,23 +32,25 @@ export function SimpleTable(props: SimpleTableProps) {
         <table class={styles.root}>
           <thead>
             <tr>
-              <Index each={header()}>{(cell, i) => <td class={alignAt(i)}>{cell()}</td>}</Index>
+              <For keyed={false} each={header()}>
+                {(cell, i) => <td class={alignAt(i)}>{cell()}</td>}
+              </For>
             </tr>
           </thead>
           <tbody>
-            <Index each={rows()}>
+            <For keyed={false} each={rows()}>
               {(row) => (
-                <tr tabIndex={0}>
-                  <Index each={row()}>
+                <tr tabindex={0}>
+                  <For keyed={false} each={row()}>
                     {(cell, ci) => (
                       <td class={classNames(alignAt(ci), statusClass(cell())) || undefined}>
                         {cell()}
                       </td>
                     )}
-                  </Index>
+                  </For>
                 </tr>
               )}
-            </Index>
+            </For>
           </tbody>
         </table>
       </div>

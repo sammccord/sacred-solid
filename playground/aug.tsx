@@ -2,8 +2,9 @@ import "../src/styles/global-fonts.css";
 import "../src/styles/global.css";
 import "../src/themes/holo.css";
 
-import { createSignal, For, type JSX } from "solid-js";
-import { render } from "solid-js/web";
+import type { JSX } from "@solidjs/web";
+import { createSignal, For } from "solid-js";
+import { render } from "@solidjs/web";
 import type { AugProps } from "../src/aug/index.ts";
 import {
   onHandleAppearanceChange,

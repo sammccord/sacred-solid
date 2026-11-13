@@ -1,4 +1,4 @@
-import type { JSX } from "solid-js";
+import type { JSX } from "@solidjs/web";
 import type { AugProps } from "../src/aug/index.ts";
 import type { StyleProps, ThemeProps } from "../src/style/index.ts";
 import { ModalStack } from "../src/components/ModalStack.tsx";

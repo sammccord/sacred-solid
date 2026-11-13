@@ -1,3 +1,4 @@
+import { flush } from "solid-js";
 import { fireEvent, render } from "@solidjs/testing-library";
 import { afterEach, beforeEach, expect, test, vi } from "vite-plus/test";
 import { ScrollArea } from "../src/components/ScrollArea.tsx";
@@ -86,9 +87,11 @@ test("a resize of the viewport or the content measures again, and cleanup discon
   expect(observers[0]?.targets).toHaveLength(2);
   size(viewport, { scrollHeight: 400, clientHeight: 100 });
   observers[0]!.callback();
+  flush();
   expect(edges(viewport)).toEqual([false, true]);
   size(viewport, { scrollHeight: 90, clientHeight: 100 });
   observers[0]!.callback();
+  flush();
   expect(edges(viewport)).toEqual([false, false]);
   unmount();
   expect(observers[0]?.disconnected).toBe(true);

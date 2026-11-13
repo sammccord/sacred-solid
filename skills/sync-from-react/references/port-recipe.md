@@ -53,16 +53,17 @@ State and effects:
 
 - `useState` becomes `createSignal`. Read with `count()`, write with `setCount(...)`.
 - Derived values are plain functions or `createMemo`. Do not copy props into signals unless the original did so to own the value (for example `defaultValue`).
-- `useEffect(() => {}, [])` becomes `onMount`. Cleanup goes in `onCleanup`.
-- `useEffect` with dependencies becomes `createEffect`. Solid tracks what you read. Use `on(...)` only to make tracking explicit.
+- This port runs on Solid 2. Read `node_modules/solid-js/skills/solid-2.0/SKILL.md` before writing Solid code.
+- `useEffect(() => {}, [])` becomes `onSettled`. Return the cleanup from the callback. `onCleanup` inside `onSettled` throws.
+- `useEffect` with dependencies becomes `createEffect(compute, apply)`. The compute reads the dependencies and returns them, the apply runs the side effect and returns its cleanup.
 - `useRef` for a DOM node becomes `let el: HTMLDivElement | undefined;` and `ref={(node) => (el = node)}`. The bare `ref={el}` form trips the `no-unassigned-vars` lint. For a mutable value that is not reactive, use a plain `let`.
-- Every `addEventListener`, `setInterval`, `setTimeout`, `requestAnimationFrame` gets an `onCleanup`.
+- Every `addEventListener`, `setInterval`, `setTimeout`, `requestAnimationFrame` gets a cleanup, returned from `onSettled` or the effect's apply.
 - `useId` becomes `createUniqueId`.
 
 Props:
 
 - Never destructure props. It kills reactivity. Read `props.x` where used.
-- Use `splitProps` to separate local props from a rest spread. Use `mergeProps` for defaults.
+- Use `omit(props, ...keys)` for a rest spread and keep reading `props.x` for the omitted keys. Use `mergeDefaults` from `src/common/utilities.ts` for default props. Solid's `merge` lets an explicit `undefined` replace the default, React's default parameters do not.
 - `children` is `JSX.Element`. Pass `props.children` straight through. Use the `children()` helper from `solid-js` only when you must inspect or reuse it.
 - `React.cloneElement` and `React.Children` do not exist. Restructure to context or a prop.
 - Where the React props extended `React.HTMLAttributes<T>`, extend `JSX.HTMLAttributes<T>` (or the specific `JSX.ButtonHTMLAttributes` etc.).
@@ -71,13 +72,14 @@ Props:
 
 JSX differences that change output:
 
-- `className` becomes `class`. `htmlFor` becomes `for`. `tabIndex` stays `tabIndex`. `dangerouslySetInnerHTML={{ __html }}` becomes `innerHTML={...}`. Drop every `key=`.
+- `className` becomes `class`. `htmlFor` becomes `for`. `tabIndex` becomes `tabindex`. `dangerouslySetInnerHTML={{ __html }}` becomes `innerHTML={...}`. Drop every `key=`.
 - Style object keys are CSS property names in kebab-case: `{ "margin-top": "8px" }`. camelCase keys are silently ignored by Solid.
 - React appends `px` to bare numbers for most properties. Solid does not. Write `width: "100px"` or `` `${n}px` ``. Unitless properties (`opacity`, `z-index`, `flex`, `line-height`) stay numbers.
 - React `onChange` on text inputs, textareas, and selects fires on every keystroke. Solid `onChange` fires on commit. Use `onInput` to keep the React behavior. Checkboxes and radios: `onChange` is fine.
 - React `onFocus` and `onBlur` bubble. Solid's do not. Use `onFocusIn` and `onFocusOut` when the original relied on bubbling from children.
-- Solid delegates most events to `document`. If the code needs `stopPropagation` to stop a native `document` listener, or the order versus a `document.addEventListener` matters, use `on:click` (native binding) instead of `onClick`.
-- Conditional rendering: ternaries and `&&` work, but prefer `<Show when={...}>` for elements and `<For each={...}>` for lists of objects. Use `<Index each={...}>` when the React code keyed by index over primitives or when rows are rebuilt from fresh arrays each tick.
+- Solid delegates most events to the render root. If the code needs `stopPropagation` to stop a native `document` listener, or the order versus a `document.addEventListener` matters, bind natively with a ref callback that calls `addEventListener`.
+- An attribute bound to `false` is removed. React writes `aria-expanded="false"`, so pass `"true"` or `"false"` strings to `aria-*` booleans.
+- Conditional rendering: ternaries and `&&` work, but prefer `<Show when={...}>` for elements and `<For each={...}>` for lists of objects. Use `<For each={...} keyed={false}>` when the React code keyed by index over primitives or when rows are rebuilt from fresh arrays each tick.
 - Controlled inputs: bind `value={props.value}` or `checked={...}`. Solid does not revert a DOM value the way React does when state is not updated. Do not emulate it.
 - A component function runs once. Anything that must react goes in a function, memo, effect, or JSX expression. Reading a signal in the component body outside those does not update.
 
@@ -93,10 +95,10 @@ Style:
 
 ## Traps the first port hit
 
-- Overlays portal with `BodyPortal` (`src/components/BodyPortal.tsx`). Solid's `Portal` adds a wrapper `<div>` that React never rendered.
+- Overlays portal with `BodyPortal` (`src/components/BodyPortal.tsx`), Solid's `Portal` mounted on `document.body`. It renders no wrapper element and registers the body for delegated events. Inserting into `document.body` by hand leaves the portaled content without event handlers.
 - A literal `{" "}` merges into neighboring text in Solid and moves layout by a sub-pixel. Where React kept the space as its own text node and the pixel diff shows it, use `SPACE` from `src/common/utilities.ts`.
-- React batches state updates for you. Wrap multi-signal updates that must land together in `batch`.
-- React effects run a task after commit, Solid effects run synchronously. Code that depended on the delay (focus after open, measuring after mount) needs `onMount` or an effect that reads the ref.
+- Solid 2 batches writes until the next microtask, as React does. A read right after a write returns the old value. Tests call `flush()` before asserting. `tests/setup.ts` flushes after every `fireEvent`.
+- Code that measures or focuses after mount (focus after open, measuring after mount) goes in `onSettled` or an effect's apply.
 - `isEmpty` treats any object as empty, so a JSX element passed where the original guards with `isEmpty` is silently dropped in React. Reproduce the guard, type the prop honestly, and report the React-side bug.
 
 ## Behavior parity checklist

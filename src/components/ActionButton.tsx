@@ -1,4 +1,5 @@
-import { type JSX, Show } from "solid-js";
+import type { JSX } from "@solidjs/web";
+import { Show } from "solid-js";
 import type { AugProps } from "../aug/index.ts";
 import { styleAttributes, type ThemeProps } from "../style/index.ts";
 import { classNames, isEmpty } from "../common/utilities.ts";
@@ -29,7 +30,7 @@ export function ActionButton(props: ActionButtonProps) {
           props.onClick?.();
         }
       }}
-      tabIndex={0}
+      tabindex={0}
       ref={props.ref}
       role="button"
     >

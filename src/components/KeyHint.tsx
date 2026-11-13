@@ -1,4 +1,5 @@
-import { For, type JSX, splitProps } from "solid-js";
+import type { JSX } from "@solidjs/web";
+import { For, omit } from "solid-js";
 import type { AugProps } from "../aug/index.ts";
 import { classNames, type SlotClasses } from "../common/utilities.ts";
 import { styleAttributes, type ThemeProps } from "../style/index.ts";
@@ -28,18 +29,18 @@ const CAP_CLASS: Record<CapKind, string> = {
 };
 
 export function KeyHint(props: KeyHintProps) {
-  const [local, rest] = splitProps(props, ["class", "keys", "classes", "aug", "theme", "children"]);
+  const rest = omit(props, "class", "keys", "classes", "aug", "theme", "children");
 
   return (
     <div
-      class={classNames(styles.root, local.class)}
+      class={classNames(styles.root, props.class)}
       {...rest}
-      {...styleAttributes(local, rest.style)}
+      {...styleAttributes(props, rest.style)}
     >
-      <For each={local.keys}>
-        {(key) => <kbd class={classNames(CAP_CLASS[capKind(key)], local.classes?.cap)}>{key}</kbd>}
+      <For each={props.keys}>
+        {(key) => <kbd class={classNames(CAP_CLASS[capKind(key)], props.classes?.cap)}>{key}</kbd>}
       </For>
-      <span class={classNames(styles.label, local.classes?.label)}>{local.children}</span>
+      <span class={classNames(styles.label, props.classes?.label)}>{props.children}</span>
     </div>
   );
 }

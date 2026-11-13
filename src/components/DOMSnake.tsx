@@ -1,13 +1,4 @@
-import {
-  For,
-  batch,
-  createEffect,
-  createMemo,
-  createSignal,
-  on,
-  onCleanup,
-  onMount,
-} from "solid-js";
+import { For, createEffect, createMemo, createSignal, onSettled } from "solid-js";
 import type { AugProps } from "../aug/index.ts";
 import { styleAttributes, type ThemeProps } from "../style/index.ts";
 import { ActionButton } from "./ActionButton.tsx";
@@ -73,41 +64,37 @@ export function DOMSnake(props: DOMSnakeProps) {
   };
 
   const moveSnake = () => {
-    batch(() => {
-      setDirection(nextDirection);
-      const current = snake();
-      const newHead: Position = {
-        x: current[0].x + nextDirection.x,
-        y: current[0].y + nextDirection.y,
-      };
+    setDirection(nextDirection);
+    const current = snake();
+    const newHead: Position = {
+      x: current[0].x + nextDirection.x,
+      y: current[0].y + nextDirection.y,
+    };
 
-      if (checkCollision(newHead)) {
-        setIsGameOver(true);
-        return;
-      }
+    if (checkCollision(newHead)) {
+      setIsGameOver(true);
+      return;
+    }
 
-      const newSnake: Position[] = [newHead, ...current];
-      const currentFood = food();
-      if (currentFood && newHead.x === currentFood.x && newHead.y === currentFood.y) {
-        setFood(generateFood());
-        setSpeed((prev) => Math.max(prev - 5, 50));
-      } else {
-        newSnake.pop();
-      }
-      setSnake(newSnake);
-    });
+    const newSnake: Position[] = [newHead, ...current];
+    const currentFood = food();
+    if (currentFood && newHead.x === currentFood.x && newHead.y === currentFood.y) {
+      setFood(generateFood());
+      setSpeed((prev) => Math.max(prev - 5, 50));
+    } else {
+      newSnake.pop();
+    }
+    setSnake(newSnake);
   };
 
   const restartGame = () => {
-    batch(() => {
-      const newFood = generateFood();
-      setSnake(initialSnake());
-      setFood(newFood);
-      setDirection(DIRECTIONS.ArrowRight);
-      setSpeed(startSpeed());
-      nextDirection = DIRECTIONS.ArrowRight;
-      setIsGameOver(false);
-    });
+    const newFood = generateFood();
+    setSnake(initialSnake());
+    setFood(newFood);
+    setDirection(DIRECTIONS.ArrowRight);
+    setSpeed(startSpeed());
+    nextDirection = DIRECTIONS.ArrowRight;
+    setIsGameOver(false);
   };
 
   const onHandleClick = (keyName: string) => {
@@ -117,18 +104,18 @@ export function DOMSnake(props: DOMSnakeProps) {
     }
   };
 
-  onMount(() => {
+  onSettled(() => {
     setFood(generateFood());
   });
 
-  onMount(() => {
+  onSettled(() => {
     if (gameContainer) {
       gameContainer.tabIndex = 0;
       gameContainer.focus();
     }
   });
 
-  onMount(() => {
+  onSettled(() => {
     const handleKeyDown = (e: KeyboardEvent): void => {
       if (!gameContainer?.contains(document.activeElement)) {
         gameContainer?.focus();
@@ -143,17 +130,19 @@ export function DOMSnake(props: DOMSnakeProps) {
       }
     };
     window.addEventListener("keydown", handleKeyDown);
-    onCleanup(() => window.removeEventListener("keydown", handleKeyDown));
+    return () => window.removeEventListener("keydown", handleKeyDown);
   });
 
-  createEffect(() => {
-    snake();
-    if (isGameOver()) return;
-    const interval = setInterval(moveSnake, speed());
-    onCleanup(() => clearInterval(interval));
-  });
+  createEffect(
+    () => [snake(), isGameOver(), speed()] as const,
+    ([, gameOver, delay]) => {
+      if (gameOver) return;
+      const interval = setInterval(moveSnake, delay);
+      return () => clearInterval(interval);
+    },
+  );
 
-  createEffect(on(isGameOver, restartGame));
+  createEffect(isGameOver, () => restartGame());
 
   return (
     <div class={classNames(styles.container, props.class)} {...styleAttributes(props)}>

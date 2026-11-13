@@ -4,10 +4,11 @@ To make a component in `src/components/` take `aug` and `theme`, spread `styleAt
 
 ## Spread styleAttributes on the root
 
-Declare both props, split them off, and spread the result after `rest`.
+Declare both props, omit them from `rest`, and spread the result after `rest`.
 
 ```tsx
-import { type JSX, splitProps } from "solid-js";
+import type { JSX } from "@solidjs/web";
+import { omit } from "solid-js";
 import type { AugProps } from "../aug/index.ts";
 import { classNames } from "../common/utilities.ts";
 import { styleAttributes, type ThemeProps } from "../style/index.ts";
@@ -19,15 +20,15 @@ export interface PanelProps extends JSX.HTMLAttributes<HTMLDivElement> {
 }
 
 export function Panel(props: PanelProps) {
-  const [local, rest] = splitProps(props, ["class", "aug", "theme", "children"]);
+  const rest = omit(props, "class", "aug", "theme", "children");
 
   return (
     <div
-      class={classNames(styles.root, local.class)}
+      class={classNames(styles.root, props.class)}
       {...rest}
-      {...styleAttributes(local, rest.style)}
+      {...styleAttributes(props, rest.style)}
     >
-      {local.children}
+      {props.children}
     </div>
   );
 }
@@ -40,7 +41,7 @@ If the component reads `props` whole and has no `rest`, pass the props object, a
 ```tsx
 import type { AugProps } from "../aug/index.ts";
 import { styleAttributes, type ThemeProps } from "../style/index.ts";
-import type { JSX } from "solid-js";
+import type { JSX } from "@solidjs/web";
 
 interface BoxProps {
   aug?: AugProps;

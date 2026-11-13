@@ -1,4 +1,5 @@
-import { type JSX, splitProps } from "solid-js";
+import type { JSX } from "@solidjs/web";
+import { omit } from "solid-js";
 import type { AugProps } from "../aug/index.ts";
 import { classNames } from "../common/utilities.ts";
 import { styleAttributes, type ThemeProps } from "../style/index.ts";
@@ -14,7 +15,8 @@ export interface SurfaceProps extends Omit<JSX.HTMLAttributes<HTMLDivElement>, "
 }
 
 export function Surface(props: SurfaceProps) {
-  const [local, rest] = splitProps(props, [
+  const rest = omit(
+    props,
     "glow",
     "glowSize",
     "blur",
@@ -23,24 +25,24 @@ export function Surface(props: SurfaceProps) {
     "theme",
     "class",
     "children",
-  ]);
+  );
 
   const glowStyle = (): JSX.CSSProperties | undefined =>
-    local.glow === undefined
+    props.glow === undefined
       ? undefined
-      : { filter: `drop-shadow(0 0 ${local.glowSize ?? "6px"} ${local.glow})` };
+      : { filter: `drop-shadow(0 0 ${props.glowSize ?? "6px"} ${props.glow})` };
 
   const backdropStyle = (): JSX.CSSProperties | undefined =>
-    local.blur === undefined
+    props.blur === undefined
       ? undefined
       : {
-          "backdrop-filter": `blur(${local.blur})`,
-          "-webkit-backdrop-filter": `blur(${local.blur})`,
+          "backdrop-filter": `blur(${props.blur})`,
+          "-webkit-backdrop-filter": `blur(${props.blur})`,
         };
 
   const shape = (): AugProps | undefined => {
-    if (local.aug === undefined) return undefined;
-    const [, clip] = splitProps(local.aug, ["border", "inlay"]);
+    if (props.aug === undefined) return undefined;
+    const clip = omit(props.aug, "border", "inlay");
     return clip;
   };
 
@@ -53,11 +55,11 @@ export function Surface(props: SurfaceProps) {
       />
       <div class={styles.glow} style={glowStyle()}>
         <div
-          class={classNames(styles.surface, local.class)}
+          class={classNames(styles.surface, props.class)}
           {...rest}
-          {...styleAttributes(local, local.style)}
+          {...styleAttributes(props, props.style)}
         >
-          {local.children}
+          {props.children}
         </div>
       </div>
     </div>

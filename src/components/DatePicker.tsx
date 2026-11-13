@@ -1,4 +1,4 @@
-import { batch, createSignal, For, Index } from "solid-js";
+import { createSignal, For } from "solid-js";
 import type { AugProps } from "../aug/index.ts";
 import { styleAttributes, type ThemeProps } from "../style/index.ts";
 import styles from "./DatePicker.module.css";
@@ -53,10 +53,8 @@ export function DatePicker(props: DatePickerProps) {
       newMonth = 12;
       newYear--;
     }
-    batch(() => {
-      setMonth(newMonth);
-      setYear(newYear);
-    });
+    setMonth(newMonth);
+    setYear(newYear);
   };
 
   const onSwitchNextMonth = () => {
@@ -66,10 +64,8 @@ export function DatePicker(props: DatePickerProps) {
       newMonth = 1;
       newYear++;
     }
-    batch(() => {
-      setMonth(newMonth);
-      setYear(newYear);
-    });
+    setMonth(newMonth);
+    setYear(newYear);
   };
 
   return (
@@ -99,19 +95,23 @@ export function DatePicker(props: DatePickerProps) {
         <For each={WEEKDAYS}>{(day) => <div class={styles.cell}>{day}</div>}</For>
       </div>
       <div class={styles.days}>
-        <Index each={range(startingWeekday())}>{() => <div class={styles.dayCell} />}</Index>
+        <For keyed={false} each={range(startingWeekday())}>
+          {() => <div class={styles.dayCell} />}
+        </For>
         <For each={range(daysInMonth()).map((i) => i + 1)}>
           {(day) => (
             <div
               class={styles.cell}
-              tabIndex={0}
+              tabindex={0}
               aria-label={`${currentYear()}-${pad(currentMonth())}-${pad(day)}`}
             >
               {pad(day)}
             </div>
           )}
         </For>
-        <Index each={range(trailingCells())}>{() => <div class={styles.dayCell} />}</Index>
+        <For keyed={false} each={range(trailingCells())}>
+          {() => <div class={styles.dayCell} />}
+        </For>
       </div>
     </div>
   );

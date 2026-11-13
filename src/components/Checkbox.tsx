@@ -1,4 +1,5 @@
-import { createSignal, type JSX } from "solid-js";
+import type { JSX } from "@solidjs/web";
+import { createSignal } from "solid-js";
 import type { AugProps } from "../aug/index.ts";
 import { styleAttributes, type ThemeProps } from "../style/index.ts";
 import { classNames, findNextFocusable } from "../common/utilities.ts";
@@ -76,7 +77,7 @@ export function Checkbox(props: CheckboxProps) {
           onKeyDown={handleKeyDown}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
-          tabIndex={0}
+          tabindex={0}
           ref={inputRef}
         />
         <label class={styles.figure} for={checkboxId()}>

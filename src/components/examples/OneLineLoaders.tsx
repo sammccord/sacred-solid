@@ -1,4 +1,4 @@
-import { For, createSignal, onCleanup, onMount } from "solid-js";
+import { For, createSignal, onSettled } from "solid-js";
 import { Card } from "../Card.tsx";
 
 const SPINNERS: { frames: readonly string[]; interval: number }[] = [
@@ -291,7 +291,7 @@ export function OneLineLoaders(props: { class?: string }) {
     elapsed: 0,
   });
 
-  onMount(() => {
+  onSettled(() => {
     let lastTime = performance.now();
 
     const accum = new Float64Array(SPINNERS.length);
@@ -345,7 +345,7 @@ export function OneLineLoaders(props: { class?: string }) {
     };
 
     const intervalId = window.setInterval(tick, 60);
-    onCleanup(() => window.clearInterval(intervalId));
+    return () => window.clearInterval(intervalId);
   });
 
   const dots = () => DOT_STRINGS[state().dotPhase];

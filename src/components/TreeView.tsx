@@ -1,9 +1,8 @@
+import type { JSX } from "@solidjs/web";
 import {
   type Accessor,
-  type JSX,
   Show,
   children as resolveChildren,
-  createComputed,
   createContext,
   createEffect,
   createSignal,
@@ -34,11 +33,16 @@ interface TreeBranchContext {
   parentLines: Accessor<boolean[]>;
 }
 
-const TreeBranchContext = createContext<TreeBranchContext>();
+const TreeBranchContext = createContext<TreeBranchContext | null>(null);
 
 function TreeItems(props: { children?: JSX.Element; onResolve: (last: unknown) => void }) {
   const resolved = resolveChildren(() => props.children);
-  createComputed(() => props.onResolve(resolved.toArray().at(-1)));
+  createEffect(
+    () => resolved.toArray().at(-1),
+    (last) => {
+      props.onResolve(last);
+    },
+  );
 
   return (
     <Show when={resolved.toArray().length > 0}>
@@ -54,9 +58,12 @@ export function TreeView(props: TreeViewProps) {
   const [isNestedLast, setIsNestedLast] = createSignal(false);
   let root: HTMLDivElement | undefined;
 
-  createEffect(() => {
-    if (branch) setIsNestedLast(branch.lastChild() === root);
-  });
+  createEffect(
+    () => branch?.lastChild(),
+    (last) => {
+      if (branch) setIsNestedLast(last === root);
+    },
+  );
 
   const isLastChild = () => (branch ? isNestedLast() : (props.isLastChild ?? false));
   const parentLines = () => (branch ? branch.parentLines() : (props.parentLines ?? []));
@@ -84,7 +91,7 @@ export function TreeView(props: TreeViewProps) {
       {...styleAttributes(props, props.style)}
     >
       <div
-        tabIndex={0}
+        tabindex={0}
         role="button"
         onClick={onToggleShow}
         onKeyDown={(e) => {
@@ -94,16 +101,16 @@ export function TreeView(props: TreeViewProps) {
           }
         }}
         class={styles.item}
-        aria-expanded={show()}
+        aria-expanded={show() ? "true" : "false"}
       >
         {prefix()}
         {icon()}
         {props.title}
       </div>
       <Show when={show()}>
-        <TreeBranchContext.Provider value={childBranch}>
+        <TreeBranchContext value={childBranch}>
           <TreeItems onResolve={setLastChild}>{props.children}</TreeItems>
-        </TreeBranchContext.Provider>
+        </TreeBranchContext>
       </Show>
     </div>
   );

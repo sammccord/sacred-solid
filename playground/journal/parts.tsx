@@ -1,4 +1,4 @@
-import type { JSX } from "solid-js";
+import type { JSX } from "@solidjs/web";
 import { Avatar } from "../../src/components/Avatar.tsx";
 import type { Emblem } from "./quests.ts";
 import css from "./journal.module.css";

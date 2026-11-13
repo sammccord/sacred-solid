@@ -1,4 +1,5 @@
-import { createSignal, type JSX, onCleanup, onMount, Show, splitProps } from "solid-js";
+import type { JSX } from "@solidjs/web";
+import { createSignal, onSettled, Show, omit } from "solid-js";
 import type { AugProps } from "../aug/index.ts";
 import { classNames, type SlotClasses } from "../common/utilities.ts";
 import { styleAttributes, type ThemeProps } from "../style/index.ts";
@@ -28,8 +29,9 @@ interface Edges {
   scrollable: boolean;
 }
 
-export function ScrollArea(allProps: ScrollAreaProps) {
-  const [local, rest] = splitProps(allProps, [
+export function ScrollArea(props: ScrollAreaProps) {
+  const rest = omit(
+    props,
     "class",
     "fade",
     "scrollbar",
@@ -38,7 +40,7 @@ export function ScrollArea(allProps: ScrollAreaProps) {
     "aug",
     "theme",
     "children",
-  ]);
+  );
   const [edges, setEdges] = createSignal<Edges>({
     up: false,
     down: false,
@@ -48,7 +50,7 @@ export function ScrollArea(allProps: ScrollAreaProps) {
   });
   let viewport = undefined as HTMLDivElement | undefined;
   let content = undefined as HTMLDivElement | undefined;
-  const mode = () => local.scrollbar ?? "native";
+  const mode = () => props.scrollbar ?? "native";
 
   const measure = () => {
     if (viewport === undefined) return;
@@ -68,43 +70,43 @@ export function ScrollArea(allProps: ScrollAreaProps) {
     });
   };
 
-  onMount(() => {
+  onSettled(() => {
     measure();
     const observer = new ResizeObserver(measure);
     observer.observe(viewport!);
     observer.observe(content!);
-    onCleanup(() => observer.disconnect());
+    return () => observer.disconnect();
   });
 
   return (
     <div
-      class={classNames(styles.root, local.class)}
+      class={classNames(styles.root, props.class)}
       {...rest}
-      {...styleAttributes(local, rest.style)}
+      {...styleAttributes(props, rest.style)}
     >
       <div
         ref={(element) => {
           viewport = element;
-          local.viewportRef?.(element);
+          props.viewportRef?.(element);
         }}
         class={classNames(
           styles.viewport,
           mode() !== "native" && styles.bare,
-          local.fade && styles.fade,
-          local.classes?.viewport,
+          props.fade && styles.fade,
+          props.classes?.viewport,
         )}
-        data-fade-top={local.fade && edges().up ? "" : undefined}
-        data-fade-bottom={local.fade && edges().down ? "" : undefined}
+        data-fade-top={props.fade && edges().up ? "" : undefined}
+        data-fade-bottom={props.fade && edges().down ? "" : undefined}
         onScroll={measure}
       >
-        <div ref={content} class={classNames(styles.content, local.classes?.content)}>
-          {local.children}
+        <div ref={content} class={classNames(styles.content, props.classes?.content)}>
+          {props.children}
         </div>
       </div>
       <Show when={mode() === "rail" && edges().scrollable}>
-        <div class={classNames(styles.rail, local.classes?.rail)} aria-hidden="true">
+        <div class={classNames(styles.rail, props.classes?.rail)} aria-hidden="true">
           <div
-            class={classNames(styles.thumb, local.classes?.thumb)}
+            class={classNames(styles.thumb, props.classes?.thumb)}
             style={{
               top: `${edges().thumbTop}px`,
               height: `${edges().thumbHeight}px`,

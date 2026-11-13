@@ -45,23 +45,28 @@
     "augmented-ui": "^2.0.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.29.13",
     "@changesets/cli": "^3.0.3",
-    "@solidjs/testing-library": "^0.8.10",
+    "@solidjs/babel-plugin": "^2.0.0-rc.21",
+    "@solidjs/testing-library": "^1.0.0-rc.2",
+    "@solidjs/vite-plugin": "^3.0.0-next.57",
+    "@solidjs/web": "^2.0.0-rc.21",
     "@types/node": "^26.6.5",
     "@types/pixelmatch": "^5.2.6",
     "@types/pngjs": "^6.0.5",
+    "@ui-sdk/core": "^0.1.0-beta.1",
+    "@ui-sdk/solid": "^0.1.0-beta.1",
     "jsdom": "^31.0.0",
     "pixelmatch": "^8.0.0",
     "playwright": "^1.65.0",
     "pngjs": "^7.0.0",
-    "rolldown-plugin-solid": "^0.2.1",
-    "solid-js": "^1.9.18",
+    "solid-js": "^2.0.0-rc.21",
     "typescript": "^7.0.2",
-    "vite-plugin-solid": "^2.11.15",
     "vite-plus": "^1.2.0"
   },
   "peerDependencies": {
-    "solid-js": "^1.9.0"
+    "@solidjs/web": ">=2.0.0-rc.21 <3",
+    "solid-js": ">=2.0.0-rc.21 <3"
   },
   "overrides": {
     "vite": "npm:@voidzero-dev/vite-plus-core@1.5.0"

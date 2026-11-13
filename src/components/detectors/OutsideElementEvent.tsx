@@ -1,4 +1,5 @@
-import { type JSX, onCleanup, onMount } from "solid-js";
+import type { JSX } from "@solidjs/web";
+import { onSettled } from "solid-js";
 
 export interface OutsideElementEventProps {
   class?: string;
@@ -22,14 +23,14 @@ export function OutsideElementEvent(props: OutsideElementEventProps) {
     }
   };
 
-  onMount(() => {
+  onSettled(() => {
     document.addEventListener("mousedown", handleOutsideEvent);
     document.addEventListener("touchstart", handleOutsideEvent);
 
-    onCleanup(() => {
+    return () => {
       document.removeEventListener("mousedown", handleOutsideEvent);
       document.removeEventListener("touchstart", handleOutsideEvent);
-    });
+    };
   });
 
   return (

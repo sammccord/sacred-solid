@@ -1,4 +1,4 @@
-import { createMemo, onCleanup, onMount } from "solid-js";
+import { createMemo, onSettled } from "solid-js";
 import type { AugProps } from "../../aug/index.ts";
 import { styleAttributes, type ThemeProps } from "../../style/index.ts";
 import {
@@ -137,11 +137,12 @@ const FONTS = [
   { className: "font-use-ubuntu-mono", label: "Ubuntu Sans Mono 1.006 [UBL]" },
 ];
 
-const FONT_ITEMS: ActionBarItem["items"] = FONTS.map(({ className, label }) => ({
-  icon: "⊹",
-  children: <span class={className}>{label}</span>,
-  onClick: () => onHandleFontChange(className === DEFAULT_FONT_CLASS ? "" : className),
-}));
+const fontItems = (): ActionBarItem["items"] =>
+  FONTS.map(({ className, label }) => ({
+    icon: "⊹",
+    children: <span class={className}>{label}</span>,
+    onClick: () => onHandleFontChange(className === DEFAULT_FONT_CLASS ? "" : className),
+  }));
 
 const APPEARANCE_ITEMS: ActionBarItem["items"] = [
   { icon: "⊹", children: "Light", onClick: () => onHandleAppearanceChange("") },
@@ -165,8 +166,8 @@ const MODE_ITEMS: ActionBarItem["items"] = MODES.map(([label, className]) => ({
   onClick: () => onHandleAppearanceModeChange(className),
 }));
 
-const DEFAULT_ITEMS: ActionBarItem[] = [
-  { hotkey: "⌃+O", body: "Fonts", openHotkey: "ctrl+o", items: FONT_ITEMS },
+const defaultItems = (): ActionBarItem[] => [
+  { hotkey: "⌃+O", body: "Fonts", openHotkey: "ctrl+o", items: fontItems() },
   { hotkey: "⌃+A", body: "Appearance", openHotkey: "ctrl+a", items: APPEARANCE_ITEMS },
   { hotkey: "⌃+T", body: "Mode", openHotkey: "ctrl+t", items: MODE_ITEMS },
   {
@@ -194,7 +195,7 @@ export function DefaultActionBar(props: DefaultActionBarProps) {
 
   createGlobalNavigationHotkeys();
 
-  onMount(() => {
+  onSettled(() => {
     const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
 
     const applyTheme = (event: MediaQueryList | MediaQueryListEvent) => {
@@ -205,12 +206,13 @@ export function DefaultActionBar(props: DefaultActionBarProps) {
 
     prefersDark.addEventListener("change", applyTheme);
 
-    onCleanup(() => {
+    return () => {
       prefersDark.removeEventListener("change", applyTheme);
-    });
+    };
   });
 
-  const items = createMemo(() => [...DEFAULT_ITEMS, ...(props.items ?? [])]);
+  const defaults = defaultItems();
+  const items = createMemo(() => [...defaults, ...(props.items ?? [])]);
 
   return (
     <div class={classNames(styles.root, props.class)} {...styleAttributes(props)}>

@@ -1,5 +1,5 @@
 import { cleanup, render } from "@solidjs/testing-library";
-import { createSignal } from "solid-js";
+import { createSignal, flush } from "solid-js";
 import { afterEach, describe, expect, test, vi } from "vite-plus/test";
 import {
   createHotkeys,
@@ -96,6 +96,7 @@ describe("createHotkeys", () => {
     press({ key: "a", code: "KeyA" });
     expect(callback).toHaveBeenCalledTimes(1);
     setKeys("b");
+    flush();
     press({ key: "a", code: "KeyA" });
     expect(callback).toHaveBeenCalledTimes(1);
     press({ key: "b", code: "KeyB" });
@@ -122,6 +123,7 @@ describe("createHotkeys", () => {
     expect(inMenu).toHaveBeenCalledTimes(1);
     expect(inOther).not.toHaveBeenCalled();
     context.enableScope("other");
+    flush();
     press({ key: "z", code: "KeyZ" });
     expect(inOther).toHaveBeenCalledTimes(1);
   });
@@ -145,6 +147,7 @@ describe("createHotkeys", () => {
     ));
     expect(registry.hotkeys().map((h) => h.description)).toEqual(["palette"]);
     setMounted(false);
+    flush();
     expect(registry.hotkeys()).toEqual([]);
   });
 

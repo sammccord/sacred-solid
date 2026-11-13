@@ -1,4 +1,4 @@
-import type { JSX } from "solid-js";
+import type { JSX } from "@solidjs/web";
 import { collectAug } from "../aug/collect.ts";
 import type { AugProps } from "../aug/index.ts";
 import { type ThemeCssVar, type ThemeTokenKey, themeTokens } from "../theme/tokens.ts";
@@ -55,12 +55,12 @@ function mergeStyle(
 
 export function styleAttributes(
   props: StyleProps,
-  style?: JSX.CSSProperties | string,
+  style?: JSX.CSSProperties | string | false,
 ): StyleAttributes {
   const aug = props.aug === undefined ? undefined : collectAug(props.aug);
   const merged = mergeStyle(
     { ...aug?.vars, ...(props.theme === undefined ? undefined : themeVars(props.theme)) },
-    style,
+    style === false ? undefined : style,
     props.theme?.ink !== undefined,
   );
   return {

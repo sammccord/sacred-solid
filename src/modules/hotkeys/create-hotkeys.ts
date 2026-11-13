@@ -1,5 +1,5 @@
 //NOTE(jimmylee): ported from https://github.com/JohannesKlauss/react-hotkeys-hook/blob/main/src/useHotkeys.ts
-import { type Accessor, createEffect, createMemo, onCleanup } from "solid-js";
+import { type Accessor, createEffect, createMemo } from "solid-js";
 import { deepEqual } from "../../common/utilities.ts";
 import { useHotkeysContext } from "./hotkeys-provider.tsx";
 import {
@@ -30,7 +30,7 @@ export function createHotkeys(
   options?: MaybeAccessor<Options | undefined>,
 ): void {
   const { enabledScopes, addHotkey, removeHotkey } = useHotkeysContext();
-  const memoisedOptions = createMemo(() => read(options), undefined, { equals: deepEqual });
+  const memoisedOptions = createMemo(() => read(options), { equals: deepEqual });
   const keyString = createMemo(() => {
     const resolved = read(keys);
     return isReadonlyArray(resolved)
@@ -40,90 +40,93 @@ export function createHotkeys(
 
   let hasTriggered = false;
 
-  createEffect(() => {
-    const opts = memoisedOptions();
-    const joinedKeys = keyString();
-
-    if (opts?.enabled === false || !isScopeActive(enabledScopes(), opts?.scopes)) {
-      return;
-    }
-
-    const listener = (e: KeyboardEvent, isKeyUp = false) => {
-      if (isKeyboardEventTriggeredByInput(e) && !isHotkeyEnabledOnTag(e, opts?.enableOnFormTags)) {
+  createEffect(
+    () => [memoisedOptions(), keyString(), enabledScopes()] as const,
+    ([opts, joinedKeys, scopes]) => {
+      if (opts?.enabled === false || !isScopeActive(scopes, opts?.scopes)) {
         return;
       }
 
-      if ((e.target as HTMLElement | null)?.isContentEditable && !opts?.enableOnContentEditable) {
-        return;
-      }
-
-      for (const key of parseKeysHookInput(joinedKeys, opts?.splitKey)) {
-        const hotkey = parseHotkey(key, opts?.combinationKey);
-
+      const listener = (e: KeyboardEvent, isKeyUp = false) => {
         if (
-          !(
-            isHotkeyMatchingKeyboardEvent(e, hotkey, opts?.ignoreModifiers) ||
-            hotkey.keys?.includes("*")
-          )
+          isKeyboardEventTriggeredByInput(e) &&
+          !isHotkeyEnabledOnTag(e, opts?.enableOnFormTags)
         ) {
-          continue;
+          return;
         }
 
-        if (opts?.ignoreEventWhen?.(e)) continue;
-        if (isKeyUp && hasTriggered) continue;
-
-        maybePreventDefault(e, hotkey, opts?.preventDefault);
-
-        if (!isHotkeyEnabled(e, hotkey, opts?.enabled)) {
-          e.stopPropagation();
-          e.preventDefault();
-          e.stopImmediatePropagation();
-          continue;
+        if ((e.target as HTMLElement | null)?.isContentEditable && !opts?.enableOnContentEditable) {
+          return;
         }
 
-        callback(e, hotkey);
+        for (const key of parseKeysHookInput(joinedKeys, opts?.splitKey)) {
+          const hotkey = parseHotkey(key, opts?.combinationKey);
 
-        if (!isKeyUp) {
-          hasTriggered = true;
+          if (
+            !(
+              isHotkeyMatchingKeyboardEvent(e, hotkey, opts?.ignoreModifiers) ||
+              hotkey.keys?.includes("*")
+            )
+          ) {
+            continue;
+          }
+
+          if (opts?.ignoreEventWhen?.(e)) continue;
+          if (isKeyUp && hasTriggered) continue;
+
+          maybePreventDefault(e, hotkey, opts?.preventDefault);
+
+          if (!isHotkeyEnabled(e, hotkey, opts?.enabled)) {
+            e.stopPropagation();
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            continue;
+          }
+
+          callback(e, hotkey);
+
+          if (!isKeyUp) {
+            hasTriggered = true;
+          }
         }
-      }
-    };
+      };
 
-    const handleKeyDown = (event: KeyboardEvent) => {
-      //NOTE(jimmylee): Synthetic events (e.g. Chrome autofill) have no key.
-      if (event.key === undefined) return;
+      const handleKeyDown = (event: KeyboardEvent) => {
+        //NOTE(jimmylee): Synthetic events (e.g. Chrome autofill) have no key.
+        if (event.key === undefined) return;
 
-      pushToCurrentlyPressedKeys(mapKey(event.code));
+        pushToCurrentlyPressedKeys(mapKey(event.code));
 
-      if ((opts?.keydown === undefined && opts?.keyup !== true) || opts?.keydown) {
-        listener(event);
-      }
-    };
+        if ((opts?.keydown === undefined && opts?.keyup !== true) || opts?.keydown) {
+          listener(event);
+        }
+      };
 
-    const handleKeyUp = (event: KeyboardEvent) => {
-      if (event.key === undefined) return;
+      const handleKeyUp = (event: KeyboardEvent) => {
+        if (event.key === undefined) return;
 
-      removeFromCurrentlyPressedKeys(mapKey(event.code));
-      hasTriggered = false;
+        removeFromCurrentlyPressedKeys(mapKey(event.code));
+        hasTriggered = false;
 
-      if (opts?.keyup) {
-        listener(event, true);
-      }
-    };
+        if (opts?.keyup) {
+          listener(event, true);
+        }
+      };
 
-    const target = opts?.document ?? document;
-    target.addEventListener("keyup", handleKeyUp);
-    target.addEventListener("keydown", handleKeyDown);
+      const target = opts?.document ?? document;
+      target.addEventListener("keyup", handleKeyUp);
+      target.addEventListener("keydown", handleKeyDown);
 
-    const registered = parseKeysHookInput(joinedKeys, opts?.splitKey).map((key) =>
-      parseHotkey(key, opts?.combinationKey, opts?.description),
-    );
-    registered.forEach(addHotkey);
+      const registered = parseKeysHookInput(joinedKeys, opts?.splitKey).map((key) =>
+        parseHotkey(key, opts?.combinationKey, opts?.description),
+      );
+      registered.forEach(addHotkey);
 
-    onCleanup(() => {
-      target.removeEventListener("keyup", handleKeyUp);
-      target.removeEventListener("keydown", handleKeyDown);
-      registered.forEach(removeHotkey);
-    });
-  });
+      return () => {
+        target.removeEventListener("keyup", handleKeyUp);
+        target.removeEventListener("keydown", handleKeyDown);
+        registered.forEach(removeHotkey);
+      };
+    },
+  );
 }

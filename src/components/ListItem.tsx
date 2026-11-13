@@ -1,4 +1,5 @@
-import { type JSX, splitProps } from "solid-js";
+import type { JSX } from "@solidjs/web";
+import { omit } from "solid-js";
 import type { AugProps } from "../aug/index.ts";
 import { classNames, findNextFocusable } from "../common/utilities.ts";
 import { styleAttributes, type ThemeProps } from "../style/index.ts";
@@ -12,7 +13,7 @@ export interface ListItemProps extends JSX.HTMLAttributes<HTMLLIElement> {
 }
 
 export function ListItem(props: ListItemProps) {
-  const [local, rest] = splitProps(props, ["class", "aug", "theme", "selected", "children"]);
+  const rest = omit(props, "class", "aug", "theme", "selected", "children");
   let itemRef: HTMLLIElement | undefined;
 
   const handleKeyDown: JSX.EventHandler<HTMLLIElement, KeyboardEvent> = (event) => {
@@ -36,15 +37,15 @@ export function ListItem(props: ListItemProps) {
 
   return (
     <li
-      class={classNames(styles.root, local.class)}
-      tabIndex={0}
+      class={classNames(styles.root, props.class)}
+      tabindex={0}
       ref={(el) => (itemRef = el)}
       onKeyDown={handleKeyDown}
-      data-selected={local.selected ? "" : undefined}
+      data-selected={props.selected ? "" : undefined}
       {...rest}
-      {...styleAttributes(local, rest.style)}
+      {...styleAttributes(props, rest.style)}
     >
-      {local.children}
+      {props.children}
     </li>
   );
 }

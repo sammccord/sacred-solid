@@ -1,10 +1,10 @@
+import type { JSX } from "@solidjs/web";
 import {
   type Accessor,
   type Component,
   createComponent,
   createContext,
   createSignal,
-  type JSX,
   useContext,
 } from "solid-js";
 
@@ -19,7 +19,7 @@ export interface ModalContextValue {
   close: (key?: string) => void;
 }
 
-const ModalContext = createContext<ModalContextValue>();
+const ModalContext = createContext<ModalContextValue | null>(null);
 
 export function ModalProvider(props: { children?: JSX.Element }) {
   const [modalStack, setModalStack] = createSignal<ModalState[]>([]);
@@ -41,11 +41,7 @@ export function ModalProvider(props: { children?: JSX.Element }) {
     });
   };
 
-  return (
-    <ModalContext.Provider value={{ modalStack, open, close }}>
-      {props.children}
-    </ModalContext.Provider>
-  );
+  return <ModalContext value={{ modalStack, open, close }}>{props.children}</ModalContext>;
 }
 
 const outsideProvider: ModalContextValue = {

@@ -1,8 +1,8 @@
 import "../src/styles/global-fonts.css";
 import "../src/styles/global.css";
 
-import type { JSX } from "solid-js";
-import { render } from "solid-js/web";
+import type { JSX } from "@solidjs/web";
+import { render } from "@solidjs/web";
 import type { AugProps } from "../src/aug/index.ts";
 import { Button } from "../src/components/Button.tsx";
 import { Card } from "../src/components/Card.tsx";

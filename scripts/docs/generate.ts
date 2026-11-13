@@ -428,7 +428,7 @@ function slotsOf(text: string): string[] {
 
 function classTags(text: string): string[] {
   const tags: string[] = [];
-  for (const mark of text.matchAll(/\b(?:props|local)\.class\b|\{\.\.\.props\}/g)) {
+  for (const mark of text.matchAll(/\bprops\.class\b|\{\.\.\.props\}/g)) {
     const before = [...text.slice(0, mark.index).matchAll(/<([A-Za-z][\w.]*)(?=[\s>/])/g)].at(-1);
     if (before !== undefined && !tags.includes(before[1]!)) tags.push(before[1]!);
   }
@@ -446,7 +446,7 @@ export function classTargetsBlocks(): { targets: string; exempt: string } {
     const text = read(file);
     if (!new RegExp(`export function ${name}\\b`).test(text)) continue;
     const tags = classTags(text);
-    if (tags.length === 0) throw new Error(`${name} never reads props.class or local.class`);
+    if (tags.length === 0) throw new Error(`${name} never reads props.class`);
     const slots = slotsOf(text);
     rows.push([
       code(name),

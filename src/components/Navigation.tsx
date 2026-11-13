@@ -1,4 +1,5 @@
-import { type JSX, Show } from "solid-js";
+import type { JSX } from "@solidjs/web";
+import { Show } from "solid-js";
 import type { AugProps } from "../aug/index.ts";
 import { styleAttributes, type ThemeProps } from "../style/index.ts";
 import styles from "./Navigation.module.css";

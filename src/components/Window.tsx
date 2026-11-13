@@ -1,4 +1,5 @@
-import { type JSX, splitProps } from "solid-js";
+import type { JSX } from "@solidjs/web";
+import { omit } from "solid-js";
 import type { AugProps } from "../aug/index.ts";
 import { styleAttributes, type ThemeProps } from "../style/index.ts";
 import styles from "./Window.module.css";
@@ -11,16 +12,16 @@ export interface WindowProps extends JSX.HTMLAttributes<HTMLElement> {
 }
 
 export function Window(props: WindowProps) {
-  const [local, rest] = splitProps(props, ["class", "aug", "theme", "children"]);
+  const rest = omit(props, "class", "aug", "theme", "children");
 
   return (
     <section
-      class={classNames(styles.window, local.class)}
+      class={classNames(styles.window, props.class)}
       role="dialog"
       {...rest}
-      {...styleAttributes(local, rest.style)}
+      {...styleAttributes(props, rest.style)}
     >
-      {local.children}
+      {props.children}
     </section>
   );
 }

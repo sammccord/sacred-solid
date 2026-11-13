@@ -2,8 +2,8 @@ import "../src/styles/global-fonts.css";
 import "../src/styles/global.css";
 import "../src/themes/acid.css";
 
-import { createMemo, createSignal, For, onCleanup, onMount, Show } from "solid-js";
-import { render } from "solid-js/web";
+import { createMemo, createSignal, For, onSettled, Show } from "solid-js";
+import { render } from "@solidjs/web";
 import { Badge } from "../src/components/Badge.tsx";
 import { BarProgress } from "../src/components/BarProgress.tsx";
 import { KeyHint } from "../src/components/KeyHint.tsx";
@@ -84,7 +84,7 @@ function Hacking() {
     h: () => setNote((value) => (value === "" ? "ARROWS MOVE, ENTER OR F PICKS, C RESETS" : "")),
   });
 
-  onMount(() => {
+  onSettled(() => {
     if (PAUSED) return;
     let last = performance.now();
     const timer = setInterval(() => {
@@ -92,7 +92,7 @@ function Hacking() {
       dispatch({ type: "tick", seconds: (now - last) / 1000 });
       last = now;
     }, 50);
-    onCleanup(() => clearInterval(timer));
+    return () => clearInterval(timer);
   });
 
   const cellProps = (cell: Cell) => ({

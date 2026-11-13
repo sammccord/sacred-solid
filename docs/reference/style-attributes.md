@@ -5,7 +5,7 @@
 ## Signature
 
 ```ts
-import type { JSX } from "solid-js";
+import type { JSX } from "@solidjs/web";
 import type { AugProps, ThemeProps } from "sacred-solid";
 
 interface StyleProps {

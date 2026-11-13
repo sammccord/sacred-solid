@@ -1,11 +1,11 @@
+import type { JSX } from "@solidjs/web";
 import {
   children as resolveChildren,
   createEffect,
   createSignal,
-  type JSX,
-  onCleanup,
-  onMount,
+  onSettled,
   Show,
+  untrack,
 } from "solid-js";
 import type { AugProps } from "../aug/index.ts";
 import { styleAttributes, type ThemeProps } from "../style/index.ts";
@@ -36,14 +36,14 @@ export function DropdownMenuTrigger(props: DropdownMenuTriggerProps) {
   let element: HTMLDivElement | undefined;
 
   const resolved = resolveChildren(() => props.children);
-  const trigger = resolved.toArray().find((node) => node instanceof HTMLElement);
+  const trigger = untrack(() => resolved.toArray().find((node) => node instanceof HTMLElement));
 
   const onClick = (event?: Event) => {
     if (event) event.preventDefault();
     setOpen(true);
   };
 
-  onMount(() => {
+  onSettled(() => {
     if (!trigger) return;
 
     const onKeyDown = (event: KeyboardEvent) => {
@@ -57,10 +57,10 @@ export function DropdownMenuTrigger(props: DropdownMenuTriggerProps) {
     trigger.addEventListener("click", onClick);
     trigger.addEventListener("keydown", onKeyDown);
 
-    onCleanup(() => {
+    return () => {
       trigger.removeEventListener("click", onClick);
       trigger.removeEventListener("keydown", onKeyDown);
-    });
+    };
   });
 
   createHotkeys(
@@ -69,8 +69,8 @@ export function DropdownMenuTrigger(props: DropdownMenuTriggerProps) {
     () => ({ enabled: Boolean(props.hotkey) }),
   );
 
-  createEffect(() => {
-    if (!focusChildren()) return;
+  createEffect(focusChildren, (focus) => {
+    if (!focus) return;
 
     if (element) {
       const firstFocusable = findFocusableDescendant(element);
@@ -83,8 +83,8 @@ export function DropdownMenuTrigger(props: DropdownMenuTriggerProps) {
     setFocusChildren(false);
   });
 
-  createEffect(() => {
-    if (!willClose()) return;
+  createEffect(willClose, (close) => {
+    if (!close) return;
 
     setOpen(false);
     setWillClose(false);
@@ -92,16 +92,15 @@ export function DropdownMenuTrigger(props: DropdownMenuTriggerProps) {
 
   //NOTE(jimmylee): WAI-ARIA requires focus return to the trigger on close so keyboard users are not stranded.
   let prevOpen = false;
-  createEffect(() => {
-    const isOpen = open();
+  createEffect(open, (isOpen) => {
     if (prevOpen && !isOpen) {
       trigger?.focus();
     }
     prevOpen = isOpen;
   });
 
-  createEffect(() => {
-    if (!open() || !trigger || !element) return;
+  createEffect(open, (isOpen) => {
+    if (!isOpen || !trigger || !element) return;
 
     const menu = element;
     menu.style.width = `${menu.getBoundingClientRect().width}px`;
@@ -119,11 +118,11 @@ export function DropdownMenuTrigger(props: DropdownMenuTriggerProps) {
     window.addEventListener("resize", updatePosition);
     window.addEventListener("scroll", updatePosition, true);
 
-    onCleanup(() => {
+    return () => {
       window.removeEventListener("resize", updatePosition);
       window.removeEventListener("scroll", updatePosition, true);
       observer.disconnect();
-    });
+    };
   });
 
   return (

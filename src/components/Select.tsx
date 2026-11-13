@@ -1,5 +1,6 @@
-import { batch, createEffect, createSignal, For, type JSX, mergeProps, on, Show } from "solid-js";
-import { classNames } from "../common/utilities.ts";
+import type { JSX } from "@solidjs/web";
+import { createEffect, createSignal, For, Show } from "solid-js";
+import { classNames, mergeDefaults } from "../common/utilities.ts";
 import styles from "./Select.module.css";
 
 export interface SelectProps {
@@ -12,7 +13,7 @@ export interface SelectProps {
 }
 
 export function Select(allProps: SelectProps) {
-  const props = mergeProps({ defaultValue: "" }, allProps);
+  const props = mergeDefaults({ defaultValue: "" }, allProps);
   const [isOpen, setIsOpen] = createSignal(false);
   const [index, setIndex] = createSignal(-1);
   const [selectedValue, setSelectedValue] = createSignal(props.defaultValue);
@@ -29,18 +30,14 @@ export function Select(allProps: SelectProps) {
   };
 
   const handleOpen = () => {
-    batch(() => {
-      setIsOpen(true);
-      const currentIndex = props.options.indexOf(selectedValue());
-      setIndex(currentIndex >= 0 ? currentIndex : 0);
-    });
+    setIsOpen(true);
+    const currentIndex = props.options.indexOf(selectedValue());
+    setIndex(currentIndex >= 0 ? currentIndex : 0);
   };
 
   const handleClose = () => {
-    batch(() => {
-      setIsOpen(false);
-      setIndex(-1);
-    });
+    setIsOpen(false);
+    setIndex(-1);
     containerRef?.focus();
   };
 
@@ -52,13 +49,11 @@ export function Select(allProps: SelectProps) {
 
   const toggle = () => (isOpen() ? handleClose() : handleOpen());
 
-  createEffect(
-    on(isOpen, (open) => {
-      if (open && index() >= 0) {
-        optionAt(index())?.focus();
-      }
-    }),
-  );
+  createEffect(isOpen, (open) => {
+    if (open && index() >= 0) {
+      optionAt(index())?.focus();
+    }
+  });
 
   //NOTE(jimmylee): Enter and Space rely on the button's native click activation via onClick.
   const handleButtonKeyDown: JSX.EventHandler<HTMLButtonElement, KeyboardEvent> = (event) => {
@@ -129,11 +124,11 @@ export function Select(allProps: SelectProps) {
         <button
           class={styles.display}
           ref={containerRef}
-          tabIndex={0}
+          tabindex={0}
           onClick={toggle}
           onKeyDown={handleButtonKeyDown}
           aria-haspopup="listbox"
-          aria-expanded={isOpen()}
+          aria-expanded={isOpen() ? "true" : "false"}
         >
           {selectedValue() || props.placeholder}
         </button>
@@ -145,9 +140,9 @@ export function Select(allProps: SelectProps) {
             {(option, idx) => (
               <li
                 role="option"
-                tabIndex={0}
+                tabindex={0}
                 class={classNames(styles.item)}
-                aria-selected={idx() === index()}
+                aria-selected={idx() === index() ? "true" : "false"}
                 onClick={() => handleSelect(option)}
                 onKeyDown={(e) => handleOptionKeyDown(e, option, idx())}
               >

@@ -1,4 +1,5 @@
-import { type JSX, createSignal, Show, splitProps } from "solid-js";
+import type { JSX } from "@solidjs/web";
+import { createSignal, Show, omit } from "solid-js";
 import type { AugProps } from "../aug/index.ts";
 import { styleAttributes, type ThemeProps } from "../style/index.ts";
 import styles from "./Drawer.module.css";
@@ -12,17 +13,17 @@ export interface DrawerProps extends Omit<JSX.HTMLAttributes<HTMLDivElement>, "d
 }
 
 export function Drawer(props: DrawerProps) {
-  const [local, rest] = splitProps(props, ["class", "aug", "theme", "children", "defaultValue"]);
-  const [expand, setExpand] = createSignal(local.defaultValue ?? false);
+  const rest = omit(props, "class", "aug", "theme", "children", "defaultValue");
+  const [expand, setExpand] = createSignal(props.defaultValue ?? false);
 
   return (
     <div
-      class={classNames(styles.root, local.class)}
+      class={classNames(styles.root, props.class)}
       {...rest}
-      {...styleAttributes(local, rest.style)}
+      {...styleAttributes(props, rest.style)}
     >
       <Show when={expand()}>
-        <div class={styles.side}>{local.children}</div>
+        <div class={styles.side}>{props.children}</div>
       </Show>
       <div class={styles.right}>
         <button class={styles.action} onClick={() => setExpand(!expand())}>

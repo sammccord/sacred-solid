@@ -2,8 +2,8 @@ import "../src/styles/global-fonts.css";
 import "../src/styles/global.css";
 import "../src/themes/redline.css";
 
-import { createMemo, createSignal, For, onMount, Show } from "solid-js";
-import { render } from "solid-js/web";
+import { createMemo, createSignal, For, onSettled, Show } from "solid-js";
+import { render } from "@solidjs/web";
 import { Accordion } from "../src/components/Accordion.tsx";
 import { Badge } from "../src/components/Badge.tsx";
 import { BarProgress } from "../src/components/BarProgress.tsx";
@@ -103,7 +103,7 @@ function Journal() {
   function JournalPanel() {
     let viewport = undefined as HTMLDivElement | undefined;
 
-    onMount(() => {
+    onSettled(() => {
       const header = viewport!.querySelector<HTMLElement>("[data-section='side-jobs']")!;
       viewport!.scrollTop = header.offsetTop - 78;
       if (document.activeElement === document.body) {
@@ -159,7 +159,7 @@ function Journal() {
                         <ListItem
                           class={css.card}
                           role="option"
-                          aria-selected={each.id === selectedId()}
+                          aria-selected={each.id === selectedId() ? "true" : "false"}
                           selected={each.id === selectedId()}
                           aug={{
                             tr: { mixin: "clip", size: "9px" },

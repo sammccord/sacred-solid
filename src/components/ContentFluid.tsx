@@ -1,4 +1,4 @@
-import type { JSX } from "solid-js";
+import type { JSX } from "@solidjs/web";
 import type { AugProps } from "../aug/index.ts";
 import { styleAttributes, type ThemeProps } from "../style/index.ts";
 import styles from "./ContentFluid.module.css";
