@@ -3,11 +3,26 @@
   -webkit-text-size-adjust: 100%;
 }
 
+.tree,
+.group {
+  display: block;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.root {
+  display: block;
+  outline: 0;
+}
+
 .item {
+  display: block;
   cursor: pointer;
 
   &:focus,
-  &:active {
+  &:active,
+  .root:focus > & {
     outline: 0;
     border: 0;
     background: var(--theme-accent);

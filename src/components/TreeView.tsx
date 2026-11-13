@@ -1,11 +1,14 @@
 import type { JSX } from "@solidjs/web";
+import { Tree, TreeGroup, TreeItem, TreeItemLabel } from "@ui-sdk/solid/tree";
 import {
   type Accessor,
-  Show,
   children as resolveChildren,
   createContext,
   createEffect,
   createSignal,
+  createUniqueId,
+  Show,
+  untrack,
   useContext,
 } from "solid-js";
 import type { AugProps } from "../aug/index.ts";
@@ -28,11 +31,17 @@ export interface TreeViewProps {
   title: string;
 }
 
+interface TreeState {
+  expanded: Accessor<string[]>;
+  expand: (value: string) => void;
+}
+
 interface TreeBranchContext {
   lastChild: Accessor<unknown>;
   parentLines: Accessor<boolean[]>;
 }
 
+const TreeStateContext = createContext<TreeState | null>(null);
 const TreeBranchContext = createContext<TreeBranchContext | null>(null);
 
 function TreeItems(props: { children?: JSX.Element; onResolve: (last: unknown) => void }) {
@@ -44,19 +53,42 @@ function TreeItems(props: { children?: JSX.Element; onResolve: (last: unknown) =
     },
   );
 
-  return (
-    <Show when={resolved.toArray().length > 0}>
-      <div>{resolved()}</div>
-    </Show>
-  );
+  return <>{resolved()}</>;
 }
 
 export function TreeView(props: TreeViewProps) {
+  const state = useContext(TreeStateContext);
+  if (state) return <TreeNode {...props} state={state} />;
+
+  const [expanded, setExpanded] = createSignal<string[]>([], { ownedWrite: true });
+  const own: TreeState = {
+    expanded,
+    expand: (value) => setExpanded((prev) => (prev.includes(value) ? prev : [...prev, value])),
+  };
+
+  return (
+    <TreeStateContext value={own}>
+      <Tree
+        class={styles.tree}
+        aria-label={props.title}
+        expanded={expanded()}
+        onExpandedChange={setExpanded}
+        expandOnPress
+      >
+        <TreeNode {...props} state={own} />
+      </Tree>
+    </TreeStateContext>
+  );
+}
+
+function TreeNode(props: TreeViewProps & { state: TreeState }) {
   const branch = useContext(TreeBranchContext);
-  const [show, setShow] = createSignal(props.defaultValue ?? false);
+  const value = createUniqueId();
   const [lastChild, setLastChild] = createSignal<unknown>();
   const [isNestedLast, setIsNestedLast] = createSignal(false);
-  let root: HTMLDivElement | undefined;
+  let root: HTMLElement | undefined;
+
+  if (untrack(() => props.defaultValue && !props.isFile)) props.state.expand(value);
 
   createEffect(
     () => branch?.lastChild(),
@@ -65,12 +97,9 @@ export function TreeView(props: TreeViewProps) {
     },
   );
 
+  const show = () => props.state.expanded().includes(value);
   const isLastChild = () => (branch ? isNestedLast() : (props.isLastChild ?? false));
   const parentLines = () => (branch ? branch.parentLines() : (props.parentLines ?? []));
-
-  const onToggleShow = () => {
-    if (!props.isFile) setShow((prevShow) => !prevShow);
-  };
 
   const spacing = () =>
     parentLines()
@@ -85,33 +114,26 @@ export function TreeView(props: TreeViewProps) {
   };
 
   return (
-    <div
-      ref={(el) => (root = el)}
+    <TreeItem
+      value={value}
+      label={props.title}
+      branch={!props.isFile}
+      ref={(el: HTMLElement) => (root = el)}
       class={classNames(styles.root, props.class)}
       {...styleAttributes(props, props.style)}
     >
-      <div
-        tabindex={0}
-        role="button"
-        onClick={onToggleShow}
-        onKeyDown={(e) => {
-          if (e.key === "Enter" || e.key === " ") {
-            if (e.key === " ") e.preventDefault();
-            onToggleShow();
-          }
-        }}
-        class={styles.item}
-        aria-expanded={show() ? "true" : "false"}
-      >
+      <TreeItemLabel class={styles.item}>
         {prefix()}
         {icon()}
         {props.title}
-      </div>
-      <Show when={show()}>
-        <TreeBranchContext value={childBranch}>
-          <TreeItems onResolve={setLastChild}>{props.children}</TreeItems>
-        </TreeBranchContext>
+      </TreeItemLabel>
+      <Show when={!props.isFile}>
+        <TreeGroup class={styles.group}>
+          <TreeBranchContext value={childBranch}>
+            <TreeItems onResolve={setLastChild}>{props.children}</TreeItems>
+          </TreeBranchContext>
+        </TreeGroup>
       </Show>
-    </div>
+    </TreeItem>
   );
 }

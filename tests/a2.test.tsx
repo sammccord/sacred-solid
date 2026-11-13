@@ -1,4 +1,5 @@
 import { cleanup, fireEvent, render, screen } from "@solidjs/testing-library";
+import { flush } from "solid-js";
 import { afterEach, expect, test } from "vite-plus/test";
 
 import { Message } from "../src/components/Message.tsx";
@@ -207,7 +208,14 @@ test("SidebarLayout without handle omits it and reversed puts the sidebar last",
   expect(root.textContent).toBe("main\u00a0side");
 });
 
-test("TreeView expands on click, Enter and Space and draws the tree prefix", () => {
+const settle = async () => {
+  for (let i = 0; i < 4; i++) {
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    flush();
+  }
+};
+
+test("TreeView is a named tree that draws the prefix and toggles branches by press and arrows", async () => {
   const { container } = render(() => (
     <TreeView title="root" defaultValue>
       <TreeView title="a" defaultValue>
@@ -217,8 +225,11 @@ test("TreeView expands on click, Enter and Space and draws the tree prefix", () 
       <TreeView title="b" />
     </TreeView>
   ));
-  const items = () => [...container.querySelectorAll('[role="button"]')].map((n) => n.textContent);
-  expect(items()).toEqual([
+  await settle();
+  const labels = () =>
+    [...container.querySelectorAll('[data-slot="tree-label"]')].map((n) => n.textContent);
+  expect(screen.getByRole("tree", { name: "root" })).toBeTruthy();
+  expect(labels()).toEqual([
     "├───╦ root",
     "│ . ├───╦ a",
     "│ . │ . ├─── a1",
@@ -226,28 +237,30 @@ test("TreeView expands on click, Enter and Space and draws the tree prefix", () 
     "│ . └───╤ b",
   ]);
 
-  const rootItem = container.querySelector('[role="button"]')!;
+  const rootItem = screen.getAllByRole("treeitem")[0]!;
   expect(rootItem.getAttribute("aria-expanded")).toBe("true");
-  fireEvent.click(rootItem);
+  fireEvent.click(container.querySelector('[data-slot="tree-label"]')!);
+  await settle();
   expect(rootItem.getAttribute("aria-expanded")).toBe("false");
-  expect(items()).toEqual(["├───╤ root"]);
+  expect(labels()).toEqual(["├───╤ root"]);
 
-  fireEvent.keyDown(rootItem, { key: "Enter" });
-  expect(items()).toHaveLength(5);
-  fireEvent.keyDown(rootItem, { key: " " });
-  expect(items()).toHaveLength(1);
-  fireEvent.keyDown(rootItem, { key: "x" });
-  expect(items()).toHaveLength(1);
+  rootItem.focus();
+  fireEvent.keyDown(rootItem, { key: "ArrowRight" });
+  await settle();
+  expect(labels()).toHaveLength(5);
+  fireEvent.keyDown(rootItem, { key: "ArrowLeft" });
+  await settle();
+  expect(labels()).toHaveLength(1);
 });
 
-test("TreeView files do not toggle and last-child marks follow the final child", () => {
+test("TreeView files are leaves and last-child marks follow the final child", async () => {
   const { container } = render(() => (
     <TreeView title="root" isLastChild defaultValue>
       <TreeView title="file" isFile />
     </TreeView>
   ));
-  const items = [...container.querySelectorAll('[role="button"]')];
-  expect(items.map((n) => n.textContent)).toEqual(["└───╦ root", ". . └─── file"]);
-  fireEvent.click(items[1]);
-  expect(items[1].getAttribute("aria-expanded")).toBe("false");
+  await settle();
+  const labels = [...container.querySelectorAll('[data-slot="tree-label"]')];
+  expect(labels.map((n) => n.textContent)).toEqual(["└───╦ root", ". . └─── file"]);
+  expect(screen.getAllByRole("treeitem")[1]!.hasAttribute("aria-expanded")).toBe(false);
 });
