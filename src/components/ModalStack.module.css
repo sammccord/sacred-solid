@@ -1,3 +1,7 @@
+.root {
+  display: contents;
+}
+
 .item {
   inset: 0;
   width: fit-content;

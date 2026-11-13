@@ -5,7 +5,6 @@ import {
   createComponent,
   createContext,
   createSignal,
-  untrack,
   useContext,
 } from "solid-js";
 
@@ -40,12 +39,13 @@ export function ModalProvider(props: { children?: JSX.Element }) {
   };
 
   const close = (key?: string) => {
-    const stack = untrack(modalStack);
-    const closing = key ? stack.find((modal) => modal.key === key) : stack.at(-1);
-    if (!closing) return;
-    setModalStack(stack.filter((modal) => modal !== closing));
+    let closing: ModalState | undefined;
+    setModalStack((prev) => {
+      closing = key ? prev.find((modal) => modal.key === key) : prev.at(-1);
+      return closing ? prev.filter((modal) => modal !== closing) : prev;
+    });
     //NOTE: The dialog unmounts before ui-sdk can return focus, so focus goes back once the page is no longer inert.
-    const target = closing.returnFocus;
+    const target = closing?.returnFocus;
     if (target) requestAnimationFrame(() => target.isConnected && target.focus());
   };
 
