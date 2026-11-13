@@ -231,49 +231,41 @@ describe("DropdownMenuTrigger", () => {
 });
 
 describe("HoverComponentTrigger", () => {
-  test("hover opens a tooltip, outside mousedown closes it", () => {
+  test("tooltip: the caller's element is the trigger, focus shows the hint, Escape hides it", async () => {
     render(() => (
       <HoverComponentTrigger component="tooltip" text="Tip text">
-        <span>target</span>
+        <button type="button">target</button>
       </HoverComponentTrigger>
     ));
-    expect(screen.getByText("target").tabIndex).toBe(0);
-    expect(screen.queryByText("Tip text")).toBeNull();
-
-    fireEvent.mouseEnter(screen.getByText("target").parentElement as HTMLElement);
-    const tip = screen.getByText("Tip text");
-    expect(tip.style.position).toBe("absolute");
-    expect(tip.style.zIndex).toBe("var(--z-index-page-tooltips)");
-
-    fireEvent.mouseDown(document.body);
-    expect(screen.queryByText("Tip text")).toBeNull();
+    const target = screen.getByRole("button", { name: "target" });
+    expect(target.getAttribute("data-slot")).toBe("tooltip-trigger");
+    target.focus();
+    fireEvent.focus(target);
+    await settle();
+    const tip = screen.getByRole("tooltip");
+    expect(tip.textContent).toBe("Tip text");
+    expect(target.getAttribute("aria-describedby")).toBe(tip.id);
+    fireEvent.keyDown(target, { key: "Escape" });
+    await settle();
+    expect(screen.queryByRole("tooltip")).toBeNull();
   });
 
-  test("focus opens a popover dialog, mousedown on the trigger root does not close it", () => {
+  test("popover: a press opens a dialog panel named by its trigger and Escape closes it", async () => {
     render(() => (
       <HoverComponentTrigger component="popover" text="Pop text">
-        <button>target</button>
+        <button type="button">target</button>
       </HoverComponentTrigger>
     ));
-    const target = screen.getByText("target");
-    fireEvent.focusIn(target);
-    const popover = screen.getByRole("dialog");
+    const target = screen.getByRole("button", { name: "target" });
+    expect(target.getAttribute("aria-haspopup")).toBe("dialog");
+    fireEvent.click(target);
+    await settle();
+    const popover = screen.getByRole("dialog", { name: "target" });
     expect(popover.textContent).toBe("Pop text");
-    expect(popover.getAttribute("aria-modal")).toBe("true");
-    expect(popover.style.zIndex).toBe("var(--z-index-page-popover)");
-
-    fireEvent.mouseDown(target.parentElement as HTMLElement);
-    expect(screen.queryByRole("dialog")).toBeTruthy();
-  });
-
-  test("click opens it", () => {
-    render(() => (
-      <HoverComponentTrigger component="tooltip" text="Tip text">
-        <span>target</span>
-      </HoverComponentTrigger>
-    ));
-    fireEvent.click(screen.getByText("target"));
-    expect(screen.getByText("Tip text")).toBeTruthy();
+    expect(target.getAttribute("aria-expanded")).toBe("true");
+    fireEvent.keyDown(document.activeElement!, { key: "Escape" });
+    await settle();
+    expect(target.getAttribute("aria-expanded")).toBe("false");
   });
 });
 

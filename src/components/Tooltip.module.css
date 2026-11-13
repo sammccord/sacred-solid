@@ -1,5 +1,11 @@
 .root {
   display: block;
+  margin: 0;
+  border: 0;
+  padding: 0;
+  overflow: visible;
+  color: var(--theme-ink);
+  font: inherit;
   background: var(--theme-surface-float);
   box-shadow: var(--theme-shadow-tooltip-geometry) var(--theme-shadow-tooltip-color);
   font-weight: 400;

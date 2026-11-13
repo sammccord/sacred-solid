@@ -1,5 +1,10 @@
 .root {
   display: block;
+  margin: 0;
+  border: 0;
+  overflow: visible;
+  color: var(--theme-ink);
+  font: inherit;
   background: var(--theme-surface-float);
   box-shadow: var(--theme-shadow-ring-geometry) var(--theme-shadow-ring-color);
   padding: calc(var(--font-size) * var(--theme-line-height-base)) 2ch calc(var(--font-size) * var(--theme-line-height-base)) 2ch;
