@@ -6,14 +6,14 @@ The element column lists the tags that receive the output of `styleAttributes`, 
 
 <!-- generated:start components -->
 
-69 exported components take `aug` and `theme`. 16 of them render no element with the attributes and pass both props to another component.
+69 exported components take `aug` and `theme`. 18 of them render no element with the attributes and pass both props to another component.
 
 | Component               | Element with the attributes | Forwards to                           | Note                                                                                                                            |
 | ----------------------- | --------------------------- | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
 | `ASCIICanvas`           | `<pre>`                     | none                                  | The component sets `height` on the same style.                                                                                  |
 | `Accordion`             | none                        | `Row`                                 | The attributes go on the header row through `Row`. The body row gets none.                                                      |
 | `ActionBar`             | `<div>`                     | none                                  |                                                                                                                                 |
-| `ActionButton`          | `<div>`                     | none                                  | The root takes `rootStyle`. The `style` prop goes on the inner `span`.                                                          |
+| `ActionButton`          | none                        | `Button`                              | The root takes `rootStyle`. The `style` prop goes on the inner `span`.                                                          |
 | `ActionListItem`        | none                        | `HTMLDivElement`, `HTMLAnchorElement` | A `div`, or an `a` when `href` is set.                                                                                          |
 | `AlertBanner`           | `<div>`                     | none                                  |                                                                                                                                 |
 | `Avatar`                | `<figure>`, `<a>`, `<div>`  | none                                  | With children, the attributes go on the wrapping `div`. The `figure` or `a` inside gets none.                                   |
@@ -23,7 +23,7 @@ The element column lists the tags that receive the output of `styleAttributes`, 
 | `Block`                 | `<span>`                    | none                                  |                                                                                                                                 |
 | `BlockLoader`           | `<span>`                    | none                                  |                                                                                                                                 |
 | `BreadCrumbs`           | `<nav>`                     | none                                  |                                                                                                                                 |
-| `Button`                | `<div>`, `<button>`         | none                                  | An enabled Button renders a `button`. A disabled one renders a `div`.                                                           |
+| `Button`                | none                        | `ButtonRoot`                          | An enabled Button renders a `button`. A disabled one renders a `div`.                                                           |
 | `ButtonGroup`           | `<div>`                     | none                                  |                                                                                                                                 |
 | `Card`                  | `<article>`                 | none                                  |                                                                                                                                 |
 | `CardDouble`            | `<article>`                 | none                                  |                                                                                                                                 |

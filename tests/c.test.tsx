@@ -132,7 +132,7 @@ describe("DropdownMenuTrigger", () => {
         <ActionButton>Menu</ActionButton>
       </DropdownMenuTrigger>
     ));
-    const trigger = screen.getByText("Menu").closest("[role=button]") as HTMLElement;
+    const trigger = screen.getByText("Menu").closest("button") as HTMLElement;
     const menu = () => document.querySelector<HTMLElement>('[data-slot="menu-content"]');
     const isOpen = () => trigger.getAttribute("aria-expanded") === "true";
     return { first, second, trigger, menu, isOpen, ...result };
@@ -143,7 +143,8 @@ describe("DropdownMenuTrigger", () => {
     expect(trigger.getAttribute("data-slot")).toBe("menu-trigger");
     expect(trigger.getAttribute("aria-haspopup")).toBe("menu");
     expect(isOpen()).toBe(false);
-    expect(document.querySelectorAll("[role=button][tabindex='0']")).toHaveLength(1);
+    expect(trigger.tagName).toBe("BUTTON");
+    expect(document.querySelectorAll("button")).toHaveLength(1);
   });
 
   test("click opens the menu with every item and the close footer", () => {
@@ -159,10 +160,10 @@ describe("DropdownMenuTrigger", () => {
     expect(menu()?.querySelector("footer")?.textContent).toContain("Press escape to");
   });
 
-  test("Enter on the trigger opens the menu on the first item, arrows wrap", async () => {
+  test("ArrowDown on the trigger opens the menu on the first item, arrows wrap", async () => {
     const { trigger } = setup();
     trigger.focus();
-    fireEvent.keyDown(trigger, { key: "Enter" });
+    fireEvent.keyDown(trigger, { key: "ArrowDown" });
     await settle();
     const items = screen.getAllByRole("menuitem");
     expect(document.activeElement).toBe(items[0]);
@@ -175,7 +176,7 @@ describe("DropdownMenuTrigger", () => {
   test("choosing an item runs it, closes the menu and returns focus to the trigger", async () => {
     const { trigger, first, second, isOpen } = setup();
     trigger.focus();
-    fireEvent.keyDown(trigger, { key: "Enter" });
+    fireEvent.keyDown(trigger, { key: "ArrowDown" });
     await settle();
     press(document.activeElement!, "ArrowDown");
     press(document.activeElement!, "Enter");
@@ -189,7 +190,7 @@ describe("DropdownMenuTrigger", () => {
   test("Escape closes the menu and returns focus to the trigger", async () => {
     const { trigger, isOpen } = setup();
     trigger.focus();
-    fireEvent.keyDown(trigger, { key: "Enter" });
+    fireEvent.keyDown(trigger, { key: "ArrowDown" });
     await settle();
     fireEvent.keyDown(document.activeElement!, { key: "Escape" });
     await settle();
@@ -200,7 +201,7 @@ describe("DropdownMenuTrigger", () => {
   test("the footer Close button closes the menu", async () => {
     const { trigger, isOpen } = setup();
     fireEvent.click(trigger);
-    fireEvent.click(screen.getByText("Close").closest("[role=button]")!);
+    fireEvent.click(screen.getByText("Close").closest("button")!);
     await settle();
     expect(isOpen()).toBe(false);
   });
@@ -293,7 +294,7 @@ describe("ButtonGroup", () => {
         items={[{ body: "Fonts", openHotkey: "ctrl+o", items: [{ children: "Alpha" }] }]}
       />
     ));
-    const trigger = screen.getByText("Fonts").closest("[role=button]")!;
+    const trigger = screen.getByText("Fonts").closest("button")!;
     fireEvent.click(trigger);
     expect(screen.getByRole("menuitem").textContent).toBe("Alpha");
     press(document, "o", { ctrlKey: true });

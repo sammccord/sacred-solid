@@ -465,6 +465,7 @@ describe("DOMSnake", () => {
     vi.spyOn(Math, "random").mockReturnValue(0);
     const { unmount } = render(() => <DOMSnake />);
     unmount();
+    vi.runOnlyPendingTimers();
     expect(vi.getTimerCount()).toBe(0);
     const event = new KeyboardEvent("keydown", { key: "ArrowUp", cancelable: true });
     window.dispatchEvent(event);

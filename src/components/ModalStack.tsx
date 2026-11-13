@@ -21,7 +21,7 @@ export function ModalStack(props: ModalStackProps) {
           return (
             <Dialog
               open
-              modal
+              modal="trap-focus"
               closeOnOutsidePress={false}
               onOpenChange={(open) => {
                 if (!open) close(modalState.key);

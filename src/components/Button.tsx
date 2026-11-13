@@ -1,48 +1,36 @@
 import type { JSX } from "@solidjs/web";
-import { Show, omit } from "solid-js";
+import { Button as ButtonRoot } from "@ui-sdk/solid/button";
+import { omit } from "solid-js";
 import type { AugProps } from "../aug/index.ts";
 import { styleAttributes, type ThemeProps } from "../style/index.ts";
-import { classNames } from "../common/utilities.ts";
 import styles from "./Button.module.css";
+import { classNames } from "../common/utilities.ts";
 
-export interface ButtonProps extends JSX.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ButtonProps extends Omit<JSX.ButtonHTMLAttributes<HTMLButtonElement>, "style"> {
   variant?: "PRIMARY" | "SECONDARY";
   isDisabled?: boolean;
+  style?: JSX.CSSProperties;
   aug?: AugProps;
   theme?: ThemeProps;
 }
 
 export function Button(props: ButtonProps) {
-  const rest = omit(props, "class", "aug", "theme", "variant", "isDisabled", "children");
-  const className = () =>
-    classNames(
-      styles.root,
-      props.isDisabled
-        ? styles.disabled
-        : props.variant === "SECONDARY"
-          ? styles.secondary
-          : styles.primary,
-      props.class,
-    );
+  const rest = omit(props, "class", "aug", "theme", "variant", "isDisabled", "style");
 
   return (
-    <Show
-      when={!props.isDisabled}
-      fallback={
-        <div class={className()} {...styleAttributes(props)}>
-          {props.children}
-        </div>
-      }
-    >
-      <button
-        class={className()}
-        role="button"
-        tabindex={0}
-        {...rest}
-        {...styleAttributes(props, rest.style)}
-      >
-        {props.children}
-      </button>
-    </Show>
+    <ButtonRoot
+      class={classNames(
+        styles.root,
+        props.isDisabled
+          ? styles.disabled
+          : props.variant === "SECONDARY"
+            ? styles.secondary
+            : styles.primary,
+        props.class,
+      )}
+      disabled={props.isDisabled}
+      {...(rest as Record<string, unknown>)}
+      {...styleAttributes(props, props.style)}
+    />
   );
 }

@@ -91,7 +91,7 @@ describe("ActionBar", () => {
 });
 
 describe("ActionButton", () => {
-  test("click and keyboard activate, hotkey is shown only when non-empty", () => {
+  test("is a native button that activates on click, hotkey is shown only when non-empty", () => {
     const onClick = vi.fn();
     const { container } = render(() => (
       <ActionButton onClick={onClick} hotkey="⌘K" isSelected>
@@ -102,11 +102,11 @@ describe("ActionButton", () => {
     expect(root.classList.contains(actionButtonStyles.selected!)).toBe(true);
     expect(container.querySelector(`.${actionButtonStyles.hotkey}`)?.textContent).toBe("⌘K");
 
+    expect(root.tagName).toBe("BUTTON");
+    expect(root.getAttribute("type")).toBe("button");
     fireEvent.click(root);
-    expect(fireEvent.keyDown(root, { key: " " })).toBe(false);
-    expect(fireEvent.keyDown(root, { key: "Enter" })).toBe(true);
     fireEvent.keyDown(root, { key: "x" });
-    expect(onClick).toHaveBeenCalledTimes(3);
+    expect(onClick).toHaveBeenCalledTimes(1);
   });
 
   test("zero hotkey renders, empty does not", () => {
@@ -117,9 +117,10 @@ describe("ActionButton", () => {
   });
 
   test("forwards ref", () => {
-    let el: HTMLDivElement | undefined;
+    let el: HTMLButtonElement | undefined;
     render(() => <ActionButton ref={(node) => (el = node)}>a</ActionButton>);
-    expect(el?.getAttribute("role")).toBe("button");
+    expect(el?.tagName).toBe("BUTTON");
+    expect(el?.getAttribute("data-slot")).toBe("button");
   });
 });
 

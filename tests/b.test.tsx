@@ -56,7 +56,7 @@ describe("Button", () => {
     expect(primary?.tagName).toBe("BUTTON");
     expect(primary?.className).toMatch(/primary/);
     expect(secondary?.className).toMatch(/secondary/);
-    expect(disabled?.tagName).toBe("DIV");
+    expect((disabled as HTMLButtonElement).disabled).toBe(true);
     expect(disabled?.className).toMatch(/disabled/);
     fireEvent.click(primary as Element);
     expect(onClick).toHaveBeenCalledTimes(1);
