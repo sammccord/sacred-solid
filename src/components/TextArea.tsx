@@ -1,4 +1,5 @@
 import type { JSX } from "@solidjs/web";
+import { Textarea as UiTextarea } from "@ui-sdk/solid/textarea";
 import { createEffect, createSignal, onCleanup, onSettled, Show, omit, untrack } from "solid-js";
 import type { AugProps } from "../aug/index.ts";
 import { styleAttributes, type ThemeProps } from "../style/index.ts";
@@ -32,6 +33,7 @@ export function TextArea(allProps: TextAreaProps) {
     "onChange",
     "value",
     "defaultValue",
+    "style",
   );
 
   let textAreaRef = undefined as HTMLTextAreaElement | undefined;
@@ -202,20 +204,20 @@ export function TextArea(allProps: TextAreaProps) {
 
       <div ref={measurementRef} class={styles.hidden}></div>
 
-      <textarea
+      <UiTextarea
         class={styles.hiddenElement}
         ref={textAreaRef}
         value={text()}
+        onValueChange={setText}
         aria-placeholder={props.placeholder}
         onFocus={onHandleFocus}
         onBlur={onHandleBlur}
         onKeyDown={onHandleKeyDown}
         onInput={onHandleChange}
-        onSelect={syncSelection}
         onKeyUp={syncSelection}
         onMouseUp={syncSelection}
         onClick={onHandleClick}
-        {...rest}
+        {...({ ...rest, onSelect: syncSelection } as Record<string, unknown>)}
       />
     </div>
   );

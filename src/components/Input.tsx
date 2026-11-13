@@ -1,4 +1,5 @@
 import type { JSX } from "@solidjs/web";
+import { Input as UiInput } from "@ui-sdk/solid/input";
 import {
   createEffect,
   createMemo,
@@ -40,6 +41,7 @@ export function Input(allProps: InputProps) {
     "id",
     "value",
     "defaultValue",
+    "style",
   );
 
   const generatedId = createUniqueId();
@@ -152,22 +154,22 @@ export function Input(allProps: InputProps) {
           </Show>
           <Show when={!isPlaceholderVisible()}>{afterCaretText()}</Show>
         </div>
-        <input
+        <UiInput
           id={inputId()}
           ref={inputRef}
           class={styles.hidden}
           value={text()}
+          onValueChange={setText}
           aria-placeholder={props.placeholder}
           type={props.type}
           onFocus={onHandleFocus}
           onBlur={onHandleBlur}
           onInput={onHandleChange}
-          onSelect={syncSelection}
           onKeyUp={syncSelection}
           onMouseUp={syncSelection}
           onClick={onHandleClick}
           onKeyDown={onHandleKeyDown}
-          {...rest}
+          {...({ ...rest, onSelect: syncSelection } as Record<string, unknown>)}
         />
       </div>
     </div>
