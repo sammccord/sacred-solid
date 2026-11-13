@@ -6,6 +6,7 @@ import { finishPackCss } from "./scripts/pack-css.ts";
 
 export default defineConfig({
   plugins: [sacredLayers(), solid()],
+  optimizeDeps: { exclude: ["@ui-sdk/core"] },
   css: {
     modules: {
       generateScopedName: (local, filename) => {

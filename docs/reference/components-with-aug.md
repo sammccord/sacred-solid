@@ -6,7 +6,7 @@ The element column lists the tags that receive the output of `styleAttributes`, 
 
 <!-- generated:start components -->
 
-69 exported components take `aug` and `theme`. 9 of them render no element with the attributes and pass both props to another component.
+69 exported components take `aug` and `theme`. 10 of them render no element with the attributes and pass both props to another component.
 
 | Component               | Element with the attributes | Forwards to  | Note                                                                                                                            |
 | ----------------------- | --------------------------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------- |
@@ -63,7 +63,7 @@ The element column lists the tags that receive the output of `styleAttributes`, 
 | `Table`                 | `<table>`                   | none         |                                                                                                                                 |
 | `TableColumn`           | `<td>`                      | none         |                                                                                                                                 |
 | `TableRow`              | `<tr>`                      | none         |                                                                                                                                 |
-| `Tabs`                  | `<div>`                     | none         |                                                                                                                                 |
+| `Tabs`                  | none                        | `TabsList`   |                                                                                                                                 |
 | `Text`                  | `<p>`                       | none         |                                                                                                                                 |
 | `TextArea`              | `<div>`                     | none         | The attributes go on the outer `div`. Other props go on the hidden `textarea`.                                                  |
 | `Tooltip`               | `<div>`                     | none         |                                                                                                                                 |

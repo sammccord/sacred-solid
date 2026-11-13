@@ -1,5 +1,6 @@
 import type { JSX } from "@solidjs/web";
-import { createSignal, createUniqueId, For, Show, omit } from "solid-js";
+import { Tabs as TabsRoot, TabsList, TabsPanel, TabsTab, TabsTabIcon } from "@ui-sdk/solid/tabs";
+import { For, Show, omit } from "solid-js";
 import type { AugProps } from "../aug/index.ts";
 import { classNames, type SlotClasses } from "../common/utilities.ts";
 import { styleAttributes, type ThemeProps } from "../style/index.ts";
@@ -35,75 +36,49 @@ export function Tabs(props: TabsProps) {
     "classes",
     "aug",
     "theme",
+    "style",
   );
-  const baseId = createUniqueId();
-  const [inner, setInner] = createSignal(props.defaultValue ?? props.items[0]?.id ?? "");
-  const value = () => props.value ?? inner();
-  const tabId = (id: string) => `${baseId}-tab-${id}`;
-  const panelId = (id: string) => `${baseId}-panel-${id}`;
-  const hasPanels = () => props.items.some((item) => "panel" in item);
-  const selected = () => props.items.find((item) => item.id === value());
-
-  const select = (id: string) => {
-    if (props.value === undefined) setInner(id);
-    props.onChange?.(id);
-  };
-
-  const move = (event: KeyboardEvent, step: number) => {
-    const current = event.currentTarget as HTMLElement;
-    const tabs = [...current.parentElement!.querySelectorAll<HTMLElement>("[role='tab']")];
-    const next = (tabs.indexOf(current) + step + tabs.length) % tabs.length;
-    event.preventDefault();
-    select(props.items[next]!.id);
-    tabs[next]!.focus();
-  };
 
   return (
-    <>
-      <div
-        role="tablist"
+    <TabsRoot
+      class={styles.group}
+      {...(props.value === undefined
+        ? { defaultValue: props.defaultValue ?? props.items[0]?.id }
+        : {
+            get value() {
+              return props.value;
+            },
+          })}
+      onValueChange={(next) => {
+        if (next !== null) props.onChange?.(next);
+      }}
+      loop
+    >
+      <TabsList
         class={classNames(styles.root, props.class)}
         {...rest}
-        {...styleAttributes(props, rest.style)}
+        {...styleAttributes(props, props.style)}
       >
         <For each={props.items}>
           {(item) => (
-            <button
-              type="button"
-              role="tab"
-              id={hasPanels() ? tabId(item.id) : undefined}
-              aria-controls={hasPanels() ? panelId(item.id) : undefined}
-              class={classNames(styles.tab, props.classes?.tab)}
-              aria-selected={item.id === value() ? "true" : "false"}
-              tabindex={item.id === value() ? 0 : -1}
-              onClick={() => select(item.id)}
-              onKeyDown={(event) => {
-                if (event.key === "ArrowRight") move(event, 1);
-                else if (event.key === "ArrowLeft") move(event, -1);
-              }}
-            >
+            <TabsTab value={item.id} class={classNames(styles.tab, props.classes?.tab)}>
               <Show when={item.icon !== undefined}>
-                <span class={classNames(styles.icon, props.classes?.icon)}>{item.icon}</span>
+                <TabsTabIcon class={classNames(styles.icon, props.classes?.icon)}>
+                  {item.icon}
+                </TabsTabIcon>
               </Show>
               <span class={classNames(styles.label, props.classes?.label)}>{item.label}</span>
-            </button>
+            </TabsTab>
           )}
         </For>
-      </div>
-      <Show when={selected()}>
+      </TabsList>
+      <For each={props.items.filter((item) => "panel" in item)}>
         {(item) => (
-          <Show when={"panel" in item()}>
-            <div
-              role="tabpanel"
-              id={panelId(item().id)}
-              aria-labelledby={tabId(item().id)}
-              class={classNames(styles.panel, props.classes?.panel)}
-            >
-              {item().panel}
-            </div>
-          </Show>
+          <TabsPanel value={item.id} class={classNames(styles.panel, props.classes?.panel)}>
+            {item.panel}
+          </TabsPanel>
         )}
-      </Show>
-    </>
+      </For>
+    </TabsRoot>
   );
 }

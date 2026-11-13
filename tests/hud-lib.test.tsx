@@ -97,7 +97,7 @@ test("Tabs marks the value selected, changes on click and moves with the arrow k
     />
   ));
   const tabs = [...container.querySelectorAll<HTMLElement>("[role='tab']")];
-  expect(container.firstElementChild?.getAttribute("role")).toBe("tablist");
+  expect(container.querySelector("[role='tablist']")?.getAttribute("data-slot")).toBe("tabs-list");
   expect(tabs.map((tab) => tab.getAttribute("aria-selected"))).toEqual(["true", "false", "false"]);
   expect(tabs.map((tab) => tab.tabIndex)).toEqual([0, -1, -1]);
   expect(tabs.every((tab) => tab.classList.contains("t"))).toBe(true);
@@ -212,9 +212,9 @@ test("Tabs mounts a getter panel only while its tab is selected", () => {
   expect(built).toBeGreaterThan(0);
 });
 
-test("Tabs without any panel renders only the tablist, with no ids", () => {
+test("Tabs without any panel renders only the tablist", () => {
   const { container } = render(() => <Tabs items={[{ id: "a", label: "A" }]} />);
-  expect(container.children).toHaveLength(1);
-  expect(container.querySelector("[role='tab']")?.hasAttribute("id")).toBe(false);
+  expect(container.querySelectorAll("[role='tablist']")).toHaveLength(1);
+  expect(container.querySelector("[role='tabpanel']")).toBeNull();
   expect(container.querySelector("[role='tab']")?.getAttribute("aria-selected")).toBe("true");
 });
