@@ -1,3 +1,7 @@
+.root {
+  display: contents;
+}
+
 .flex {
   display: flex;
   align-items: center;

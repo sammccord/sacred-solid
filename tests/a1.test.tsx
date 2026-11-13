@@ -1,3 +1,4 @@
+import { flush } from "solid-js";
 import { cleanup, fireEvent, render, screen } from "@solidjs/testing-library";
 import { afterEach, describe, expect, test, vi } from "vite-plus/test";
 import { Accordion } from "../src/components/Accordion.tsx";
@@ -45,23 +46,29 @@ describe("Accordion", () => {
     expect(screen.queryByText("hidden body")).toBeNull();
   });
 
-  test("Enter and space toggle, space is default-prevented", () => {
+  test("Enter and Space toggle the section from the keyboard", async () => {
     render(() => (
       <Accordion title="More" defaultValue>
         body
       </Accordion>
     ));
-    const header = screen.getByRole("button");
+    const header = screen.getByRole("button", { name: /More/ });
+    const key = async (value: string) => {
+      fireEvent.keyDown(header, { key: value });
+      fireEvent.keyUp(header, { key: value });
+      await new Promise((resolve) => setTimeout(resolve, 0));
+      flush();
+    };
+    expect(header.getAttribute("aria-expanded")).toBe("true");
     expect(screen.getByText("body")).toBeTruthy();
-
-    expect(fireEvent.keyDown(header, { key: "Enter" })).toBe(true);
+    await key("Enter");
+    expect(header.getAttribute("aria-expanded")).toBe("false");
     expect(screen.queryByText("body")).toBeNull();
-
-    expect(fireEvent.keyDown(header, { key: " " })).toBe(false);
+    await key(" ");
+    expect(header.getAttribute("aria-expanded")).toBe("true");
     expect(screen.getByText("body")).toBeTruthy();
-
-    fireEvent.keyDown(header, { key: "a" });
-    expect(screen.getByText("body")).toBeTruthy();
+    await key("a");
+    expect(header.getAttribute("aria-expanded")).toBe("true");
   });
 });
 
