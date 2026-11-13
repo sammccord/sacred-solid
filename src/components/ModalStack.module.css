@@ -1,20 +1,21 @@
-.root {
-  align-items: center;
-  bottom: 0;
-  display: flex;
-  justify-content: center;
-  left: 0;
-  pointer-events: none;
-  position: fixed;
-  right: 0;
-  top: 0;
-  z-index: var(--z-index-page-modals);
-}
-
 .item {
-  pointer-events: auto;
-  position: absolute;
+  inset: 0;
+  width: fit-content;
+  max-width: 100vw;
+  height: fit-content;
+  max-height: 100dvh;
+  margin: auto;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  overflow: visible;
+  color: inherit;
+  background: none;
   transition:
     opacity 0.2s ease,
     transform 0.4s ease;
+
+  &::backdrop {
+    background: none;
+  }
 }

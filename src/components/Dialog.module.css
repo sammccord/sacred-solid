@@ -41,3 +41,17 @@
 .root:where([data-aug-inlay]) {
   background: none;
 }
+
+.popup {
+  inset: 0;
+  height: fit-content;
+  margin: auto;
+  border: 0;
+  outline: 0;
+  color: var(--theme-ink);
+  font: inherit;
+
+  &::backdrop {
+    background: none;
+  }
+}

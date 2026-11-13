@@ -5,12 +5,14 @@ import {
   createComponent,
   createContext,
   createSignal,
+  untrack,
   useContext,
 } from "solid-js";
 
 export interface ModalState {
   key: string;
   render: () => JSX.Element;
+  returnFocus: HTMLElement | null;
 }
 
 export interface ModalContextValue {
@@ -28,17 +30,23 @@ export function ModalProvider(props: { children?: JSX.Element }) {
     const key = `modal-${Date.now()}-${Math.random().toString(36).substring(2, 11)}`;
     setModalStack((prev) => [
       ...prev,
-      { key, render: () => createComponent(component, modalProps) },
+      {
+        key,
+        render: () => createComponent(component, modalProps),
+        returnFocus: document.activeElement instanceof HTMLElement ? document.activeElement : null,
+      },
     ]);
     return key;
   };
 
   const close = (key?: string) => {
-    setModalStack((prev) => {
-      if (prev.length === 0) return prev;
-      if (key) return prev.filter((modal) => modal.key !== key);
-      return prev.slice(0, -1);
-    });
+    const stack = untrack(modalStack);
+    const closing = key ? stack.find((modal) => modal.key === key) : stack.at(-1);
+    if (!closing) return;
+    setModalStack(stack.filter((modal) => modal !== closing));
+    //NOTE: The dialog unmounts before ui-sdk can return focus, so focus goes back once the page is no longer inert.
+    const target = closing.returnFocus;
+    if (target) requestAnimationFrame(() => target.isConnected && target.focus());
   };
 
   return <ModalContext value={{ modalStack, open, close }}>{props.children}</ModalContext>;
@@ -62,4 +70,20 @@ export function useModals(): ModalContextValue {
     return outsideProvider;
   }
   return context;
+}
+
+const ModalTitleContext = createContext<(() => string | undefined) | null>(null);
+
+export function ModalTitle(props: { id: string; children?: JSX.Element }) {
+  let claimed = false;
+  const claim = () => {
+    if (claimed) return undefined;
+    claimed = true;
+    return props.id;
+  };
+  return <ModalTitleContext value={claim}>{props.children}</ModalTitleContext>;
+}
+
+export function useModalTitleId(): string | undefined {
+  return useContext(ModalTitleContext)?.();
 }

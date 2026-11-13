@@ -43,7 +43,7 @@ Text colors.
 | `--theme-ink-inverse` | `inkInverse` | theme | set by each theme | Text drawn on an ink fill. |
 | `--theme-ink-subdued` | `inkSubdued` | theme | set by each theme | Placeholder text.          |
 
-- `--theme-ink` is read by `ActionButton`, `ActionListItem`, `BreadCrumbs`, `Button`, `CanvasPlatformer`, `CanvasSnake`, `Checkbox`, `DatePicker`, `Drawer`, `DropdownMenu`, `KeyHint`, `MatrixLoader`, `Navigation`, `RadioButton`, `Select`, `Tabs`, `global.css`.
+- `--theme-ink` is read by `ActionButton`, `ActionListItem`, `BreadCrumbs`, `Button`, `CanvasPlatformer`, `CanvasSnake`, `Checkbox`, `DatePicker`, `Dialog`, `Drawer`, `DropdownMenu`, `KeyHint`, `MatrixLoader`, `Navigation`, `RadioButton`, `Select`, `Tabs`, `global.css`.
 - `--theme-ink-inverse` is read by `Dialog`, `Input`, `NumberRangeSlider`, `Panel`, `RadioButton`, `Select`.
 - `--theme-ink-subdued` is read by `Input`.
 

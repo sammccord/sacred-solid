@@ -1,35 +1,44 @@
-import { For } from "solid-js";
+import { Dialog, DialogContent } from "@ui-sdk/solid/dialog";
+import { createUniqueId, For } from "solid-js";
 import { classNames } from "../common/utilities.ts";
 import styles from "./ModalStack.module.css";
-import { useModals } from "./page/ModalContext.tsx";
+import { ModalTitle, useModals } from "./page/ModalContext.tsx";
 
 export interface ModalStackProps {
   class?: string;
 }
 
 export function ModalStack(props: ModalStackProps) {
-  const { modalStack } = useModals();
+  const { modalStack, close } = useModals();
 
   return (
-    <div class={classNames(styles.root, props.class)}>
-      <For each={modalStack()}>
-        {(modalState, index) => {
-          const offsetFromLast = () => modalStack().length - 1 - index();
+    <For each={modalStack()}>
+      {(modalState, index) => {
+        const titleId = createUniqueId();
+        const offsetFromLast = () => modalStack().length - 1 - index();
 
-          return (
-            <div
-              class={styles.item}
+        return (
+          <Dialog
+            open
+            modal
+            closeOnOutsidePress={false}
+            onOpenChange={(open) => {
+              if (!open) close(modalState.key);
+            }}
+          >
+            <DialogContent
+              class={classNames(styles.item, props.class)}
+              aria-labelledby={titleId}
               style={{
-                "z-index": 10 + index(),
                 transform: `translateY(${-offsetFromLast() * 40}px)`,
                 filter: `blur(${offsetFromLast() * 1.1}px)`,
               }}
             >
-              {modalState.render()}
-            </div>
-          );
-        }}
-      </For>
-    </div>
+              <ModalTitle id={titleId}>{modalState.render()}</ModalTitle>
+            </DialogContent>
+          </Dialog>
+        );
+      }}
+    </For>
   );
 }

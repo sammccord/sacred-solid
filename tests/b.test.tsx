@@ -416,24 +416,61 @@ describe("NumberRangeSlider", () => {
 });
 
 describe("Dialog", () => {
-  test("renders title and content and wires OK and Cancel", () => {
+  const settle = async () => {
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    flush();
+  };
+
+  test("without a trigger it is an inline panel that wires OK and Cancel", () => {
     const onConfirm = vi.fn();
     const onCancel = vi.fn();
-    render(() => (
+    const { container } = render(() => (
       <Dialog title="Sure?" onConfirm={onConfirm} onCancel={onCancel}>
         Delete it
       </Dialog>
     ));
-    const dialog = screen.getByRole("dialog");
-    expect(dialog.getAttribute("aria-modal")).toBe("true");
-    expect(dialog.querySelector("header")?.textContent).toBe("Sure?");
-    expect(dialog.querySelector("article")?.textContent).toBe("Delete it");
-    expect(dialog.getAttribute("aria-describedby")).toBe(dialog.querySelector("article")?.id);
+    expect(screen.queryByRole("dialog")).toBeNull();
+    expect(container.querySelector("header")?.textContent).toBe("Sure?");
+    expect(container.querySelector("article")?.textContent).toBe("Delete it");
     fireEvent.click(screen.getByText("OK"));
     expect(onConfirm).toHaveBeenCalledTimes(1);
-    expect(onCancel).not.toHaveBeenCalled();
     fireEvent.click(screen.getByText("Cancel"));
     expect(onCancel).toHaveBeenCalledTimes(1);
+  });
+
+  test("with a trigger it is a named alert dialog whose answers close it", async () => {
+    const onConfirm = vi.fn();
+    const onCancel = vi.fn();
+    render(() => (
+      <Dialog
+        title="Sure?"
+        trigger={<button type="button">Delete</button>}
+        onConfirm={onConfirm}
+        onCancel={onCancel}
+      >
+        Delete it
+      </Dialog>
+    ));
+    const trigger = screen.getByRole("button", { name: "Delete" });
+    expect(trigger.getAttribute("aria-haspopup")).toBe("dialog");
+    fireEvent.click(trigger);
+    await settle();
+    const dialog = screen.getByRole("alertdialog", { name: "Sure?" });
+    expect(dialog.getAttribute("aria-describedby")).not.toBeNull();
+    expect(document.getElementById(dialog.getAttribute("aria-describedby")!)?.textContent).toBe(
+      "Delete it",
+    );
+    fireEvent.click(screen.getByRole("button", { name: "Cancel" }));
+    await settle();
+    expect(onCancel).toHaveBeenCalledTimes(1);
+    expect(screen.queryByRole("alertdialog")).toBeNull();
+    expect(document.activeElement).toBe(trigger);
+    fireEvent.click(trigger);
+    await settle();
+    fireEvent.click(screen.getByRole("button", { name: "OK" }));
+    await settle();
+    expect(onConfirm).toHaveBeenCalledTimes(1);
+    expect(screen.queryByRole("alertdialog")).toBeNull();
   });
 });
 
