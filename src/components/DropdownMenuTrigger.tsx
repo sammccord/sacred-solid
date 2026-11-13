@@ -15,6 +15,7 @@ export interface DropdownMenuTriggerProps {
   children?: JSX.Element;
   items: DropdownMenuProps["items"];
   hotkey?: string;
+  trigger?: (triggerProps: Record<string, unknown>) => JSX.Element;
 }
 
 export function DropdownMenuTrigger(props: DropdownMenuTriggerProps) {
@@ -34,7 +35,9 @@ export function DropdownMenuTrigger(props: DropdownMenuTriggerProps) {
   return (
     <div class={classNames(styles.root, props.class)} {...styleAttributes(props)}>
       <Menu controller={controller} loop>
-        {trigger ? (
+        {props.trigger ? (
+          <MenuTrigger render={(triggerProps) => props.trigger!(triggerProps)} />
+        ) : trigger ? (
           <MenuTrigger
             render={(triggerProps) => {
               spread(trigger, triggerProps, true);

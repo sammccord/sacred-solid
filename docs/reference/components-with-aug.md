@@ -6,7 +6,7 @@ The element column lists the tags that receive the output of `styleAttributes`, 
 
 <!-- generated:start components -->
 
-69 exported components take `aug` and `theme`. 18 of them render no element with the attributes and pass both props to another component.
+69 exported components take `aug` and `theme`. 19 of them render no element with the attributes and pass both props to another component.
 
 | Component               | Element with the attributes | Forwards to                           | Note                                                                                                                            |
 | ----------------------- | --------------------------- | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
@@ -24,7 +24,7 @@ The element column lists the tags that receive the output of `styleAttributes`, 
 | `BlockLoader`           | `<span>`                    | none                                  |                                                                                                                                 |
 | `BreadCrumbs`           | `<nav>`                     | none                                  |                                                                                                                                 |
 | `Button`                | none                        | `ButtonRoot`                          | An enabled Button renders a `button`. A disabled one renders a `div`.                                                           |
-| `ButtonGroup`           | `<div>`                     | none                                  |                                                                                                                                 |
+| `ButtonGroup`           | none                        | `Toolbar`                             |                                                                                                                                 |
 | `Card`                  | `<article>`                 | none                                  |                                                                                                                                 |
 | `CardDouble`            | `<article>`                 | none                                  |                                                                                                                                 |
 | `Checkbox`              | `<div>`                     | none                                  |                                                                                                                                 |

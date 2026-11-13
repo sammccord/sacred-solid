@@ -288,6 +288,24 @@ describe("ButtonGroup", () => {
     expect(onClick).toHaveBeenCalledTimes(1);
   });
 
+  test("is a named toolbar with one tab stop and arrow keys between its buttons", () => {
+    render(() => (
+      <ButtonGroup
+        label="Edit"
+        items={[{ body: "Cut" }, { body: "Copy" }, { body: "More", items: [{ children: "x" }] }]}
+      />
+    ));
+    expect(screen.getByRole("toolbar", { name: "Edit" })).toBeTruthy();
+    const buttons = screen.getAllByRole("button");
+    expect(buttons.map((button) => button.tabIndex)).toEqual([0, -1, -1]);
+    buttons[0]!.focus();
+    fireEvent.keyDown(buttons[0]!, { key: "ArrowRight" });
+    expect(document.activeElement).toBe(buttons[1]);
+    fireEvent.keyDown(buttons[1]!, { key: "ArrowRight" });
+    expect(document.activeElement).toBe(buttons[2]);
+    expect(buttons[2]!.getAttribute("aria-haspopup")).toBe("menu");
+  });
+
   test("items with a menu open a dropdown via click and toggle it with openHotkey", async () => {
     render(() => (
       <ButtonGroup

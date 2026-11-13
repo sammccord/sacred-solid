@@ -6,6 +6,7 @@ import { classNames } from "../common/utilities.ts";
 import { ActionButton } from "./ActionButton.tsx";
 import styles from "./ButtonGroup.module.css";
 import { DropdownMenuTrigger } from "./DropdownMenuTrigger.tsx";
+import { Toolbar, ToolbarButton } from "@ui-sdk/solid/toolbar";
 import type { DropdownMenuProps } from "./DropdownMenu.tsx";
 
 export interface ButtonGroupItem {
@@ -23,14 +24,17 @@ export interface ButtonGroupProps {
   theme?: ThemeProps;
   items?: ButtonGroupItem[];
   isFull?: boolean;
+  label?: string;
 }
 
 export function ButtonGroup(props: ButtonGroupProps) {
   return (
     <Show when={props.items}>
       {(items) => (
-        <div
+        <Toolbar
           class={classNames(styles.root, props.isFull ? styles.full : null, props.class)}
+          aria-label={props.label ?? "Actions"}
+          loop
           {...styleAttributes(props)}
         >
           <For each={items()}>
@@ -38,24 +42,42 @@ export function ButtonGroup(props: ButtonGroupProps) {
               <Show
                 when={each.items}
                 fallback={
-                  <ActionButton
-                    onClick={each.onClick}
-                    hotkey={each.hotkey}
-                    isSelected={each.selected}
-                  >
-                    {each.body}
-                  </ActionButton>
+                  <ToolbarButton
+                    onClick={() => each.onClick?.()}
+                    render={(buttonProps) => (
+                      <ActionButton
+                        {...buttonProps}
+                        hotkey={each.hotkey}
+                        isSelected={each.selected}
+                      >
+                        {each.body}
+                      </ActionButton>
+                    )}
+                  />
                 }
               >
-                <DropdownMenuTrigger items={each.items} hotkey={each.openHotkey}>
-                  <ActionButton hotkey={each.hotkey} isSelected={each.selected}>
-                    {each.body}
-                  </ActionButton>
-                </DropdownMenuTrigger>
+                <DropdownMenuTrigger
+                  items={each.items}
+                  hotkey={each.openHotkey}
+                  trigger={(triggerProps) => (
+                    <ToolbarButton
+                      {...triggerProps}
+                      render={(buttonProps) => (
+                        <ActionButton
+                          {...buttonProps}
+                          hotkey={each.hotkey}
+                          isSelected={each.selected}
+                        >
+                          {each.body}
+                        </ActionButton>
+                      )}
+                    />
+                  )}
+                />
               </Show>
             )}
           </For>
-        </div>
+        </Toolbar>
       )}
     </Show>
   );

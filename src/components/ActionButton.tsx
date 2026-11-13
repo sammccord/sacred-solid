@@ -10,7 +10,7 @@ export interface ActionButtonProps extends Omit<
   JSX.ButtonHTMLAttributes<HTMLButtonElement>,
   "style" | "onClick" | "ref"
 > {
-  onClick?: () => void;
+  onClick?: (event: MouseEvent) => void;
   hotkey?: string | number;
   children?: JSX.Element;
   style?: JSX.CSSProperties;
@@ -38,7 +38,7 @@ export function ActionButton(props: ActionButtonProps) {
   return (
     <Button
       class={classNames(styles.root, props.isSelected ? styles.selected : null, props.class)}
-      onClick={() => props.onClick?.()}
+      onClick={props.onClick}
       {...(rest as Record<string, unknown>)}
       {...styleAttributes(props, props.rootStyle)}
     >
