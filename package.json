@@ -1,6 +1,6 @@
 {
   "name": "sacred-solid",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "SolidJS port of SRCL, the Sacred Computer component library with terminal aesthetics.",
   "license": "MIT",
   "repository": {
