@@ -53,14 +53,7 @@ export function markupCases(c: typeof Lib): Case[] {
         </c.Panel>
       ),
     ],
-    [
-      "RadioButton",
-      () => (
-        <c.RadioButton name="r" value="v">
-          x
-        </c.RadioButton>
-      ),
-    ],
+    ["RadioButton", () => <c.RadioButtonGroup name="r" options={[{ value: "v", label: "x" }]} />],
     ["Row", () => <c.Row>x</c.Row>],
     ["SimpleTable", () => <c.SimpleTable data={TABLE} />],
     ["Surface", () => <c.Surface>x</c.Surface>],

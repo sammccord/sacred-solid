@@ -9,7 +9,6 @@ import { DatePicker } from "../src/components/DatePicker.tsx";
 import { Dialog } from "../src/components/Dialog.tsx";
 import { Input } from "../src/components/Input.tsx";
 import { NumberRangeSlider } from "../src/components/NumberRangeSlider.tsx";
-import { RadioButton } from "../src/components/RadioButton.tsx";
 import { RadioButtonGroup } from "../src/components/RadioButtonGroup.tsx";
 import { Select } from "../src/components/Select.tsx";
 import { TextArea } from "../src/components/TextArea.tsx";
@@ -201,98 +200,89 @@ describe("TextArea", () => {
 });
 
 describe("Checkbox", () => {
-  test("toggles the mark and the checked class and reports changes", () => {
+  test("is a named checkbox that toggles its mark, the checked class and reports changes", () => {
     const onChange = vi.fn();
     const { container } = render(() => (
       <Checkbox name="agree" onChange={onChange}>
         Agree
       </Checkbox>
     ));
-    const input = container.querySelector("input") as HTMLInputElement;
-    const label = container.querySelector("label") as HTMLLabelElement;
-    expect(label.getAttribute("for")).toBe("agree-checkbox");
-    expect(label.textContent).toBe("\u00A0");
-    fireEvent.click(input);
-    expect(label.textContent).toBe("╳");
+    const box = screen.getByRole("checkbox", { name: /Agree/ });
+    expect(box.getAttribute("aria-checked")).toBe("false");
+    expect(box.textContent).toBe("\u00A0");
+    fireEvent.click(box);
+    expect(box.getAttribute("aria-checked")).toBe("true");
+    expect(box.textContent).toBe("╳");
     expect((container.firstElementChild as HTMLElement).className).toMatch(/checked/);
-    expect(onChange).toHaveBeenCalledTimes(1);
-    expect(container.textContent).toContain("Agree");
+    expect(onChange).toHaveBeenCalledWith(true);
   });
 
-  test("defaultChecked starts checked, Enter toggles it", () => {
-    const { container } = render(() => <Checkbox name="c" defaultChecked />);
-    const input = container.querySelector("input") as HTMLInputElement;
-    expect(input.checked).toBe(true);
-    expect(container.querySelector("label")?.textContent).toBe("╳");
-    fireEvent.keyDown(input, { key: "Enter" });
-    expect(input.checked).toBe(false);
-    expect(container.querySelector("label")?.textContent).toBe("\u00A0");
+  test("defaultChecked starts checked, a press toggles it, the value submits under name", () => {
+    const { container } = render(() => (
+      <form>
+        <Checkbox name="c" defaultChecked>
+          C
+        </Checkbox>
+      </form>
+    ));
+    const box = screen.getByRole("checkbox", { name: /C/ });
+    expect(box.textContent).toBe("╳");
+    expect(new FormData(container.querySelector("form")!).get("c")).toBe("on");
+    fireEvent.click(box);
+    expect(box.getAttribute("aria-checked")).toBe("false");
+    expect(box.textContent).toBe("\u00A0");
   });
 
   test("ArrowRight focuses the next focusable", () => {
-    const { container } = render(() => (
+    render(() => (
       <>
-        <Checkbox name="c" />
+        <Checkbox name="c">C</Checkbox>
         <button id="after">a</button>
       </>
     ));
-    const input = container.querySelector("input") as HTMLInputElement;
-    input.focus();
-    fireEvent.keyDown(input, { key: "ArrowRight" });
-    expect(document.activeElement?.id).toBe("after");
-  });
-});
-
-describe("RadioButton", () => {
-  test("selected renders the dot and fires onSelect on change and Enter", () => {
-    const onSelect = vi.fn();
-    const { container } = render(() => (
-      <RadioButton name="g" value="a" selected onSelect={onSelect}>
-        A
-      </RadioButton>
-    ));
-    expect(container.querySelector('[class*="dot"]')).not.toBeNull();
-    const input = container.querySelector("input") as HTMLInputElement;
-    expect(input.checked).toBe(true);
-    fireEvent.change(input);
-    fireEvent.keyDown(input, { key: "Enter" });
-    expect(onSelect).toHaveBeenCalledTimes(2);
-    expect(onSelect).toHaveBeenCalledWith("a");
-  });
-
-  test("Tab is captured and moves focus forward", () => {
-    const { container } = render(() => (
-      <>
-        <RadioButton name="g" value="a" />
-        <button id="after">a</button>
-      </>
-    ));
-    const input = container.querySelector("input") as HTMLInputElement;
-    input.focus();
-    const tab = new KeyboardEvent("keydown", { key: "Tab", bubbles: true, cancelable: true });
-    input.dispatchEvent(tab);
-    expect(tab.defaultPrevented).toBe(true);
+    const box = screen.getByRole("checkbox");
+    box.focus();
+    fireEvent.keyDown(box, { key: "ArrowRight" });
     expect(document.activeElement?.id).toBe("after");
   });
 });
 
 describe("RadioButtonGroup", () => {
-  test("clicking an option moves the selection", () => {
+  test("names its radios, moves the selection on click and arrows, reports the value", () => {
+    const onChange = vi.fn();
     const { container } = render(() => (
-      <RadioButtonGroup
-        defaultValue="b"
-        options={[
-          { value: "a", label: "Alpha" },
-          { value: "b", label: "Beta" },
-        ]}
-      />
+      <form>
+        <RadioButtonGroup
+          name="pick"
+          label="Pick one"
+          defaultValue="b"
+          onChange={onChange}
+          options={[
+            { value: "a", label: "Alpha" },
+            { value: "b", label: "Beta" },
+          ]}
+        />
+      </form>
     ));
-    const inputs = Array.from(container.querySelectorAll("input"));
-    expect(inputs.map((i) => i.checked)).toEqual([false, true]);
-    fireEvent.click(inputs[0] as HTMLInputElement);
-    expect(inputs.map((i) => i.checked)).toEqual([true, false]);
-    expect(container.querySelectorAll('[class*="dot"]').length).toBe(1);
-    expect(container.textContent).toContain("Alpha");
+    expect(screen.getByRole("radiogroup", { name: "Pick one" })).toBeTruthy();
+    const radios = screen.getAllByRole("radio");
+    const checked = () => radios.map((radio) => radio.getAttribute("aria-checked"));
+    expect(
+      radios.map(
+        (radio) => radio.textContent === "" && radio.getAttribute("aria-labelledby") !== null,
+      ),
+    ).toEqual([true, true]);
+    expect(screen.getByRole("radio", { name: /Alpha/ })).toBe(radios[0]);
+    expect(checked()).toEqual(["false", "true"]);
+    fireEvent.click(radios[0]!);
+    expect(checked()).toEqual(["true", "false"]);
+    expect(onChange).toHaveBeenLastCalledWith("a");
+    expect(container.querySelectorAll('[data-slot="radio-indicator"]')).toHaveLength(1);
+    radios[0]!.focus();
+    fireEvent.keyDown(radios[0]!, { key: "ArrowDown" });
+    expect(checked()).toEqual(["false", "true"]);
+    expect(document.activeElement).toBe(radios[1]);
+    expect(new FormData(container.querySelector("form")!).get("pick")).toBe("b");
   });
 });
 

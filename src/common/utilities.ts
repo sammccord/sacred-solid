@@ -100,8 +100,17 @@ export function classNames(...args: ClassValue[]): string {
   return classes.join(" ");
 }
 
-const FOCUSABLE_SELECTOR =
-  'a[href], button, input, select, textarea, [tabindex]:not([tabindex="-1"]), [contenteditable="true"]';
+const FOCUSABLE_SELECTOR = [
+  "a[href]",
+  "button",
+  "input",
+  "select",
+  "textarea",
+  "[tabindex]",
+  '[contenteditable="true"]',
+]
+  .map((tag) => `${tag}:not([tabindex="-1"]):not([disabled]):not([aria-hidden="true"])`)
+  .join(", ");
 
 export function isFocusableElement(element: EventTarget | null): element is HTMLElement {
   return element instanceof HTMLElement && element.matches(FOCUSABLE_SELECTOR);

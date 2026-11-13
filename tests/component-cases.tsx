@@ -1,5 +1,6 @@
 import type { JSX } from "@solidjs/web";
 import { Menu } from "@ui-sdk/solid/menu";
+import { RadioGroup } from "@ui-sdk/solid/radio";
 import type { AugProps } from "../src/aug/index.ts";
 import type { StyleProps, ThemeProps } from "../src/style/index.ts";
 import { ModalStack } from "../src/components/ModalStack.tsx";
@@ -212,7 +213,14 @@ export const cases: Case[] = [
     ),
   ],
   ["Popover", (s) => <Popover {...s}>x</Popover>],
-  ["RadioButton", (s) => <RadioButton name="r" value="v" {...s} />],
+  [
+    "RadioButton",
+    (s) => (
+      <RadioGroup>
+        <RadioButton value="v" {...s} />
+      </RadioGroup>
+    ),
+  ],
   ["Row", (s) => <Row {...s}>x</Row>],
   ["RowEllipsis", (s) => <RowEllipsis {...s}>x</RowEllipsis>],
   ["RowSpaceBetween", (s) => <RowSpaceBetween {...s}>x</RowSpaceBetween>],
